@@ -11,6 +11,7 @@ function stored(key,fallback=null){try{const data=localStorage.getItem(key);retu
 function store(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
 function notice(message){$('notice').textContent=message||'';$('notice').hidden=!message;}
 let account=null,capabilities={jev:false,discord:false},csrfToken=null,serverOnline=false,active=null;
+let opponentChosen=false; // set once the player picks an opponent, so the JEV default never overrides them
 let state=createInitialState(),record=null,imported=null,busy=false,path=[],flip=true,activeTab='overview',analytics=null;
 let localTurnStarted=performance.now(),localWorker=null,workerSequence=0,pollTimer=null,pollCount=0,leaderboardCursor=null,leaderboardRows=[];
 const pendingWorker=new Map();
@@ -270,6 +271,11 @@ function showTab(name){activeTab=name;for(const tab of document.querySelectorAll
   if(name==='leaderboard')loadLeaderboard();if(name==='history')loadHistory();}
 function applyCapabilities(){
   $('opponent').querySelector('[value=jev]').disabled=!capabilities.jev;$('opponent').querySelector('[value=jev]').textContent=capabilities.jev?'JEV · structured model + search':'JEV · connect API to enable';
+  // Default to JEV once the server reports it available. The <option> order puts
+  // local first, so without this the select stays on the local search opponent
+  // even while the header reads "JEV CONNECTED". Applied once, and never over a
+  // choice the player has already made.
+  if(capabilities.jev&&!opponentChosen&&$('opponent').value!=='jev'){$('opponent').value='jev';opponentChosen=true;}
   $('mode').querySelector('[value=ranked]').disabled=!account||!capabilities.jev||$('opponent').value!=='jev';
   if($('mode').querySelector('[value=ranked]').disabled)$('mode').value='casual';
   $('login').hidden=!capabilities.discord||!!account;$('logout').hidden=!account;$('identity').textContent=account?.displayName||'Guest';
@@ -298,7 +304,7 @@ $('new-game').onclick=startGame;$('resign').onclick=resign;$('flip').onclick=()=
 $('cancel-selection').onclick=()=>{path=[];renderGame();};$('continue-local').onclick=()=>startLocal(state,active.humanSide);
 $('analysis-on').onchange=()=>{$('decision-body').hidden=!$('analysis-on').checked;store('jev-analysis-on',$('analysis-on').checked);};
 $('difficulty').onchange=()=>{store('jev-difficulty',$('difficulty').value);if(activeTab==='leaderboard')loadLeaderboard();};
-$('opponent').onchange=applyCapabilities;$('telemetry-consent').onchange=()=>store('jev-telemetry-consent',$('telemetry-consent').checked);
+$('opponent').onchange=()=>{opponentChosen=true;applyCapabilities();};$('telemetry-consent').onchange=()=>store('jev-telemetry-consent',$('telemetry-consent').checked);
 $('logout').onclick=async()=>{try{await api('/api/logout',{});location.reload();}catch(error){notice(error.message);}};
 $('board').addEventListener('keydown',event=>{
   if(event.key==='Escape'){path=[];renderGame();return;}
