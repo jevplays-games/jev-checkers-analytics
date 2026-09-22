@@ -284,8 +284,8 @@ async function bootstrap(){
   const launch=new URL(location.href).searchParams.get('launch');
   if(launch&&/^[a-f0-9]{64}$/.test(launch)){sessionStorage.setItem('checkers-launch',launch);history.replaceState(null,'',location.pathname);}
   $('analysis-on').checked=stored('jev-analysis-on',true);$('decision-body').hidden=!$('analysis-on').checked;
-  $('telemetry-consent').checked=stored('jev-telemetry-consent',false);$('difficulty').value=stored('jev-difficulty','normal');
-  if(!['easy','normal','hard','jev'].includes($('difficulty').value))$('difficulty').value='normal';
+  $('telemetry-consent').checked=stored('jev-telemetry-consent',false);$('difficulty').value=stored('jev-difficulty','jev');
+  if(!['easy','normal','hard','jev'].includes($('difficulty').value))$('difficulty').value='jev';
   try{
     const result=await api('/api/me');serverOnline=true;account=result.user;csrfToken=result.csrf;capabilities=result.capabilities;
     $('connection').textContent=capabilities.jev?'JEV CONNECTED':'LOCAL READY';
