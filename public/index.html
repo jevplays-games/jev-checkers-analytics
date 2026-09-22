@@ -73,11 +73,13 @@
 </main>
   <footer><span>JEV ARCADE · CHECKERS LAB</span><span>Deterministic rules. Inspectable decisions. Verified outcomes.</span></footer>
   <div class="jv-scrim" id="jv-scrim"></div>
-  <div class="jv-sheet jv-account" id="jv-sheet" role="dialog" aria-modal="true" aria-label="Menu">
-    <span class="jv-sheet-label">Account</span>
-    <span class="jv-sheet-item jv-identity" id="identity">Guest</span>
-    <a class="jv-sheet-item" id="login" href="/api/auth/discord">Sign in with Discord</a>
-    <button class="jv-sheet-item" id="logout" type="button" hidden>Sign out</button>
+  <div class="jv-sheet" id="jv-sheet" role="dialog" aria-modal="true" aria-label="Menu">
+    <div id="jv-controls">
+      <span class="jv-sheet-label">Account</span>
+      <span class="jv-sheet-item jv-identity" id="identity">Guest</span>
+      <a class="jv-sheet-item" id="login" href="/api/auth/discord">Sign in with Discord</a>
+      <button class="jv-sheet-item" id="logout" type="button" hidden>Sign out</button>
+    </div>
   </div>
 </div>
 </body></html>

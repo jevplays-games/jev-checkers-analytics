@@ -7,6 +7,7 @@ from playwright.sync_api import sync_playwright
 root=pathlib.Path(__file__).resolve().parents[1];out=root/'reports';out.mkdir(exist_ok=True)
 sources={'/'+str(f.relative_to(root/'public')):f.read_text() for f in (root/'public').rglob('*.js')}
 html=(root/'public/index.html').read_text();html=re.sub(r'<script\b[^>]*>.*?</script>','',html,flags=re.S);html=re.sub(r'<link\b[^>]*>','',html)
+brandcss=(root/'public/brand/brand.css').read_text()
 css=(root/'public/game.css').read_text();results=[]
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox'])
@@ -23,7 +24,8 @@ with sync_playwright() as p:
    return {'status':r.status,'body':r.read().decode(),'headers':dict(r.headers)}
   page.expose_function('_testDigest',lambda data:list(hashlib.sha256(bytes(data)).digest()))
   page.expose_function('_testHTTP',http)
-  page.set_content(html,wait_until='domcontentloaded');page.add_style_tag(content=css)
+  page.set_content(html,wait_until='domcontentloaded');page.add_style_tag(content=brandcss)
+  page.add_style_tag(content=css)
   page.evaluate('''({sources,saved})=>{
    window._errors=[];addEventListener('unhandledrejection',e=>window._errors.push(e.reason?.stack||String(e.reason)));
    Object.defineProperty(crypto,'subtle',{value:{digest:async(_name,bytes)=>new Uint8Array(await window._testDigest(Array.from(new Uint8Array(bytes.buffer||bytes,bytes.byteOffset||0,bytes.byteLength)))).buffer}});
