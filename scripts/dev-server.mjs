@@ -8,7 +8,7 @@ const root=resolve(fileURLToPath(new URL('..',import.meta.url))),publicRoot=reso
 const port=Number(process.env.PORT||8787),host=process.env.HOST||'127.0.0.1';
 await mkdir(resolve(root,'.data'),{recursive:true});
 const db=new NodeDB(process.env.DB_PATH||resolve(root,'.data/checkers.sqlite'));db.exec(await readFile(resolve(root,'migrations/001.sql'),'utf8'));
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.json':'application/json'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.woff2':'font/woff2','.json':'application/json'};
 const tasks=new Set();
 const ctx={waitUntil(p){tasks.add(p);p.catch(e=>console.error('Background task failed:',e.name)).finally(()=>tasks.delete(p));}};
 const env={...process.env,APP_ENV:'local',APP_ORIGIN:process.env.APP_ORIGIN||`http://127.0.0.1:${port}`,DB:db,
