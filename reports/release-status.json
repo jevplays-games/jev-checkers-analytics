@@ -1,0 +1,32 @@
+{
+  "release": "1.0.0",
+  "createdAt": "2026-09-22T05:22:09.686029+00:00",
+  "game": "checkers",
+  "runtimeDependencies": 0,
+  "minimumNode": "22.16.0",
+  "unitIntegrationTests": {
+    "passed": 87,
+    "failed": 0,
+    "skipped": 0
+  },
+  "chromiumSourceHarness": {
+    "passed": 13,
+    "realModuleWorkerTransportVerified": false,
+    "normalBrowserNetworkingVerified": false
+  },
+  "headlessSearchSmoke": {
+    "completedGames": 16,
+    "pairedOpeningsPerOpponent": 4,
+    "remoteProviderUsed": false
+  },
+  "externalLiveValidation": {
+    "TypeSafe": false,
+    "Discord": false,
+    "Cloudflare": false
+  },
+  "clientBytes": {
+    "raw": 89593,
+    "sumOfGzipMembers": 30167
+  },
+  "integrityNote": "SHA256SUMS protects accidental corruption; it is not an externally authenticated signature."
+}

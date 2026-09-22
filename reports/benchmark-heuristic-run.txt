@@ -1,0 +1,16 @@
+
+> jev-checkers-analytics@1.0.0 bench
+> node --env-file-if-exists=.env bench/run.mjs --pairs 4 --profile easy --opponent heuristic --out reports/benchmark-search-v-heuristic
+
+.env not found. Continuing without it.
+(node:3653) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+opening-0001-search-red: complete (33 moves)
+opening-0001-search-white: complete (30 moves)
+opening-0002-search-red: complete (27 moves)
+opening-0002-search-white: complete (30 moves)
+opening-0003-search-red: complete (21 moves)
+opening-0003-search-white: complete (22 moves)
+opening-0004-search-red: complete (35 moves)
+opening-0004-search-white: complete (28 moves)
+Results: /mnt/data/jev-checkers-analytics/reports/benchmark-search-v-heuristic

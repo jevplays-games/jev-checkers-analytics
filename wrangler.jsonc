@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jev-checkers",
+  "main": "server/worker.js",
+  "compatibility_date": "2026-09-22",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "single-page-application" },
+  "d1_databases": [{ "binding": "DB", "database_name": "checkers", "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID", "migrations_dir": "migrations" }],
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": { "APP_ORIGIN": "https://REPLACE_WITH_YOUR_HOST", "BUILD_ID": "source-release-1.0.0", "GLOBAL_DAILY_MATCH_LIMIT": "200", "LOG_REQUESTS": "false" },
+  "observability": { "enabled": false }
+}

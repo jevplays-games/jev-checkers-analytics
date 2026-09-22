@@ -1,0 +1,113 @@
+{
+  "benchmarkVersion": 1,
+  "startedAt": "2026-09-22T05:21:34.928Z",
+  "seed": 73019,
+  "pairs": 4,
+  "treatments": [
+    "search"
+  ],
+  "opponent": "random",
+  "maxPlies": 240,
+  "profile": {
+    "version": "checkers-strategy-1.0.0",
+    "model": "jev-1.13.0",
+    "difficulty": "easy",
+    "depth": 1,
+    "nodes": 1000,
+    "candidates": 8,
+    "factors": [
+      "mobility"
+    ],
+    "captureExtension": 4,
+    "weights": {
+      "promotion": 40,
+      "mobility": 30,
+      "support": 30,
+      "trap": -60
+    },
+    "evaluation": {
+      "man": 100,
+      "king": 175,
+      "advancement": 4,
+      "mobility": 6,
+      "center": 8
+    },
+    "tieBreak": "ascii-action-id",
+    "quantization": 4,
+    "rubricVersion": "checkers-factors-v1"
+  },
+  "profileHash": "f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad",
+  "runtime": {
+    "node": "v22.16.0",
+    "platform": "linux",
+    "arch": "x64",
+    "cpu": "AMD EPYC 9V74 80-Core Processor"
+  },
+  "remoteProviderUsed": false,
+  "design": "Same legal opening in each color. Ablation uses identical search budgets; only JEV factors differ. Truncation is not a draw.",
+  "finishedAt": "2026-09-22T05:21:35.040Z",
+  "summaries": {
+    "search": {
+      "games": 8,
+      "completed": 8,
+      "truncated": 0,
+      "failed": 0,
+      "wins": 8,
+      "draws": 0,
+      "losses": 0,
+      "scoreAmongCompleted": 1,
+      "completionFraction": 1,
+      "allScheduledScoreBounds": {
+        "lower": 1,
+        "upper": 1
+      },
+      "completePairedPositions": 4,
+      "pairedMean": 1,
+      "paired95CI": {
+        "method": "percentile bootstrap over paired starting positions",
+        "replicates": 1000,
+        "lower": 1,
+        "upper": 1
+      },
+      "treatedDecisionLatency": {
+        "count": 157,
+        "sum": 91.01511600000009,
+        "min": 0.017304999999993242,
+        "max": 5.286042999999999,
+        "mean": 0.5797141146496821,
+        "p50": 0.4639150000000143,
+        "p90": 1.1218883999999973,
+        "p95": 1.3649870000000077,
+        "p99": 4.22617792
+      },
+      "nodes": {
+        "count": 157,
+        "sum": 1522,
+        "min": 1,
+        "max": 41,
+        "mean": 9.694267515923567,
+        "p50": 11,
+        "p90": 19.400000000000006,
+        "p95": 22.19999999999999,
+        "p99": 39.31999999999999
+      },
+      "jevDecisions": 0,
+      "forcedDecisions": 0,
+      "fallbacks": 0,
+      "providerAttempts": 0
+    }
+  },
+  "ablation": null,
+  "operations": {
+    "count": 0,
+    "providerAttempts": 0,
+    "failedAttempts": 0,
+    "scope": "All benchmark attempts including uncommitted failures; treatment summary attempts cover committed decisions only."
+  },
+  "caveats": [
+    "Generated openings are a smoke-test suite, not a calibrated measure of human playing strength.",
+    "Color pairs share a starting position; uncertainty is clustered by starting position.",
+    "Truncated games are reported separately and never converted to draws.",
+    "Remote provider quality is not measured unless remoteProviderUsed is true."
+  ]
+}

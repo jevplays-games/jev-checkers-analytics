@@ -1,0 +1,574 @@
+TAP version 13
+# (node:3259) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: guest session is opaque and cookie is HttpOnly; capability state is honest
+ok 1 - guest session is opaque and cookie is HttpOnly; capability state is honest
+  ---
+  duration_ms: 35.609677
+  type: 'test'
+  ...
+# Subtest: missing or wrong CSRF and cross-origin writes are rejected
+ok 2 - missing or wrong CSRF and cross-origin writes are rejected
+  ---
+  duration_ms: 5.356126
+  type: 'test'
+  ...
+# Subtest: unknown score, board and guild fields are rejected
+ok 3 - unknown score, board and guild fields are rejected
+  ---
+  duration_ms: 7.741328
+  type: 'test'
+  ...
+# Subtest: ranked local opponent and unconfigured JEV cannot be started
+ok 4 - ranked local opponent and unconfigured JEV cannot be started
+  ---
+  duration_ms: 5.939178
+  type: 'test'
+  ...
+# Subtest: idempotent creation returns same match; changed payload with same ID fails
+ok 5 - idempotent creation returns same match; changed payload with same ID fails
+  ---
+  duration_ms: 12.585308
+  type: 'test'
+  ...
+# Subtest: authoritative human/local-opponent turns, resignation, replay and analytics work end to end
+ok 6 - authoritative human/local-opponent turns, resignation, replay and analytics work end to end
+  ---
+  duration_ms: 45.578303
+  type: 'test'
+  ...
+# Subtest: another session cannot read or mutate owned matches
+ok 7 - another session cannot read or mutate owned matches
+  ---
+  duration_ms: 7.408957
+  type: 'test'
+  ...
+# Subtest: illegal actions and stale revisions never mutate state
+ok 8 - illegal actions and stale revisions never mutate state
+  ---
+  duration_ms: 6.341261
+  type: 'test'
+  ...
+# Subtest: competing actions commit exactly one human turn
+ok 9 - competing actions commit exactly one human turn
+  ---
+  duration_ms: 15.87208
+  type: 'test'
+  ...
+# Subtest: JEV provider outage becomes a verified no-contest, not a loss or silent fallback
+ok 10 - JEV provider outage becomes a verified no-contest, not a loss or silent fallback
+  ---
+  duration_ms: 18.166118
+  type: 'test'
+  ...
+# Subtest: mocked real-provider contract produces a verified ranked result and a provisional world entry
+ok 11 - mocked real-provider contract produces a verified ranked result and a provisional world entry
+  ---
+  duration_ms: 28.965179
+  type: 'test'
+  ...
+# Subtest: abandoned human turn is a server-recorded administrative loss
+ok 12 - abandoned human turn is a server-recorded administrative loss
+  ---
+  duration_ms: 9.119522
+  type: 'test'
+  ...
+# Subtest: browser telemetry requires consent and cannot submit arbitrary payloads
+ok 13 - browser telemetry requires consent and cannot submit arbitrary payloads
+  ---
+  duration_ms: 7.412352
+  type: 'test'
+  ...
+# Subtest: admin analytics require a distinct bearer credential
+ok 14 - admin analytics require a distinct bearer credential
+  ---
+  duration_ms: 3.747472
+  type: 'test'
+  ...
+# Subtest: content security policy and no-store protect API responses
+ok 15 - content security policy and no-store protect API responses
+  ---
+  duration_ms: 2.532739
+  type: 'test'
+  ...
+# Subtest: expired lease discards late JEV result without a second move
+ok 16 - expired lease discards late JEV result without a second move
+  ---
+  duration_ms: 21.769847
+  type: 'test'
+  ...
+# Subtest: complete audit record verifies offline without network
+ok 17 - complete audit record verifies offline without network
+  ---
+  duration_ms: 14.166262
+  type: 'test'
+  ...
+# Subtest: detects action tamper
+ok 18 - detects action tamper
+  ---
+  duration_ms: 3.115659
+  type: 'test'
+  ...
+# Subtest: detects evidence tamper
+ok 19 - detects evidence tamper
+  ---
+  duration_ms: 6.092098
+  type: 'test'
+  ...
+# Subtest: detects missing event
+ok 20 - detects missing event
+  ---
+  duration_ms: 3.142319
+  type: 'test'
+  ...
+# Subtest: detects outcome tamper
+ok 21 - detects outcome tamper
+  ---
+  duration_ms: 5.267115
+  type: 'test'
+  ...
+# Subtest: detects profile tamper
+ok 22 - detects profile tamper
+  ---
+  duration_ms: 3.296396
+  type: 'test'
+  ...
+# Subtest: detects final-state tamper
+ok 23 - detects final-state tamper
+  ---
+  duration_ms: 6.348552
+  type: 'test'
+  ...
+# Subtest: detects wrong chain head
+ok 24 - detects wrong chain head
+  ---
+  duration_ms: 8.886358
+  type: 'test'
+  ...
+# Subtest: metrics account for all recorded moves and snapshots
+ok 25 - metrics account for all recorded moves and snapshots
+  ---
+  duration_ms: 12.780681
+  type: 'test'
+  ...
+# Subtest: percentiles are interpolated and empty metrics remain unknown
+ok 26 - percentiles are interpolated and empty metrics remain unknown
+  ---
+  duration_ms: 0.205684
+  type: 'test'
+  ...
+# Subtest: CSV prevents formula injection but preserves numeric negative values
+ok 27 - CSV prevents formula injection but preserves numeric negative values
+  ---
+  duration_ms: 0.385109
+  type: 'test'
+  ...
+# Subtest: ZIP writer emits local, central-directory and end records
+ok 28 - ZIP writer emits local, central-directory and end records
+  ---
+  duration_ms: 0.496062
+  type: 'test'
+  ...
+# Subtest: self-consistent hashes do not excuse forged move metadata
+ok 29 - self-consistent hashes do not excuse forged move metadata
+  ---
+  duration_ms: 13.925497
+  type: 'test'
+  ...
+# Subtest: failed JEV attempts remain in analytics even when no move was committed
+ok 30 - failed JEV attempts remain in analytics even when no move was committed
+  ---
+  duration_ms: 6.011504
+  type: 'test'
+  ...
+# (node:3261) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: signed Discord PING succeeds; unsigned PING is rejected
+ok 31 - signed Discord PING succeeds; unsigned PING is rejected
+  ---
+  duration_ms: 34.458027
+  type: 'test'
+  ...
+# Subtest: signature rejects tampered body and stale timestamp
+ok 32 - signature rejects tampered body and stale timestamp
+  ---
+  duration_ms: 4.702392
+  type: 'test'
+  ...
+# Subtest: guild command creates user-bound opaque launch without raw identities in URL
+ok 33 - guild command creates user-bound opaque launch without raw identities in URL
+  ---
+  duration_ms: 5.892639
+  type: 'test'
+  ...
+# Subtest: DM, user-install, unsupported channel and wrong application are rejected
+ok 34 - DM, user-install, unsupported channel and wrong application are rejected
+  ---
+  duration_ms: 9.106453
+  type: 'test'
+  ...
+# Subtest: launch grant is account-bound, single-use and retains only a short-lived context
+ok 35 - launch grant is account-bound, single-use and retains only a short-lived context
+  ---
+  duration_ms: 10.767666
+  type: 'test'
+  ...
+# Subtest: forwarded launch cannot be redeemed by a different Discord user
+ok 36 - forwarded launch cannot be redeemed by a different Discord user
+  ---
+  duration_ms: 10.374946
+  type: 'test'
+  ...
+# Subtest: OAuth state validates, rotates session, retrieves identity and never stores provider tokens
+ok 37 - OAuth state validates, rotates session, retrieves identity and never stores provider tokens
+  ---
+  duration_ms: 7.501434
+  type: 'test'
+  ...
+# Subtest: OAuth callback rejects wrong browser session and unapproved return path
+ok 38 - OAuth callback rejects wrong browser session and unapproved return path
+  ---
+  duration_ms: 7.43122
+  type: 'test'
+  ...
+# Subtest: redeemed context is consumed by one ranked match and scopes its verified result
+ok 39 - redeemed context is consumed by one ranked match and scopes its verified result
+  ---
+  duration_ms: 35.97507
+  type: 'test'
+  ...
+# Subtest: balanced score weights colors equally, not by games played
+ok 40 - balanced score weights colors equally, not by games played
+  ---
+  duration_ms: 0.804888
+  type: 'test'
+  ...
+# Subtest: qualified entries sort before provisional ones
+ok 41 - qualified entries sort before provisional ones
+  ---
+  duration_ms: 0.215619
+  type: 'test'
+  ...
+# Subtest: exact rational score comparison precedes games, wins and ID tiebreakers
+ok 42 - exact rational score comparison precedes games, wins and ID tiebreakers
+  ---
+  duration_ms: 0.172124
+  type: 'test'
+  ...
+# (node:3303) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: initial board: 12 per color, red first, exactly seven opening moves
+ok 43 - initial board: 12 per color, red first, exactly seven opening moves
+  ---
+  duration_ms: 2.195341
+  type: 'test'
+  ...
+# Subtest: square mapping is a bijection for all 32 playable squares
+ok 44 - square mapping is a bijection for all 32 playable squares
+  ---
+  duration_ms: 0.159065
+  type: 'test'
+  ...
+# Subtest: a capture anywhere suppresses all quiet moves
+ok 45 - a capture anywhere suppresses all quiet moves
+  ---
+  duration_ms: 0.257059
+  type: 'test'
+  ...
+# Subtest: complete multi-jump path is the atomic action
+ok 46 - complete multi-jump path is the atomic action
+  ---
+  duration_ms: 0.685391
+  type: 'test'
+  ...
+# Subtest: branching capture paths are both available
+ok 47 - branching capture paths are both available
+  ---
+  duration_ms: 0.219945
+  type: 'test'
+  ...
+# Subtest: a shorter complete capture is legal; there is no maximum-capture rule
+ok 48 - a shorter complete capture is legal; there is no maximum-capture rule
+  ---
+  duration_ms: 0.205363
+  type: 'test'
+  ...
+# Subtest: red men cannot capture backward
+ok 49 - red men cannot capture backward
+  ---
+  duration_ms: 0.139686
+  type: 'test'
+  ...
+# Subtest: white men capture only toward decreasing rows
+ok 50 - white men capture only toward decreasing rows
+  ---
+  duration_ms: 0.185994
+  type: 'test'
+  ...
+# Subtest: king can capture backward
+ok 51 - king can capture backward
+  ---
+  duration_ms: 0.131754
+  type: 'test'
+  ...
+# Subtest: kings do not fly
+ok 52 - kings do not fly
+  ---
+  duration_ms: 0.132435
+  type: 'test'
+  ...
+# Subtest: crowning ends a capture even when the new king could jump
+ok 53 - crowning ends a capture even when the new king could jump
+  ---
+  duration_ms: 0.219864
+  type: 'test'
+  ...
+# Subtest: quiet move crowns and ends turn
+ok 54 - quiet move crowns and ends turn
+  ---
+  duration_ms: 0.886449
+  type: 'test'
+  ...
+# Subtest: king may return to its start but may not capture a piece twice
+ok 55 - king may return to its start but may not capture a piece twice
+  ---
+  duration_ms: 0.218944
+  type: 'test'
+  ...
+# Subtest: opponent with no pieces loses
+ok 56 - opponent with no pieces loses
+  ---
+  duration_ms: 0.143932
+  type: 'test'
+  ...
+# Subtest: blocked side loses even if it has pieces
+ok 57 - blocked side loses even if it has pieces
+  ---
+  duration_ms: 0.14864
+  type: 'test'
+  ...
+# Subtest: threefold repetition includes the side to move
+ok 58 - threefold repetition includes the side to move
+  ---
+  duration_ms: 0.464546
+  type: 'test'
+  ...
+# Subtest: 80 quiet king plies cause a no-progress draw
+ok 59 - 80 quiet king plies cause a no-progress draw
+  ---
+  duration_ms: 0.141379
+  type: 'test'
+  ...
+# Subtest: man move and capture reset the no-progress clock
+ok 60 - man move and capture reset the no-progress clock
+  ---
+  duration_ms: 0.203411
+  type: 'test'
+  ...
+# Subtest: decisive outcomes take precedence over draw counters
+ok 61 - decisive outcomes take precedence over draw counters
+  ---
+  duration_ms: 0.213154
+  type: 'test'
+  ...
+# Subtest: actions do not mutate input state
+ok 62 - actions do not mutate input state
+  ---
+  duration_ms: 0.29782
+  type: 'test'
+  ...
+# Subtest: illegal and terminal actions are rejected
+ok 63 - illegal and terminal actions are rejected
+  ---
+  duration_ms: 0.220145
+  type: 'test'
+  ...
+# Subtest: serialization round-trips and rejects version or schema tampering
+ok 64 - serialization round-trips and rejects version or schema tampering
+  ---
+  duration_ms: 0.723348
+  type: 'test'
+  ...
+# Subtest: men on crown rows are rejected by imports
+ok 65 - men on crown rows are rejected by imports
+  ---
+  duration_ms: 0.286723
+  type: 'test'
+  ...
+# Subtest: randomized legal trajectories preserve invariants, counts and determinism
+ok 66 - randomized legal trajectories preserve invariants, counts and determinism
+  ---
+  duration_ms: 603.379631
+  type: 'test'
+  ...
+# (node:3309) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: all four profiles have increasing deterministic budgets
+ok 67 - all four profiles have increasing deterministic budgets
+  ---
+  duration_ms: 1.186731
+  type: 'test'
+  ...
+# Subtest: features report initial material and mobility without model arithmetic
+ok 68 - features report initial material and mobility without model arithmetic
+  ---
+  duration_ms: 0.9349
+  type: 'test'
+  ...
+# Subtest: search deterministic at the same completed depth and node budget
+ok 69 - search deterministic at the same completed depth and node budget
+  ---
+  duration_ms: 90.790931
+  type: 'test'
+  ...
+# Subtest: incomplete root iteration falls back to the previous whole iteration
+ok 70 - incomplete root iteration falls back to the previous whole iteration
+  ---
+  duration_ms: 1.88972
+  type: 'test'
+  ...
+# Subtest: immediate terminal win is prioritized
+ok 71 - immediate terminal win is prioritized
+  ---
+  duration_ms: 0.279493
+  type: 'test'
+  ...
+# Subtest: typed request never contains Discord identity
+ok 72 - typed request never contains Discord identity
+  ---
+  duration_ms: 27.294933
+  type: 'test'
+  ...
+# Subtest: Score distributions and Noul answers validate against documented response shape
+ok 73 - Score distributions and Noul answers validate against documented response shape
+  ---
+  duration_ms: 12.102866
+  type: 'test'
+  ...
+# Subtest: rejects wrong model
+ok 74 - rejects wrong model
+  ---
+  duration_ms: 2.898228
+  type: 'test'
+  ...
+# Subtest: rejects missing answer
+ok 75 - rejects missing answer
+  ---
+  duration_ms: 2.802206
+  type: 'test'
+  ...
+# Subtest: rejects extra answer
+ok 76 - rejects extra answer
+  ---
+  duration_ms: 3.086556
+  type: 'test'
+  ...
+# Subtest: rejects NaN score
+ok 77 - rejects NaN score
+  ---
+  duration_ms: 2.799172
+  type: 'test'
+  ...
+# Subtest: rejects bad distribution
+ok 78 - rejects bad distribution
+  ---
+  duration_ms: 3.083722
+  type: 'test'
+  ...
+# Subtest: rejects wrong score expectation
+ok 79 - rejects wrong score expectation
+  ---
+  duration_ms: 2.744071
+  type: 'test'
+  ...
+# Subtest: rejects bad usage
+ok 80 - rejects bad usage
+  ---
+  duration_ms: 2.757521
+  type: 'test'
+  ...
+# Subtest: rejects bad legend
+ok 81 - rejects bad legend
+  ---
+  duration_ms: 3.109871
+  type: 'test'
+  ...
+# Subtest: JEV factors can change equal-budget search ordering
+ok 82 - JEV factors can change equal-budget search ordering
+  ---
+  duration_ms: 25.001477
+  type: 'test'
+  ...
+# Subtest: real adapter boundary works with an explicit mocked provider; records request and validated response
+ok 83 - real adapter boundary works with an explicit mocked provider; records request and validated response
+  ---
+  duration_ms: 36.991617
+  type: 'test'
+  ...
+# Subtest: forced move skips provider entirely
+ok 84 - forced move skips provider entirely
+  ---
+  duration_ms: 3.096972
+  type: 'test'
+  ...
+# Subtest: unauthorized provider response is not retried
+ok 85 - unauthorized provider response is not retried
+  ---
+  duration_ms: 7.987741
+  type: 'test'
+  ...
+# Subtest: transient provider failure is retried once and recorded
+ok 86 - transient provider failure is retried once and recorded
+  ---
+  duration_ms: 208.983752
+  type: 'test'
+  ...
+# Subtest: two invalid responses fail closed and preserve failed attempts
+ok 87 - two invalid responses fail closed and preserve failed attempts
+  ---
+  duration_ms: 209.396152
+  type: 'test'
+  ...
+1..87
+# tests 87
+# suites 0
+# pass 87
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 958.109187
+# start of coverage report
+# -----------------------------------------------------------------------------
+# file                    | line % | branch % | funcs % | uncovered lines
+# -----------------------------------------------------------------------------
+# public                  |        |          |         | 
+#  games                  |        |          |         | 
+#   checkers              |        |          |         | 
+#    rules.js             | 100.00 |    93.71 |  100.00 | 
+#    strategy.js          | 100.00 |    91.58 |  100.00 | 
+#  lib                    |        |          |         | 
+#   analytics.js          |  96.15 |    83.33 |   81.82 | 63-65 104
+#   audit.js              | 100.00 |    83.61 |  100.00 | 
+#   zip.js                | 100.00 |    90.00 |  100.00 | 
+# server                  |        |          |         | 
+#  auth.js                | 100.00 |    82.98 |   90.91 | 
+#  discord.js             | 100.00 |    91.30 |  100.00 | 
+#  jev.js                 | 100.00 |    88.31 |   90.91 | 
+#  leaderboards.js        |  83.33 |    72.73 |   90.91 | 14 32 53-60
+#  matches.js             |  96.89 |    83.61 |  100.00 | 53-54 146-148
+#  node-db.js             | 100.00 |    85.00 |  100.00 | 
+#  util.js                | 100.00 |    85.71 |  100.00 | 
+#  worker.js              |  88.04 |    75.56 |   71.43 | 59-60 67-68 70-75 77
+# tests                   |        |          |         | 
+#  api.test.js            | 100.00 |   100.00 |  100.00 | 
+#  audit.test.js          | 100.00 |   100.00 |  100.00 | 
+#  discord.test.js        | 100.00 |   100.00 |  100.00 | 
+#  helpers.js             | 100.00 |   100.00 |   83.33 | 
+#  leaderboards.test.js   | 100.00 |   100.00 |  100.00 | 
+#  rules.test.js          | 100.00 |   100.00 |  100.00 | 
+#  strategy.test.js       | 100.00 |   100.00 |   97.14 | 
+# -----------------------------------------------------------------------------
+# all files               |  97.63 |    88.48 |   96.46 | 
+# -----------------------------------------------------------------------------
+# end of coverage report

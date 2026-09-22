@@ -1,0 +1,11 @@
+
+> jev-checkers-analytics@1.0.0 verify
+> node scripts/verify-replay.mjs reports/example-replay.json
+
+{
+  "valid": true,
+  "eventCount": 2,
+  "finalHash": "3adf74560428ecf67eca2c82fbfd84d50c1c9f088b9852cad92c92a8e019221c",
+  "outcome": null,
+  "trust": "Structural integrity only. Official provenance requires the originating server database."
+}

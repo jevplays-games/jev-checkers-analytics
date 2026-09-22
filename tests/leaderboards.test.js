@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import { balancedScore,compareBalanced } from '../server/leaderboards.js';
+test('balanced score weights colors equally, not by games played',()=>{assert.equal(balancedScore(20,10,0,100),50);assert.equal(balancedScore(20,10,20,10),100);assert.equal(balancedScore(10,10,10,10),50);assert.equal(balancedScore(0,0,0,10),null);});
+test('qualified entries sort before provisional ones',()=>{const qualified={id:'a',redGames:10,whiteGames:10,redUnits:10,whiteUnits:10,games:20,wins:0};const provisional={id:'b',redGames:1,whiteGames:1,redUnits:2,whiteUnits:2,games:2,wins:2};assert(compareBalanced(qualified,provisional)<0);});
+test('exact rational score comparison precedes games, wins and ID tiebreakers',()=>{const a={id:'a',redGames:10,whiteGames:10,redUnits:10,whiteUnits:10,games:20,wins:5},b={...a,id:'b',redUnits:11};assert(compareBalanced(a,b)>0);assert(compareBalanced(a,{...a,id:'b'})<0);assert(compareBalanced(a,{...a,games:21})>0);});
