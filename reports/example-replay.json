@@ -3,7 +3,7 @@
   "version": 1,
   "manifest": {
     "formatVersion": 1,
-    "matchId": "fb9cfa23-0393-4cd4-a1c2-6a4418a4e03c",
+    "matchId": "cf594596-153c-403d-8919-40a911e29146",
     "gameId": "checkers",
     "rulesVersion": "american-8x8-web-v1",
     "engineVersion": "1.0.0",
@@ -87,14 +87,14 @@
     },
     "profileHash": "8f52c726df7b75774411b6a8314a96677ad53a68d6e3c4e7c62925683476bd38",
     "trust": "untrusted_client",
-    "startedAt": "2026-09-22T05:20:09.269Z"
+    "startedAt": "2026-09-22T07:35:30.889Z"
   },
   "events": [
     {
       "schemaVersion": 1,
-      "matchId": "fb9cfa23-0393-4cd4-a1c2-6a4418a4e03c",
+      "matchId": "cf594596-153c-403d-8919-40a911e29146",
       "seq": 1,
-      "at": "2026-09-22T05:20:09.368Z",
+      "at": "2026-09-22T07:35:30.975Z",
       "kind": "move",
       "actor": "human",
       "action": {
@@ -140,17 +140,17 @@
           "phase": "opening"
         }
       },
-      "turnMs": 90.9000000001397,
+      "turnMs": 76.40000003576279,
       "preHash": "de8e2cdf375c7066b327dd7aed6da869f9f91a3144ff5c1e01beba994190185e",
       "postHash": "73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615",
-      "previousHash": "96eaf183f89dcc55317e9c4d9a8e6e703cc96648ec444b9d4970a571011614fd",
-      "eventHash": "68f8a10794117b3f34d8fa59b47acba66a9232202e6aa5bc94618e63ec622272"
+      "previousHash": "5976ff04700392ff23166fb65f36af3855c40c3fd245c58c9d706cca9e101e07",
+      "eventHash": "fbe51074fcfb984c0d5df92f551a1f7a4b1eb5ba8828b80a41c28ec78025edd0"
     },
     {
       "schemaVersion": 1,
-      "matchId": "fb9cfa23-0393-4cd4-a1c2-6a4418a4e03c",
+      "matchId": "cf594596-153c-403d-8919-40a911e29146",
       "seq": 2,
-      "at": "2026-09-22T05:20:09.430Z",
+      "at": "2026-09-22T07:35:31.012Z",
       "kind": "move",
       "actor": "opponent",
       "action": {
@@ -171,7 +171,7 @@
         "searchedNodes": 582,
         "cutoffs": 103,
         "budgetExhausted": false,
-        "searchMs": 20.5999999998603,
+        "searchMs": 10.900000035762787,
         "forced": false,
         "tacticalWin": false,
         "baselineActionId": "m:22-17",
@@ -1009,7 +1009,7 @@
             }
           }
         ],
-        "totalMs": 21,
+        "totalMs": 11.199999988079071,
         "providerMs": 0,
         "questionCount": 0,
         "attempts": [],
@@ -1020,11 +1020,11 @@
         "profileHash": "8f52c726df7b75774411b6a8314a96677ad53a68d6e3c4e7c62925683476bd38",
         "stateHash": "73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615"
       },
-      "turnMs": 49.699999999953434,
+      "turnMs": 28,
       "preHash": "73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615",
       "postHash": "baad6a536a1dfbfe2b4d23d2d877d328fa93a3974a9533d535479b66d34432ba",
-      "previousHash": "68f8a10794117b3f34d8fa59b47acba66a9232202e6aa5bc94618e63ec622272",
-      "eventHash": "3adf74560428ecf67eca2c82fbfd84d50c1c9f088b9852cad92c92a8e019221c"
+      "previousHash": "fbe51074fcfb984c0d5df92f551a1f7a4b1eb5ba8828b80a41c28ec78025edd0",
+      "eventHash": "d5eba097f5cca2a54efb3ba61a2f69c3d9a5284ad20f75624169a68cea11f1b8"
     }
   ],
   "finalState": {
@@ -1071,7 +1071,7 @@
       "american-8x8-web-v1|red|11111111011110003000303333333333": 1
     }
   },
-  "finalHash": "3adf74560428ecf67eca2c82fbfd84d50c1c9f088b9852cad92c92a8e019221c",
+  "finalHash": "d5eba097f5cca2a54efb3ba61a2f69c3d9a5284ad20f75624169a68cea11f1b8",
   "outcome": null,
   "verification": "local-only",
   "eligible": false
