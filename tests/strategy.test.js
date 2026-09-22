@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import { createInitialState,applyAction,getLegalActions } from '../public/games/checkers/rules.js';
 import { profileFor,searchCandidates,rankCandidates,chooseLocalAction,features } from '../public/games/checkers/strategy.js';
 import { buildRequest,validateAnswers,chooseJevAction,factorsFromAnswers } from '../server/jev.js';
-import { testEnv,mockJev,position } from './helpers.js';
+import { testEnv,mockJev,roundedJev,position } from './helpers.js';
 test('all four profiles have increasing deterministic budgets',()=>{let last=0;for(const d of ['easy','normal','hard','jev']){const p=profileFor(d);assert(p.nodes>last);last=p.nodes;}assert.throws(()=>profileFor('__proto__'));});
 test('features report initial material and mobility without model arithmetic',()=>{const f=features(createInitialState());assert.equal(f.red.material,1200);assert.equal(f.white.material,1200);assert.equal(f.red.mobility,7);});
 test('search deterministic at the same completed depth and node budget',()=>{const s=applyAction(createInitialState(),'m:09-13'),p=profileFor('normal'),a=searchCandidates(s,p),b=searchCandidates(s,p);assert.deepEqual(a.candidates.map(c=>[c.action.id,c.score]),b.candidates.map(c=>[c.action.id,c.score]));assert.equal(a.searchedNodes,b.searchedNodes);assert(a.searchedNodes<=p.nodes);});
@@ -10,6 +10,7 @@ test('incomplete root iteration falls back to the previous whole iteration',()=>
 test('immediate terminal win is prioritized',()=>{const s=searchCandidates(position({9:1,14:3}),profileFor('easy'));assert(s.tacticalWin);assert.equal(s.candidates[0].action.id,'j:09x18');});
 test('typed request never contains Discord identity',()=>{const s=createInitialState(),p=profileFor('normal'),search=searchCandidates(s,p),request=buildRequest(s,search,p);assert.equal(Object.keys(request.questions).length,search.candidates.length*3);assert(!JSON.stringify(request).includes('discord'));assert(request.questions.c0_mobility.instructions.includes('candidates[0]'));});
 test('Score distributions and Noul answers validate against documented response shape',()=>{const s=createInitialState(),p=profileFor('hard'),search=searchCandidates(s,{...p,nodes:100}),request=buildRequest(s,search,p),response=mockJev(request);const result=validateAnswers(response,request);assert.equal(Object.keys(result.answers).length,Object.keys(request.questions).length);});
+test('Score distributions rounded to the provider grain validate instead of failing the turn',()=>{const s=createInitialState(),p=profileFor('normal'),request=buildRequest(s,searchCandidates(s,p),p),response=roundedJev(request);const result=validateAnswers(response,request);assert.equal(Object.keys(result.answers).length,Object.keys(request.questions).length);});
 for(const [name,change]of Object.entries({
  'wrong model':r=>r.model='jev-latest', 'missing answer':r=>delete r.answers[Object.keys(r.answers)[0]],
  'extra answer':r=>r.answers.extra={type:'noul',noul:.1}, 'NaN score':r=>r.answers[Object.keys(r.answers)[0]].score=NaN,

@@ -26,6 +26,20 @@ export async function client(environment){
     }
   };
 }
+// Mirrors the provider's real output grain: probabilities and expected scores rounded to 0.01, so the
+// bucket sum and the expected score only agree with the distribution to within that rounding.
+export function roundedJev(request){
+  const answers={};
+  for(const [key,q]of Object.entries(request.questions)){
+    if(q.type==='noul'){answers[key]={type:'noul',noul:.2};continue;}
+    const raw=[.084,.337,.229,.298,.052].slice(0,q.criteria.length);
+    const probabilities=Object.fromEntries(raw.map((p,i)=>[String(i),Math.round(p*100)/100]));
+    const mean=raw.reduce((t,p,i)=>t+i*p,0);
+    answers[key]={type:'score',score:Math.round(mean*100)/100,confidence:.11,
+      probabilities,legend:Object.fromEntries(q.criteria.map((text,i)=>[String(i),text]))};
+  }
+  return {model:request.model,answers,usage:{input_tokens:5753,output_tokens:347}};
+}
 export function mockJev(request,score=2){
   const answers={};
   for(const [key,q]of Object.entries(request.questions))answers[key]=q.type==='noul'?{type:'noul',noul:.2}:{type:'score',score,confidence:1,

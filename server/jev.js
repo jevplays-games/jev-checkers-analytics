@@ -2,6 +2,8 @@ import { profileFor, searchCandidates, searchEvidence, rankCandidates, features 
 import { hashState, sha256 } from '../public/lib/audit.js';
 import { operation, uid, HttpError } from './util.js';
 export const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
+// Smallest increment the provider reports Score probabilities and expected scores on.
+export const PROBABILITY_GRAIN = 0.01;
 const RUBRICS = {
   promotion: ['Much worse promotion prospects','Worse promotion prospects','Balanced promotion prospects','Better promotion prospects','Much better promotion prospects'],
   mobility: ['Severely confined relative to the opponent','Worse useful mobility','Balanced useful mobility','Better useful mobility','Strong durable mobility advantage'],
@@ -45,7 +47,10 @@ export function validateAnswers(response,request) {
       if(JSON.stringify(Object.keys(a.probabilities).sort())!==JSON.stringify(ks)||JSON.stringify(Object.keys(a.legend).sort())!==JSON.stringify(ks))throw new Error('Invalid score keys');
       let total=0,mean=0;
       for(const k of ks){const p=a.probabilities[k];if(!numbers(p,0,1)||a.legend[k]!==q.criteria[Number(k)])throw new Error('Invalid score distribution or legend');total+=p;mean+=Number(k)*p;}
-      if(Math.abs(total-1)>.001||Math.abs(mean-a.score)>.015)throw new Error('Inconsistent score distribution');
+      // The provider reports probabilities and scores on a 0.01 grain, so each bucket may be off by half a
+      // grain. Tolerances are the worst-case accumulation of that rounding, not slack for arbitrary drift.
+      const half=PROBABILITY_GRAIN/2,sumTolerance=n*half,meanTolerance=half*(n*(n-1)/2)+half;
+      if(Math.abs(total-1)>sumTolerance||Math.abs(mean-a.score)>meanTolerance)throw new Error('Inconsistent score distribution');
       normalized[key]={type:'score',score:a.score,confidence:a.confidence,probabilities:a.probabilities,legend:a.legend};
     }
   }
