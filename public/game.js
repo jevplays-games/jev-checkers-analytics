@@ -286,10 +286,11 @@ async function bootstrap(){
   $('analysis-on').checked=stored('jev-analysis-on',true);$('decision-body').hidden=!$('analysis-on').checked;
   $('telemetry-consent').checked=stored('jev-telemetry-consent',false);$('difficulty').value=stored('jev-difficulty','jev');
   if(!['easy','normal','hard','jev'].includes($('difficulty').value))$('difficulty').value='jev';
+  let serverActiveId=null;
   try{
     const result=await api('/api/me');serverOnline=true;account=result.user;csrfToken=result.csrf;capabilities=result.capabilities;
     $('connection').textContent=capabilities.jev?'JEV CONNECTED':'LOCAL READY';
-    if(result.activeMatchId){$('resume').hidden=false;$('resume').onclick=()=>resumeRemote(result.activeMatchId);}
+    if(result.activeMatchId){serverActiveId=result.activeMatchId;$('resume').hidden=false;$('resume').onclick=()=>resumeRemote(result.activeMatchId);}
     const pending=sessionStorage.getItem('checkers-launch');
     if(pending&&account){try{await api('/api/launch/redeem',{token:pending});sessionStorage.removeItem('checkers-launch');notice('Discord channel context verified. Your next ranked match can count for Channel, Server and World.');}catch(error){sessionStorage.removeItem('checkers-launch');notice(error.message);}}
     else if(pending)notice('Sign in with the Discord account that invoked /play checkers to redeem this launch.');
@@ -299,6 +300,21 @@ async function bootstrap(){
   if(saved?.record&&!saved.record.outcome&&saved.active?.kind==='local'){
     try{await verifyReplay(saved.record);active=saved.active;record=saved.record;state=record.finalState;localTurnStarted=performance.now();renderGame();renderAnalytics();await runLocalOpponent();}catch{store('jev-checkers-active',null);}
   }
+  await autoStart(serverActiveId);
+}
+/* Auto-start: the board is playable as soon as the page is, with no click.
+   Order matters -- an unfinished local game has just been restored above, and a
+   live SERVER match is rejoined here rather than started over, so a reload can
+   never open a second match alongside one the server still holds a lease on.
+   Ranked is taken only when the <option> is enabled, which is the same gate the
+   player faces by hand (signed in, JEV available, JEV selected). When JEV is
+   not configured the opponent select stays on 'local' and startGame() routes to
+   startLocal(), so an auto-started game is never relabeled as JEV. */
+async function autoStart(serverActiveId){
+  if(active&&!currentOutcome())return;
+  if(serverActiveId){try{await resumeRemote(serverActiveId);return;}catch{/* fall through to a fresh game */}}
+  if(!$('mode').querySelector('[value=ranked]').disabled)$('mode').value='ranked';
+  try{await startGame();}catch(error){notice(error.message);}
 }
 $('new-game').onclick=startGame;$('resign').onclick=resign;$('flip').onclick=()=>{flip=!flip;renderGame();renderReplay();};
 $('cancel-selection').onclick=()=>{path=[];renderGame();};$('continue-local').onclick=()=>startLocal(state,active.humanSide);
