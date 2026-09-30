@@ -36,10 +36,14 @@ export async function rate(env,bucket,limit,seconds) {
     expires_at=CASE WHEN expires_at<=? THEN ? ELSE expires_at END RETURNING hits`,bucket,expiry,time,time,expiry);
   assert(result.hits<=limit,429,'Usage limit reached. Try again later.','rate_limited');
 }
-export function secureHeaders(response,requestIdValue) {
+// Discord shows an Activity inside its own iframe. Only a page loaded with Discord's frame_id may be framed, and only by Discord.
+export const ACTIVITY_FRAME_ANCESTORS='frame-ancestors https://discord.com https://ptb.discord.com https://canary.discord.com';
+export function secureHeaders(response,requestIdValue,framable=false) {
   const headers=new Headers(response.headers);
   headers.set('x-content-type-options','nosniff');headers.set('referrer-policy','no-referrer');
-  headers.set('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+  const csp="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
+  headers.set('content-security-policy',framable?csp.replace("frame-ancestors 'none'",ACTIVITY_FRAME_ANCESTORS):csp);
+  if(framable)headers.delete('x-frame-options');
   headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');headers.set('x-request-id',requestIdValue);
   return new Response(response.body,{status:response.status,headers});
 }
@@ -49,7 +53,10 @@ export function origin(env,request) {
   assert(new URL(result).origin===result,500,'APP_ORIGIN must be an origin without a trailing slash');
   return result;
 }
+export const activityOrigin=env=>/^\d{5,25}$/.test(env.DISCORD_APPLICATION_ID??'')?`https://${env.DISCORD_APPLICATION_ID}.discordsays.com`:null;
 export function csrf(request,session,env) {
-  assert(request.headers.get('origin')===origin(env,request),403,'Origin mismatch');
+  // The Activity origin is honored only for bearer sessions: a cookie session must never be usable from it.
+  const got=request.headers.get('origin'),framed=session?.via==='bearer'?activityOrigin(env):null;
+  assert(got===origin(env,request)||(framed&&got===framed),403,'Origin mismatch');
   assert(session && request.headers.get('x-csrf-token')===session.csrf,403,'CSRF token mismatch');
 }

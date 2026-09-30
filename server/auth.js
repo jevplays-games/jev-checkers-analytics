@@ -8,10 +8,19 @@ export function sessionCookie(value,env,request,maxAge=604800){
 }
 export async function getSession(request,env){
   const name=local(env,request)?'jev_dev_session':'__Host-jev_session';
-  const value=request.headers.get('cookie')?.split(';').map(s=>s.trim()).find(s=>s.startsWith(name+'='))?.slice(name.length+1);
+  // Inside a Discord Activity the browser will not send our SameSite cookie, so the game holds the session token in memory.
+  const bearer=/^Bearer ([a-f0-9]{64})$/.exec(request.headers.get('authorization')??'')?.[1];
+  const value=bearer??request.headers.get('cookie')?.split(';').map(s=>s.trim()).find(s=>s.startsWith(name+'='))?.slice(name.length+1);
   if(!value||!/^[a-f0-9]{64}$/.test(value))return null;
   const session=await one(env,`SELECT s.*,u.discord_id,u.display_name,u.avatar_ref,u.disabled FROM sessions s LEFT JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.expires_at>?`,await sha256(value),now());
-  if(session?.disabled)return null;return session;
+  if(session?.disabled)return null;return session&&bearer?{...session,via:'bearer'}:session;
+}
+export async function upsertDiscordUser(env,user){
+  assert(user&&/^\d{6,24}$/.test(user.id)&&typeof user.username==='string',502,'Invalid Discord identity');
+  const display=(user.global_name||user.username).slice(0,80),id=uid();
+  await run(env,`INSERT INTO users(id,discord_id,display_name,avatar_ref,created_at,last_seen) VALUES (?,?,?,?,?,?)
+    ON CONFLICT(discord_id) DO UPDATE SET display_name=excluded.display_name,avatar_ref=excluded.avatar_ref,last_seen=excluded.last_seen`,id,user.id,display,user.avatar||null,now(),now());
+  const saved=await one(env,'SELECT * FROM users WHERE discord_id=?',user.id);assert(!saved.disabled,403,'Account is disabled');return saved;
 }
 export async function ensureSession(request,env){
   let session=await getSession(request,env);if(session)return {session,cookie:null};
@@ -47,11 +56,7 @@ export async function loginCallback(request,env){
   }finally{
     try{await call('https://discord.com/api/oauth2/token/revoke',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:env.DISCORD_APPLICATION_ID,client_secret:env.DISCORD_CLIENT_SECRET,token:tokens.access_token}).toString(),signal:AbortSignal.timeout(4000)});}catch{/* Token is not retained. */}
   }
-  assert(user&&/^\d{6,24}$/.test(user.id)&&typeof user.username==='string',502,'Invalid Discord identity');
-  const display=(user.global_name||user.username).slice(0,80),id=uid();
-  await run(env,`INSERT INTO users(id,discord_id,display_name,avatar_ref,created_at,last_seen) VALUES (?,?,?,?,?,?)
-    ON CONFLICT(discord_id) DO UPDATE SET display_name=excluded.display_name,avatar_ref=excluded.avatar_ref,last_seen=excluded.last_seen`,id,user.id,display,user.avatar||null,now(),now());
-  const saved=await one(env,'SELECT * FROM users WHERE discord_id=?',user.id);assert(!saved.disabled,403,'Account is disabled');
+  const saved=await upsertDiscordUser(env,user);
   const raw=token();await run(env,'UPDATE sessions SET token_hash=?,user_id=?,csrf=?,context_json=NULL,expires_at=? WHERE id=?',await sha256(raw),saved.id,token(),now()+7*86400000,session.id);
   await operation(env,'auth_success',{userId:saved.id});return redirect(JSON.parse(grant.payload_json).returnTo,{'set-cookie':sessionCookie(raw,env,request)});
 }
