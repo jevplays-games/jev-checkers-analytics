@@ -1,6 +1,7 @@
 import { uid,json,assert,bodyJSON,csrf,secureHeaders,operation,now,all,one,rate,safeEqual,HttpError } from './util.js';
 import { getSession,me,loginStart,loginCallback,logout } from './auth.js';
 import { interaction,redeem } from './discord.js';
+import { activityConfig,createActivitySession } from './activity.js';
 import { ownedMatch,snapshot,createMatch,humanAction,advanceMatch,getReplay,maintenance } from './matches.js';
 import { leaderboard,playerAnalytics } from './leaderboards.js';
 import { analyzeReplay,distribution,toCSV,flatEvents } from '../public/lib/analytics.js';
@@ -32,6 +33,8 @@ async function route(request,env,ctx){
   assert(env.DB,503,'Database is not configured');
   if(path==='/api/health'&&request.method==='GET')return json({ok:true,service:'jev-checkers',version:'1.0.0'});
   if(path==='/api/discord/interactions'&&request.method==='POST')return interaction(request,env);
+  if(path==='/api/activity/config'&&request.method==='GET')return activityConfig(env);
+  if(path==='/api/activity/session'&&request.method==='POST')return createActivitySession(request,env);
   if(path==='/api/me'&&request.method==='GET')return me(request,env);
   if(path==='/api/auth/discord'&&request.method==='GET')return loginStart(request,env);
   if(path==='/api/auth/discord/callback'&&request.method==='GET')return loginCallback(request,env);
@@ -85,8 +88,9 @@ export default {
       if(status===500)console.error(JSON.stringify({kind:'internal_error',requestId,errorType:error.name}));
     }
     // No raw URL, query parameters, request body, IP, cookies or OAuth codes in request logs.
-    if(new URL(request.url).pathname.startsWith('/api/')&&env.LOG_REQUESTS==='true')console.log(JSON.stringify({kind:'http_request',requestId,status:response.status,durationMs:performance.now()-started,method:request.method}));
-    return secureHeaders(response,requestId);
+    const {pathname,searchParams}=new URL(request.url);
+    if(pathname.startsWith('/api/')&&env.LOG_REQUESTS==='true')console.log(JSON.stringify({kind:'http_request',requestId,status:response.status,durationMs:performance.now()-started,method:request.method}));
+    return secureHeaders(response,requestId,!pathname.startsWith('/api/')&&searchParams.has('frame_id'));
   },
   async scheduled(_event,env,ctx){ctx.waitUntil(maintenance(env));}
 };

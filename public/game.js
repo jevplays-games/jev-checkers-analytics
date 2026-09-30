@@ -15,15 +15,17 @@ let opponentChosen=false; // set once the player picks an opponent, so the JEV d
 let state=createInitialState(),record=null,imported=null,busy=false,path=[],flip=true,activeTab='overview',analytics=null;
 let localTurnStarted=performance.now(),localWorker=null,workerSequence=0,pollTimer=null,pollCount=0,leaderboardCursor=null,leaderboardRows=[];
 const pendingWorker=new Map();
+let bearer=null; // set only inside a Discord Activity, where cookies are not sent
 async function api(url,body){
   const start=performance.now();
-  const response=await fetch(url,{credentials:'same-origin',...(body!==undefined?{method:'POST',headers:{'content-type':'application/json','x-csrf-token':csrfToken||''},body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(15000)});
+  const auth=bearer?{authorization:`Bearer ${bearer}`}:{};
+  const response=await fetch(url,{credentials:'same-origin',...(body!==undefined?{method:'POST',headers:{...auth,'content-type':'application/json','x-csrf-token':csrfToken||''},body:JSON.stringify(body)}:bearer?{headers:auth}:{}),signal:AbortSignal.timeout(15000)});
   const data=await response.json();if(!response.ok){const error=new Error(data.error||'Request failed');error.status=response.status;error.code=data.code;throw error;}
   if(body&&url.endsWith('/actions'))telemetry('action_ack',performance.now()-start);return data;
 }
 function telemetry(kind,elapsedMs){
   if(!$('telemetry-consent').checked||active?.kind!=='remote'||!csrfToken)return;
-  fetch('/api/telemetry',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-csrf-token':csrfToken},body:JSON.stringify({matchId:active.id,consent:true,events:[{kind,elapsedMs:Math.max(0,Math.round(elapsedMs)),visible:!document.hidden}]})}).catch(()=>{});
+  fetch('/api/telemetry',{method:'POST',credentials:'same-origin',headers:{...(bearer?{authorization:`Bearer ${bearer}`}:{}),'content-type':'application/json','x-csrf-token':csrfToken},body:JSON.stringify({matchId:active.id,consent:true,events:[{kind,elapsedMs:Math.max(0,Math.round(elapsedMs)),visible:!document.hidden}]})}).catch(()=>{});
 }
 function localDecision(s,difficulty){
   if(!localWorker){localWorker=new Worker('/games/checkers/local-worker.js',{type:'module'});
@@ -287,6 +289,10 @@ async function bootstrap(){
   $('telemetry-consent').checked=stored('jev-telemetry-consent',false);$('difficulty').value=stored('jev-difficulty','jev');
   if(!['easy','normal','hard','jev'].includes($('difficulty').value))$('difficulty').value='jev';
   let serverActiveId=null;
+  if(new URLSearchParams(location.search).has('frame_id')){
+    try{bearer=(await (await import('/activity.js')).signInWithDiscord(api)).token;}
+    catch(error){notice(`Could not sign in through Discord. ${error.message}`);}
+  }
   try{
     const result=await api('/api/me');serverOnline=true;account=result.user;csrfToken=result.csrf;capabilities=result.capabilities;
     $('connection').textContent=capabilities.jev?'JEV CONNECTED':'LOCAL READY';
