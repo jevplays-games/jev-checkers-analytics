@@ -1,3 +1,4 @@
+import { prepareSearch, evaluateFast, BUDGET as ENGINE_BUDGET } from './engine.js';
 import { getLegalActions, getOutcome, applyGeneratedAction, owner, isKing, coords, squareAt, otherSide } from './rules.js';
 export const MODEL_ID = 'jev-1.13.0';
 export const STRATEGY_VERSION = 'checkers-strategy-1.0.0';
@@ -39,14 +40,15 @@ export function features(state) {
   result.phase = result.pieceCount > 18 ? 'opening' : result.pieceCount > 8 ? 'middlegame' : 'endgame';
   return result;
 }
-export function evaluate(state, perspective = state.toMove) {
+/** Original object-based evaluation, kept as the reference the fast evaluate must match exactly. */
+export function evaluateReference(state, perspective = state.toMove) {
   const f = features(state), us = f[perspective], them = f[otherSide(perspective)];
   return us.material-them.material + 4*(us.advancement-them.advancement) + 6*(us.mobility-them.mobility) + 8*(us.center-them.center);
 }
 const compare = (a,b) => b.score-a.score || (a.action.id < b.action.id ? -1 : a.action.id > b.action.id ? 1 : 0);
 const BUDGET = Symbol('node budget exhausted');
-/** Complete root iterations only. No transposition reuse across different draw histories. */
-export function searchCandidates(state, profile = profileFor()) {
+/** Original clone-per-node search, kept as the reference the fast search must match exactly (except searchMs). */
+export function searchCandidatesReference(state, profile = profileFor()) {
   const started = performance.now(), actions = getLegalActions(state), perspective = state.toMove;
   if (!actions.length || getOutcome(state)) throw new Error('Cannot search terminal state');
   let nodes = 0, cutoffs = 0, completedDepth = 0, exhausted = false;
@@ -54,7 +56,7 @@ export function searchCandidates(state, profile = profileFor()) {
     const after = applyGeneratedAction(state, action), outcome = getOutcome(after);
     const immediateWin = outcome?.winner === perspective;
     const immediateLoss = !outcome && getLegalActions(after).some(reply => getOutcome(applyGeneratedAction(after, reply))?.winner === otherSide(perspective));
-    return { action, after, immediateWin, immediateLoss, score: outcome ? outcome.winner === null ? 0 : immediateWin ? 1000000 : -1000000 : evaluate(after,perspective), pv: [action.id], frontierBoard: after.board };
+    return { action, after, immediateWin, immediateLoss, score: outcome ? outcome.winner === null ? 0 : immediateWin ? 1000000 : -1000000 : evaluateReference(after,perspective), pv: [action.id], frontierBoard: after.board };
   });
   const terminalValue = (outcome, side, distance) => !outcome.winner ? 0 : outcome.winner === side ? 1000000-distance : -1000000+distance;
   function negamax(s, depth, alpha, beta, extension, distance) {
@@ -63,7 +65,7 @@ export function searchCandidates(state, profile = profileFor()) {
     if (outcome) return { score: terminalValue(outcome,s.toMove,distance), pv: [], board: s.board };
     const legal = getLegalActions(s);
     const extend = depth <= 0 && extension > 0 && legal[0]?.captured.length;
-    if (depth <= 0 && !extend) return { score: evaluate(s), pv: [], board: s.board };
+    if (depth <= 0 && !extend) return { score: evaluateReference(s), pv: [], board: s.board };
     let best = { score: -Infinity, pv: [], board: s.board };
     for (const action of legal) {
       const child = negamax(applyGeneratedAction(s,action),depth-1,-beta,-alpha,extend ? extension-1 : extension,distance+1);
@@ -91,6 +93,44 @@ export function searchCandidates(state, profile = profileFor()) {
     excludedImmediateLosses: wins.length ? 0 : safe.length ? roots.length-safe.length : 0,
     prunedCount: actions.length-candidates.length, completedDepth, searchedNodes: Math.min(nodes,profile.nodes),
     cutoffs, exhausted, searchMs: performance.now()-started, forced: actions.length === 1,
+    tacticalWin: wins.length > 0, budget: profile.nodes };
+}
+export function evaluate(state, perspective = state.toMove) {
+  const fast = evaluateFast(state, perspective);
+  return fast === undefined ? evaluateReference(state, perspective) : fast;
+}
+/** Complete root iterations only. No transposition reuse across different draw histories. */
+export function searchCandidates(state, profile = profileFor()) {
+  const started = performance.now(), actions = getLegalActions(state), perspective = state.toMove;
+  if (!actions.length || getOutcome(state)) throw new Error('Cannot search terminal state');
+  const engine = prepareSearch(state, actions, profile);
+  if (!engine) return searchCandidatesReference(state, profile);
+  let completedDepth = 0, exhausted = false;
+  let roots = actions.map((action, i) => {
+    const after = applyGeneratedAction(state, action), info = engine.rootOutcome(i);
+    const immediateWin = info.outcome === 'win';
+    return { action, after, immediateWin, immediateLoss: info.immediateLoss,
+      score: info.outcome ? info.outcome === 'draw' ? 0 : immediateWin ? 1000000 : -1000000 : info.score,
+      pv: [action.id], frontierBoard: after.board };
+  });
+  engine.setBudget(profile.nodes);
+  for (let depth = 1; depth <= profile.depth; depth++) {
+    const iteration = [];
+    try {
+      for (let i = 0; i < roots.length; i++) {
+        const child = engine.searchRoot(i, depth, profile.captureExtension);
+        iteration.push({ ...roots[i], score: child.score, pv: [roots[i].action.id, ...child.pv], frontierBoard: child.board });
+      }
+      roots = iteration; completedDepth = depth;
+    } catch (error) { if (error !== ENGINE_BUDGET) throw error; exhausted = true; break; }
+  }
+  const wins = roots.filter(r => r.immediateWin), safe = roots.filter(r => !r.immediateLoss);
+  const pool = wins.length ? wins : safe.length ? safe : roots;
+  const candidates = [...pool].sort(compare).slice(0, profile.candidates);
+  return { candidates, allCandidates: [...roots].sort(compare), legalCount: actions.length,
+    excludedImmediateLosses: wins.length ? 0 : safe.length ? roots.length - safe.length : 0,
+    prunedCount: actions.length - candidates.length, completedDepth, searchedNodes: Math.min(engine.nodes, profile.nodes),
+    cutoffs: engine.cutoffs, exhausted, searchMs: performance.now() - started, forced: actions.length === 1,
     tacticalWin: wins.length > 0, budget: profile.nodes };
 }
 export function rankCandidates(search, factorsByAction, profile) {
