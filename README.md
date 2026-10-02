@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev playing checkers with cyan and magenta pieces beside a glowing bar-chart hologram in a neon arcade" width="100%"></p>
+
 # JEV Arcade — Checkers + Analytics
 
 A playable, single-page American-checkers application with inspectable JEV decisions, a deterministic rules engine, authoritative server matches, Discord identity/community launch, verified leaderboards, and extensive first-party analytics.
