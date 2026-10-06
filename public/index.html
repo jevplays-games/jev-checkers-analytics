@@ -5,8 +5,15 @@
   <meta name="description" content="Play checkers against JEV. Inspect every decision, explore game analytics and verify your replay.">
   <meta name="color-scheme" content="dark light"><meta name="theme-color" content="#0e1017"><title>Checkers · JEV Arcade</title>
   <link rel="preload" href="/brand/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+  <meta property="og:type" content="website"><meta property="og:site_name" content="JevPlay Arcade"><meta property="og:title" content="Checkers · JEV Arcade">
+  <meta property="og:description" content="Play checkers against JEV. Inspect every decision, explore game analytics and verify your replay.">
+  <meta property="og:url" content="https://checkers.jevplay.games/"><meta property="og:image" content="https://checkers.jevplay.games/brand/og.png">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Checkers on JevPlay Arcade: a red king puck wearing a gold crown.">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://checkers.jevplay.games/brand/og.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png">
   <link rel="icon" type="image/svg+xml" href="/brand/icon.svg">
-  <link rel="apple-touch-icon" href="/brand/icon.svg">
+  <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+  <link rel="preload" href="/art/red.svg" as="image" type="image/svg+xml"><link rel="preload" href="/art/dark.svg" as="image" type="image/svg+xml"><link rel="preload" href="/art/red-king.svg" as="image" type="image/svg+xml">
   <link rel="stylesheet" href="/brand/brand.css">
   <link rel="stylesheet" href="/game.css"><script type="module" src="/brand/brand.js"></script><script type="module" src="/game.js"></script>
 </head>
@@ -15,7 +22,7 @@
 <div class="jv-app">
   <header class="jv-header">
     <a class="jv-brand" href="/" aria-label="JEV Arcade home">
-      <img class="jv-mark" src="/brand/mark.svg" alt="" width="28" height="28">
+      <img class="jv-mark" src="/brand/mark.svg" alt="" width="32" height="32">
       <span class="jv-wordmark">JEV ARCADE</span>
       <span class="jv-sep" aria-hidden="true"></span>
       <span class="jv-title">Checkers</span>
@@ -26,14 +33,14 @@
     </button>
   </header>
   <main class="jv-main" id="main">
-<section class="intro jv-hero"><div><p class="eyebrow">HUMAN INTUITION. STRUCTURED DECISIONS.</p><h1>Checkers<span class="title-dot">.</span></h1><p class="subtitle">Play the position. Inspect the decision.</p></div><div class="intro-note"><span class="tiny-label">RULESET</span><strong>American / English · 8 × 8</strong><span>Mandatory captures. Complete jump chains.</span></div></section>
+<section class="intro jv-hero jv-pip-hide"><div><p class="eyebrow">HUMAN INTUITION. STRUCTURED DECISIONS.</p><h1>Checkers<span class="title-dot">.</span></h1><p class="subtitle">Play the position. Inspect the decision.</p></div><div class="intro-note"><span class="tiny-label">RULESET</span><strong>American / English · 8 × 8</strong><span>Mandatory captures. Complete jump chains.</span></div></section>
 <div id="notice" class="notice" role="alert" hidden></div>
 <section class="arena jv-first" aria-label="Checkers game">
  <div class="board-panel jv-panel">
-  <div class="player-strip"><span class="avatar opponent-avatar" aria-hidden="true">J</span><div><strong id="opponent-name">Local search opponent</strong><span id="opponent-detail">Unranked practice · no model calls</span></div><span id="opponent-material" class="material-count">12 pieces</span></div>
-  <div class="board-frame jv-fit"><div id="board" class="board" role="grid" aria-label="Checkers board. Arrow keys navigate. Enter selects. Escape cancels." aria-rowcount="8" aria-colcount="8"></div></div>
+  <div class="player-strip jv-pip-hide"><span class="avatar opponent-avatar" aria-hidden="true">J</span><div><strong id="opponent-name">Local search opponent</strong><span id="opponent-detail">Unranked practice · no model calls</span></div><span id="opponent-material" class="material-count">12 pieces</span></div>
+  <div class="board-frame jv-fit jv-tray"><div id="board" class="board" role="grid" aria-label="Checkers board. Arrow keys navigate. Enter selects. Escape cancels." aria-rowcount="8" aria-colcount="8"></div></div>
   <div class="player-strip bottom"><span class="avatar human-avatar" aria-hidden="true">Y</span><div><strong id="human-name">You · Red</strong><span id="turn-status" role="status" aria-live="polite" aria-atomic="true">Start a game to play.</span></div><span id="human-material" class="material-count">12 pieces</span></div>
-  <div class="board-controls"><button id="flip" class="subtle">Flip board</button><button id="cancel-selection" class="subtle">Clear selection</button><button id="resign" class="danger subtle" disabled>Resign</button></div>
+  <div class="board-controls jv-pip-hide"><button id="flip" class="subtle">Flip board</button><button id="cancel-selection" class="subtle">Clear selection</button><button id="resign" class="danger subtle" disabled>Resign</button></div>
  </div>
  <aside class="side-stack">
   <section class="jv-panel setup"><div class="section-heading"><h2>Set the challenge</h2><span id="mode-badge" class="pill">PRACTICE</span></div>
@@ -42,16 +49,16 @@
     <button id="new-game" class="primary wide">Start a game <span aria-hidden="true">↗</span></button><button id="resume" class="wide subtle" hidden>Resume active match</button><button id="continue-local" class="wide subtle" hidden>Continue as local practice</button>
     <p class="small muted" id="setup-note">Practice works without an account or an API key. It is not JEV and never enters an official leaderboard.</p>
   </section>
-  <section class="jv-panel decision-panel"><div class="section-heading"><h2>Decision evidence</h2><label class="toggle"><input type="checkbox" id="analysis-on" checked><span>Show</span></label></div>
+  <section class="jv-panel decision-panel jv-pip-hide"><div class="section-heading"><h2>Decision evidence</h2><label class="toggle"><input type="checkbox" id="analysis-on" checked><span>Show</span></label></div>
     <div id="decision-body"><div class="decision-status"><span id="thinking-dot" class="status-dot"></span><span id="decision-status">Awaiting first decision</span></div>
       <div class="decision-big" id="selected-action">—</div><div class="metric-grid mini"><div><span>Legal moves</span><strong id="legal-count">7</strong></div><div><span>Search depth</span><strong id="search-depth">—</strong></div><div><span>Decision time</span><strong id="decision-time">—</strong></div><div><span>Search nodes</span><strong id="search-nodes">—</strong></div></div>
       <div id="factor-list" class="factor-list"><p class="small muted">Structured observations, not hidden reasoning. Model certainty is not a win probability.</p></div>
     </div>
   </section>
-  <details class="jv-panel legal-panel"><summary>Accessible legal-move list <span id="move-count"></span></summary><div id="legal-moves" class="legal-moves"></div></details>
+  <details class="jv-panel legal-panel jv-pip-hide"><summary>Accessible legal-move list <span id="move-count"></span></summary><div id="legal-moves" class="legal-moves"></div></details>
  </aside>
 </section>
-<section class="analytics-section" aria-label="Match analytics">
+<section class="analytics-section jv-pip-hide" aria-label="Match analytics">
  <div class="analytics-heading"><div><p class="eyebrow">EVERY TURN, ACCOUNTED FOR</p><h2>Match observatory</h2></div><div class="toolbar"><button id="verify" class="subtle">Verify replay</button><button id="export" class="primary">Export analytics ZIP</button><label for="import-replay" class="button subtle">Import replay</label><input id="import-replay" type="file" accept=".json,application/json" hidden></div></div>
  <p id="audit-status" class="small muted">No match recorded yet. Local records are untrusted; official scores require server verification.</p>
  <div class="tabs" role="tablist" aria-label="Analytics views">
@@ -71,7 +78,7 @@
 </section>
 <details class="jv-panel rules"><summary>Rules, trust boundaries and analytics privacy</summary><div class="rules-grid"><div><h3>American checkers</h3><p>Red moves first. Men move and capture diagonally forward. Kings move and capture in both directions, one square or one short jump at a time. A capture is mandatory whenever available. Choose any full capture sequence; taking the most pieces is not required. Reaching the king row ends your turn.</p><p>You win when your opponent has no pieces or no legal move. This web ruleset automatically draws on threefold repetition or 80 individual turns without a capture or man move.</p></div><div><h3>Trust and competition</h3><p>JEV uses a legal candidate set and bounded tactical search. Forced actions may need no model call. Local practice is explicitly not JEV. Official games use server-side actions, replay checks and a pinned opponent profile.</p><p>Ranked turns have a 24-hour abandonment deadline. A provider failure is a no-contest, never a player loss. External assistance is not prevented.</p></div><div><h3>Analytics privacy</h3><p>Core records contain game states, decisions, timings and audit hashes. JEV receives game data only—not your Discord identity. No chats, keystrokes or IP addresses are stored by this application. Hosting providers may have their own infrastructure logs.</p><label class="toggle"><input type="checkbox" id="telemetry-consent">Send optional coarse browser performance events for server matches</label><p class="small muted">Off by default. Untrusted telemetry is excluded from scoring and removed after seven days.</p></div></div></details>
 </main>
-  <footer><span>JEV ARCADE · CHECKERS LAB</span><span>Deterministic rules. Inspectable decisions. Verified outcomes.</span></footer>
+  <footer class="jv-pip-hide"><span>JEV ARCADE · CHECKERS LAB</span><span>Deterministic rules. Inspectable decisions. Verified outcomes.</span></footer>
   <div class="jv-scrim" id="jv-scrim"></div>
   <div class="jv-sheet" id="jv-sheet" role="dialog" aria-modal="true" aria-label="Menu">
     <div id="jv-controls">

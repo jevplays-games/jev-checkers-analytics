@@ -33,7 +33,11 @@ function localDecision(s,difficulty){
     localWorker.onerror=()=>{for(const promise of pendingWorker.values())promise.reject(new Error('Local search worker failed'));pendingWorker.clear();localWorker.terminate();localWorker=null;};}
   const id=++workerSequence;return new Promise((resolve,reject)=>{pendingWorker.set(id,{resolve,reject});localWorker.postMessage({id,state:s,difficulty});});
 }
+// Piece elements are rebuilt on every render, so a move is remembered by square: a piece that has just
+// arrived keeps its pop animation running from where it was (negative delay) instead of restarting or vanishing.
+const seen=new Map();
 function drawBoard(target,board,interactive=false){
+  const track=target.id==='board',now=performance.now(),first=track&&seen.size===0&&!target.firstChild;
   const focus=target.contains(document.activeElement)?document.activeElement.dataset.square:null;
   target.replaceChildren();const fragment=document.createDocumentFragment(),legal=interactive&&canMove()?getLegalActions(state):[];
   const compatible=path.length?legal.filter(a=>path.every((sq,i)=>a.path[i]===sq)):legal;
@@ -51,7 +55,9 @@ function drawBoard(target,board,interactive=false){
       if(interactive&&path.includes(sq))button.classList.add('selected');if(interactive&&nextSquares.has(sq))button.classList.add('next');
       if(interactive&&latest?.path.includes(sq))button.classList.add('last');
       button.append(element('span',String(sq),'number'));
-      if(p){const piece=element('span',undefined,`piece ${owner(p)}${isKing(p)?' king':''}`);piece.setAttribute('aria-hidden','true');button.append(piece);}
+      if(p){const piece=element('span',undefined,`piece ${owner(p)}${isKing(p)?' king':''}`);piece.setAttribute('aria-hidden','true');
+        if(track){const val=`${owner(p)}${isKing(p)}`,prev=seen.get(sq),born=prev&&prev.val===val?prev.born:first?-1e9:now;seen.set(sq,{val,born});if(now-born<360){piece.classList.add('is-new');piece.style.animationDelay=`${born-now}ms`;}}
+        button.append(piece);}else if(track)seen.delete(sq);
       row.append(button);
     }fragment.append(row);
   }target.append(fragment);
@@ -61,7 +67,7 @@ function currentOutcome(){return active?.outcome||getOutcome(state);}
 function canMove(){return !!active&&!busy&&!currentOutcome()&&state.toMove===active.humanSide&&active.status!=='void';}
 function renderGame(){
   const start=performance.now();drawBoard($('board'),state.board,true);const f=features(state),human=active?.humanSide||'red',opponent=otherSide(human);
-  $('human-name').textContent=`${account?.displayName||'You'} · ${human==='red'?'Red':'White'}`;
+  $('human-name').textContent=`${account?.displayName||'You'} · ${human==='red'?'Red':'Dark'}`;
   $('human-material').textContent=`${f[human].men+f[human].kings} pieces · ${f[human].kings} kings`;
   $('opponent-material').textContent=`${f[opponent].men+f[opponent].kings} pieces · ${f[opponent].kings} kings`;
   const remote=active?.opponent==='jev';$('opponent-name').textContent=remote?'JEV + tactical search':'Local search opponent';
@@ -70,7 +76,12 @@ function renderGame(){
   const outcome=currentOutcome(),legal=getOutcome(state)?[]:getLegalActions(state);
   let status=!active?'Start a game to play.':outcome?outcome.reason==='service_failure'?'Provider unavailable · no contest':outcome.winner===null?`Draw · ${outcome.reason}`:`${outcome.winner===human?'You win':'Opponent wins'} · ${outcome.reason}`:
     busy||state.toMove!==human?remote?'JEV is evaluating…':'Local opponent is searching…':path.length>1?'Complete the capture sequence.':legal[0]?.captured.length?'Your turn · a capture is mandatory.':'Your turn · select a piece.';
-  $('turn-status').textContent=status;$('resign').disabled=!canMove();$('thinking-dot').classList.toggle('busy',busy);
+  $('turn-status').textContent=status;
+  // The status line turns into the result plaque in place; the side to move is lit.
+  const verdict=outcome&&outcome.reason!=='service_failure'?outcome.winner===null?'is-draw':outcome.winner===human?'is-win':'is-loss':'';
+  $('turn-status').className=verdict?`jv-plaque ${verdict}`:'';
+  const mover=active&&!outcome?(state.toMove===human?'human':'opponent'):null;
+  document.querySelector('.player-strip.bottom').classList.toggle('is-turn',mover==='human');document.querySelector('.player-strip:not(.bottom)').classList.toggle('is-turn',mover==='opponent');$('resign').disabled=!canMove();$('thinking-dot').classList.toggle('busy',busy);
   $('continue-local').hidden=active?.status!=='void'||!!getOutcome(state);
   $('legal-count').textContent=String(legal.length);$('move-count').textContent=`(${legal.length})`;
   $('legal-moves').replaceChildren(...legal.map(a=>{const b=element('button',moveName(a.id));b.disabled=!canMove();b.addEventListener('click',()=>play(a.id));return b;}));
