@@ -96,3 +96,25 @@ test('storage migration keeps newer data, drops the stale key, and survives bloc
  const blocked={getItem(){throw new Error('SecurityError');},setItem(){throw new Error('SecurityError');},removeItem(){throw new Error('SecurityError');}};
  assert.doesNotThrow(()=>migrateStorage(blocked,blocked));
 });
+
+// Orchestrator rule D9: hostile or malformed LEGACY_APP_ORIGINS entries are skipped, never admitted, never a 500.
+import { appOrigins } from '../server/util.js';
+const HOSTILE=['https://user:pw@evil.example',`https://evil.example#@checkers.jevplay.games`,'https://evil.example/path','https://evil.example?q=1','https://*.jevplay.games','not a url','javascript:alert(1)','http://checkers.jevplay.games'];
+test('D9: only bare origins are admitted from LEGACY_APP_ORIGINS',()=>{
+ const env={APP_ENV:'production',APP_ORIGIN:NEW,LEGACY_APP_ORIGINS:[...HOSTILE,`${OLD}/`].join(',')};
+ const warn=console.warn;let warnings=0;console.warn=()=>warnings++;
+ try{assert.deepEqual(appOrigins(env),[NEW,OLD]);}finally{console.warn=warn;}
+ assert(warnings<=HOSTILE.length);
+});
+for(const entry of HOSTILE)test(`D9: legacy entry ${entry} admits no evil host and keeps both real hosts working`,async()=>{
+ const warn=console.warn;console.warn=()=>{};
+ try{
+  const t=await testEnv({APP_ENV:'production',APP_ORIGIN:NEW,LEGACY_APP_ORIGINS:`${entry},${OLD}`,DISCORD_APPLICATION_ID:'1111111111',DISCORD_CLIENT_SECRET:'test'});
+  const start=async host=>{const r=await worker.fetch(new Request(`${host}/api/auth/discord`),t.env,t.ctx);assert(r.status<500);return new URL(r.headers.get('location')).searchParams.get('redirect_uri');};
+  assert.equal(await start('https://evil.example'),`${NEW}/api/auth/discord/callback`);
+  assert.equal(await start(NEW),`${NEW}/api/auth/discord/callback`);
+  assert.equal(await start(OLD),`${OLD}/api/auth/discord/callback`);
+  const health=await worker.fetch(new Request('https://evil.example/api/health'),t.env,t.ctx);assert.equal(health.status,200);
+  t.DB.close();
+ }finally{console.warn=warn;}
+});

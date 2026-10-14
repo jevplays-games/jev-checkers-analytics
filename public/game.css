@@ -2,7 +2,7 @@
    darker --chart-human (main series) and --chart-jev (second series, also dashed); chart text is ink. */
 /* Identity: pink/ink chrome from brand.css; the accent stays ink. Colour is used only where play needs it:
    the board squares and the two piece colours, which match the puck art (public/art). */
-:root{--chart-human:#155A80;--chart-jev:#7A4E0B;--square-dark:var(--grey);--square-light:var(--paper);--piece-red:#B5232E;--piece-dark:var(--ink);--empty-art:url(/art/red-king.svg)}
+:root{--chart-human:#155A80;--chart-jev:#7A4E0B;--square-dark:var(--grey);--square-light:var(--paper);--piece-red:var(--pink);--piece-dark:var(--ink);--empty-art:url(/art/red-king.svg)}
 *{box-sizing:border-box}button,input,select{font:inherit}button,.button{border:1px solid var(--line);background:var(--raised);color:var(--text);border-radius:var(--radius-sm);padding:var(--s2) var(--s3);min-height:var(--tap);min-width:var(--tap);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:var(--s3);font-weight:600}@media(hover:hover){button:hover,.button:hover{border-color:var(--ink);background:var(--paper)}}button:active,.button:active{border-color:var(--ink);background:var(--paper)}button:disabled,select:disabled{cursor:not-allowed;opacity:.5}.primary{background:var(--ink);border-color:var(--ink);color:var(--paper);box-shadow:var(--drop-sm)}@media(hover:hover){.primary:hover{background:var(--muted);border-color:var(--ink)}}.primary:active{background:var(--muted);box-shadow:none}.subtle{background:transparent}.danger{color:var(--ink)}.danger:not(:disabled)::before{content:'';width:8px;height:8px;flex:none;background:var(--danger)}.wide{width:100%;margin-top:var(--s3);justify-content:space-between}.pill{border:1px solid var(--line);background:var(--raised);border-radius:var(--radius-pill);padding:var(--s1) var(--s2);font:600 10px/1.5 var(--mono);letter-spacing:.06em;color:var(--ink);white-space:nowrap}a{color:var(--ink)}select,input[type=search]{width:100%;min-height:var(--tap);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper);padding:var(--s2);color:var(--text)}label{display:block;font-size:var(--fs-xs);font-weight:600;color:var(--text);margin-bottom:var(--s2)}/* Account controls live in #jv-controls; brand.js moves that container between the sheet and the header at 900px. No cloned markup. */
 .account-identity{font-weight:600;color:var(--muted);cursor:default}
 @media(min-width:900px){#jv-controls #login,#jv-controls #logout{border:1px solid var(--line);background:var(--raised);border-radius:var(--radius-sm)}}
@@ -38,7 +38,7 @@
 .player-strip{border:1px solid transparent;border-radius:var(--radius-sm);padding:var(--s1) var(--s2)}
 .player-strip.is-turn{border-color:var(--ink);background:var(--paper);box-shadow:var(--drop-sm)}
 .player-strip.is-turn .avatar{border-color:var(--ink)}
-.human-avatar{color:var(--paper);background:var(--piece-red)}
+.human-avatar{color:var(--ink);background:var(--piece-red)}
 .opponent-avatar{background:var(--piece-dark);color:var(--pink)}
 .player-strip span:not(.avatar):not(.material-count).jv-plaque{display:flex;font-size:var(--fs-xs);color:var(--text);margin-top:var(--s1)}
 .jv-plaque.is-win{--plaque-art:url(/brand/result-win.svg)}.jv-plaque.is-draw{--plaque-art:url(/brand/result-draw.svg)}.jv-plaque.is-loss{--plaque-art:url(/brand/result-loss.svg)}

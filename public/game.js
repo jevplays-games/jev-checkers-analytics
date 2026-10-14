@@ -199,7 +199,8 @@ function chart(target,series,label,bars=false){
     const n=entry.values.length,x=i=>left+(n>1?i/(n-1):.5)*width;
     if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:'bar'});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
     else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${s?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:'bar'}));}
-    svg.append(svgNode('text',{x:left+s*190,y:166},`${entry.name} · ${entry.values.length} observations`));
+    // Legend: a swatch drawn like its series (solid, dashed or a bar) so colour is not the only cue; the label is ink.
+    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:'bar legend-swatch'}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${s?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${entry.values.length} observations`));
   }target.append(svg);
 }
 function renderAnalytics(){

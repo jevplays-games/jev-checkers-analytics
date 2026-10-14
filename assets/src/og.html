@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200, initial-scale=1">
+<title>Typecheckers — jevplay.games</title>
+<style>
+@font-face{font-family:Inter;src:url('../../public/brand/inter-var.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:block}
+@font-face{font-family:VT323;src:url('../../public/brand/vt323.woff2') format('woff2');font-weight:400;font-style:normal;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{position:relative;background:#F386A1;color:#1E1E1E;font-family:VT323,'JetBrains Mono',monospace}
+.texture{position:absolute;inset:0;pointer-events:none}
+.frame{position:absolute;inset:30px;border:1px solid #1E1E1E}
+.crop{position:absolute;width:18px;height:18px;border:solid #1E1E1E;border-width:1px 0 0 1px}
+.tl{top:15px;left:15px}.tr{top:15px;right:15px;transform:rotate(90deg)}.br{bottom:15px;right:15px;transform:rotate(180deg)}.bl{bottom:15px;left:15px;transform:rotate(270deg)}
+.tag{position:absolute;left:64px;top:66px;padding:9px 14px;background:#1E1E1E;color:#F386A1;border:2px dotted #F386A1;outline:2px dotted #1E1E1E;font-size:25px;letter-spacing:1px}
+.copy{position:absolute;left:64px;top:192px;width:625px;background:#F386A1;padding:10px 0 18px}
+h1{font-family:Inter,sans-serif;font-size:92px;line-height:1.1;font-weight:700;letter-spacing:-4.5px;margin:0 0 25px}
+.tagline{font-size:32px;line-height:1.15;margin:0;max-width:580px}
+.domain{position:absolute;left:64px;bottom:61px;font-size:29px;background:#F386A1;padding:5px 0;margin:0}
+.window{position:absolute;left:728px;top:122px;width:400px;background:#DEDEDE;border:3px solid #1E1E1E;box-shadow:3px 3px 0 #1E1E1E,inset 0 0 0 2px #FEFEFE;padding:0 16px 17px}
+.titlebar{height:37px;margin:0 -16px 16px;padding:3px 11px;background:#1E1E1E;color:#FEFEFE;display:flex;justify-content:space-between;align-items:center;font-size:26px;line-height:1}
+.board{display:block;width:360px;height:360px;border:2px solid #1E1E1E}
+.mascot{position:absolute;left:66px;top:402px;display:flex;align-items:center;gap:15px;background:#F386A1;padding-right:16px;font-size:24px}
+.mascot svg{width:66px;height:78px}.highlight{display:inline-block;width:10px;height:10px;background:#E551BA;margin-right:8px}
+</style>
+</head>
+<body>
+<svg class="texture" width="1200" height="630" aria-hidden="true">
+ <defs>
+  <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.65" fill="#1E1E1E"/></pattern>
+  <pattern id="dense" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.5" fill="#1E1E1E"/></pattern>
+ </defs>
+ <path d="M0 0H1200V630H0Z" fill="url(#dots)" opacity=".4"/>
+ <g fill="url(#dense)" opacity=".4"><circle cx="1102" cy="92" r="98"/><circle cx="702" cy="511" r="96"/><circle cx="22" cy="349" r="64"/></g>
+</svg>
+<div class="frame" aria-hidden="true"></div>
+<i class="crop tl"></i><i class="crop tr"></i><i class="crop br"></i><i class="crop bl"></i>
+<div class="tag">JEVPLAY.GAMES/TYPECHECKERS</div>
+<main class="copy">
+ <h1>Typecheckers</h1>
+ <p class="tagline">Jump, king, outplay Jev.<br>Every move logged.</p>
+</main>
+<div class="mascot">
+ <svg viewBox="0 0 66 78" role="img" aria-label="Jev pixel robot" shape-rendering="crispEdges">
+  <path fill="#1E1E1E" d="M30 0h6v12h18v6h6v30h-6v6H42v6h12v12h-6v6H36V66h-6v12H18v-6h-6V60h12v-6H12v-6H6V18h6v-6h18Z"/>
+  <path fill="#DEDEDE" d="M12 18h42v30H12Z"/>
+  <path fill="#1E1E1E" d="M18 24h12v12H18Zm18 0h12v12H36ZM24 42h18v6H24Z"/>
+  <path fill="#F386A1" d="M18 24h6v6h-6Zm18 0h6v6h-6ZM24 60h18v6H24Z"/>
+ </svg>
+ <span><span class="highlight"></span>JEV IS READY.</span>
+</div>
+<section class="window" aria-label="Board window">
+ <div class="titlebar"><span>BOARD</span><span>_ x</span></div>
+ <svg class="board" viewBox="0 0 352 352" role="img" aria-label="Pink and ink kings with stepped pixel crowns on a grey and paper checkerboard" shape-rendering="crispEdges">
+  <defs>
+   <pattern id="squares" width="88" height="88" patternUnits="userSpaceOnUse"><path fill="#FEFEFE" d="M0 0h88v88H0Z"/><path fill="#DEDEDE" d="M0 0h44v44H0Zm44 44h44v44H44Z"/></pattern>
+   <path id="disc" d="M-10-18H10V-14H14V-10H18V10H14V14H10V18H-10V14H-14V10H-18V-10H-14V-14H-10Z"/>
+   <path id="disc-inset" d="M-10-14H10V-10H14V10H10V14H-10V10H-14V-10H-10Z"/>
+   <path id="disc-core" d="M-6-10H6V-6H10V6H6V10H-6V6H-10V-6H-6Z"/>
+   <path id="crown" d="M-10-6H-6V-2H-2V-8H2V-2H6V-6H10V6H-10Z"/>
+  </defs>
+  <path fill="url(#squares)" d="M0 0h352v352H0Z"/>
+  <g transform="translate(242 66)">
+   <use href="#disc" fill="#1E1E1E"/>
+   <use href="#disc-inset" fill="#F386A1"/>
+   <use href="#crown" fill="#1E1E1E"/>
+  </g>
+  <g transform="translate(110 198)">
+   <use href="#disc" fill="#1E1E1E"/>
+   <use href="#disc-inset" fill="#FEFEFE"/>
+   <use href="#disc-core" fill="#1E1E1E"/>
+   <path fill="#FEFEFE" d="M-6-4H-4V-2H-2V-6H2V-2H4V-4H6V4H-6Z"/>
+  </g>
+ </svg>
+</section>
+<p class="domain">typecheckers.jevplay.games</p>
+</body>
+</html>
