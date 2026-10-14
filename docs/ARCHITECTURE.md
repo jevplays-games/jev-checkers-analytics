@@ -12,7 +12,7 @@ flowchart LR
   subgraph S[Trusted server]
     API[Worker-compatible API] --> SR[Same checkers rules]
     API --> DB[(D1 / local SQLite)]
-    SR --> J[JEV adapter and response validator]
+    SR --> J[Jev adapter and response validator]
     API --> A[Session and Discord verification]
   end
   UI <-->|HTTPS: intentions and authoritative snapshots| API
@@ -30,7 +30,7 @@ Thirty-two playable squares, immutable state transitions, generated complete act
 
 All game state stays separate from identities, clocks, network leases, and DOM state. The same engine powers local play, server play, replay, analytics, and benchmarks. There is no gameplay RNG in checkers. Only benchmark fixture/baseline generation uses an explicit seeded generator.
 
-## JEV decision loop
+## Jev decision loop
 
 ```mermaid
 flowchart TD
@@ -40,7 +40,7 @@ flowchart TD
   F -- No --> Q[Deterministic node-budgeted tactical search]
   Q --> C[Bounded candidate shortlist and exact features]
   C --> P[Persist model packet and versioned questions]
-  P --> J[Real JEV request / at most two attempts]
+  P --> J[Real Jev request / at most two attempts]
   J --> V[Validate model, typed answers, distributions, usage]
   V --> U[Combine tactical score and normalized model factors]
   U --> K[Revalidate legality / lease / revision]
@@ -49,7 +49,7 @@ flowchart TD
   J -- Exhausted failure budget --> NC[No-contest event / optional separate local continuation]
 ```
 
-Search is deterministic; accepted remote output is recorded, not presumed deterministic. Root scores use the last complete depth across candidates. Interrupted deeper work consumes nodes but does not create mixed-depth ranking. Candidate features and horizon-limited frontiers are supplied to JEV, never player identities. Numerical facts and legality remain code responsibilities.
+Search is deterministic; accepted remote output is recorded, not presumed deterministic. Root scores use the last complete depth across candidates. Interrupted deeper work consumes nodes but does not create mixed-depth ranking. Candidate features and horizon-limited frontiers are supplied to Jev, never player identities. Numerical facts and legality remain code responsibilities.
 
 ## Authentication and context
 
@@ -71,7 +71,7 @@ sequenceDiagram
   S-->>B: HttpOnly application session
 ```
 
-A separate signed `/play checkers` interaction establishes invoking user, guild, and channel. Signature verification covers timestamp plus the unchanged raw body. A one-use random token is account-bound and stored hashed. Browser redemption requires matching authenticated identity. The token grants one community-attributed match; its context proof permits short-lived leaderboard reading. Arbitrary browser guild/channel IDs are never accepted.
+A separate signed `/play typecheckers` interaction (the legacy `/play checkers` is still accepted) establishes invoking user, guild, and channel. Signature verification covers timestamp plus the unchanged raw body. A one-use random token is account-bound and stored hashed. Browser redemption requires matching authenticated identity. The token grants one community-attributed match; its context proof permits short-lived leaderboard reading. Arbitrary browser guild/channel IDs are never accepted.
 
 ## Authoritative results
 
@@ -79,10 +79,10 @@ A separate signed `/play checkers` interaction establishes invoking user, guild,
 flowchart TD
   END[Terminal board / server administrative result] --> EV[Read accepted events and pinned manifest]
   EV --> HASH[Validate hash chain and replay every action]
-  HASH --> PROV[Verify correct actors, fixed profile and real JEV response provenance]
+  HASH --> PROV[Verify correct actors, fixed profile and real Jev response provenance]
   PROV --> RES[Recompute board outcome or validate administrative evidence]
   RES --> FINAL[Idempotent result finalization]
-  FINAL --> ELIG{Ranked, authenticated, JEV and verified?}
+  FINAL --> ELIG{Ranked, authenticated, Jev and verified?}
   ELIG -- Yes --> LB[Eligible Channel / Server / World aggregate]
   ELIG -- No --> PRIVATE[Unofficial history or no-contest]
 ```

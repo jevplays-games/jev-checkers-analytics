@@ -1,9 +1,10 @@
 {
-  "name": "jev-checkers-analytics",
+  "name": "jev-typecheckers",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Vanilla checkers with JEV, Discord, authoritative replays and detailed analytics",
+  "description": "Typecheckers: vanilla American checkers against Jev, with Discord, authoritative replays and detailed analytics",
+  "license": "MIT",
   "engines": {
     "node": ">=22.16.0"
   },

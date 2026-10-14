@@ -1,4 +1,4 @@
-name: Checkers tests
+name: Typecheckers tests
 on: [push, pull_request]
 permissions:
   contents: read

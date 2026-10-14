@@ -29,7 +29,7 @@ Base origin is configured by `APP_ORIGIN`. JSON requests use `Content-Type: appl
 
 ```json
 {
-  "gameId": "checkers",
+  "gameId": "typecheckers",
   "mode": "casual",
   "opponent": "jev",
   "difficulty": "normal",
@@ -37,7 +37,9 @@ Base origin is configured by `APP_ORIGIN`. JSON requests use `Content-Type: appl
 }
 ```
 
-`mode`: casual/ranked. `opponent`: jev/local. Ranked requires Discord, configured JEV, and no other active ranked match. Local practice normally runs entirely in the browser; server-local matches exist for testing and unofficial server play. Any community attribution comes from a redeemed server-held entitlement, never creation-body IDs.
+`mode`: casual/ranked. `opponent`: jev/local. Ranked requires Discord, configured Jev, and no other active ranked match. Local practice normally runs entirely in the browser; server-local matches exist for testing and unofficial server play. Any community attribution comes from a redeemed server-held entitlement, never creation-body IDs.
+
+`gameId`: `typecheckers`. The pre-rename id `checkers` is still accepted from older clients.
 
 Difficulty: easy/normal/hard/jev. A request key reused with different content is a conflict. Exact body validation and limits are enforced in `server/matches.js`.
 
@@ -83,3 +85,16 @@ Responses contain `asOf`, cohort, qualification rule, total, entries, and next c
 Responses contain a safe error message, code, and request ID. 400: invalid request; 401: no session/signature; 403: ownership/context/CSRF; 409: stale revision or conflicting idempotency; 422: illegal action; 429: quota; 503: unavailable configuration/provider. Unexpected failures return a generic 500, not a stack trace or secret.
 
 Provider input is generated only from authoritative matches. There is no generic prompt/model proxy and no client score-submission endpoint. Body/telemetry/provider response limits, per-session advancement limits, and match-start quotas bound abuse. Deployment should add edge-level traffic controls to protect endpoints that must remain public.
+
+## Rename compatibility (Checkers → Typecheckers)
+
+| Identifier | Written by new code | Still accepted |
+|---|---|---|
+| Match `gameId` (request body and replay manifest) | `typecheckers` | `checkers` |
+| Replay `format` | `jev-typecheckers-audit` | `jev-checkers-audit` (`public/lib/audit.js`, `npm run verify`) |
+| Discord subcommand | `/play typecheckers` | `/play checkers` until it is deregistered |
+| Launch / OAuth return path | `/play/typecheckers` | `/play/checkers` |
+| Browser storage | `jev-typecheckers-active`, `jev-typecheckers-history`, `typecheckers-launch` | old `jev-checkers-*` / `checkers-launch` keys are moved to the new keys once on load |
+| Export file | `typecheckers-analytics-<matchId>.zip` | — |
+
+Rows already in D1 keep `gameId:"checkers"`; they are not rewritten. The strategy and profile identifiers (`checkers-strategy-1.0.0`, `checkers-factors-v1`) are unchanged because they feed the pinned profile hash that groups leaderboard cohorts. `reports/example-replay.json` is a pre-rename export and `tests/rename.test.js` checks it still verifies.

@@ -105,5 +105,5 @@ export function serialize(state) {
     repetitions: Object.fromEntries(Object.entries(state.repetitions).sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)) });
 }
 export function deserialize(data) { return validateState(typeof data === 'string' ? JSON.parse(data) : structuredClone(data)); }
-export const checkers = { id: 'checkers', rulesVersion: RULES_VERSION, engineVersion: ENGINE_VERSION,
+export const checkers = { id: 'typecheckers', legacyIds: ['checkers'], rulesVersion: RULES_VERSION, engineVersion: ENGINE_VERSION,
   createInitialState, getLegalActions, applyAction, getOutcome, serialize, deserialize };

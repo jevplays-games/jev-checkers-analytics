@@ -48,10 +48,14 @@ export function secureHeaders(response,requestIdValue,framable=false) {
   return new Response(response.body,{status:response.status,headers});
 }
 export async function safeEqual(a,b) { if(typeof a!=='string'||typeof b!=='string')return false;return await sha256(a)===await sha256(b); }
+// APP_ORIGIN is the canonical origin. LEGACY_APP_ORIGINS (comma-separated) keeps the pre-rename hostname
+// (checkers.jevplay.games) working until the redirect cutover: a request on a listed origin keeps its own
+// origin for links, OAuth callbacks and the CSRF origin check, so cookies stay on the host that set them.
+export function appOrigins(env){return [env.APP_ORIGIN,...String(env.LEGACY_APP_ORIGINS??'').split(',').map(o=>o.trim())].filter(Boolean);}
 export function origin(env,request) {
-  const result=env.APP_ORIGIN || new URL(request.url).origin;
+  const own=new URL(request.url).origin,result=env.APP_ORIGIN || own;
   assert(new URL(result).origin===result,500,'APP_ORIGIN must be an origin without a trailing slash');
-  return result;
+  return own!==result&&appOrigins(env).slice(1).includes(own)?own:result;
 }
 export const activityOrigin=env=>/^\d{5,25}$/.test(env.DISCORD_APPLICATION_ID??'')?`https://${env.DISCORD_APPLICATION_ID}.discordsays.com`:null;
 export function csrf(request,session,env) {

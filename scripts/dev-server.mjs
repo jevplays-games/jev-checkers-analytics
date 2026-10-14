@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { readFile,mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { resolve,extname,sep,dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isProduction } from './production.mjs';
@@ -8,7 +9,9 @@ import { NodeDB } from '../server/node-db.js';
 const root=resolve(fileURLToPath(new URL('..',import.meta.url))),publicRoot=resolve(root,'public');
 const production=isProduction(process.env),trustProxy=process.env.TRUST_PROXY==='1';
 const port=Number(process.env.PORT||8787),host=process.env.HOST||(production?'0.0.0.0':'127.0.0.1');
-const dbPath=resolve(process.env.DB_PATH||resolve(root,'.data/checkers.sqlite'));
+// The dev database was .data/checkers.sqlite before the Typecheckers rename; keep using it if it is the only one.
+const legacyDb=resolve(root,'.data/checkers.sqlite'),newDb=resolve(root,'.data/typecheckers.sqlite');
+const dbPath=resolve(process.env.DB_PATH||(existsSync(legacyDb)&&!existsSync(newDb)?legacyDb:newDb));
 if(dbPath.startsWith(publicRoot+sep))throw new Error('DB_PATH must not be inside public/');
 await mkdir(dirname(dbPath),{recursive:true});
 const db=new NodeDB(dbPath);db.exec(await readFile(resolve(root,'migrations/001.sql'),'utf8'));
@@ -16,7 +19,7 @@ const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=
 const tasks=new Set();
 const ctx={waitUntil(p){tasks.add(p);p.catch(e=>console.error('Background task failed:',e.name)).finally(()=>tasks.delete(p));}};
 const env={...process.env,APP_ENV:production?'production':'local',APP_ORIGIN:process.env.APP_ORIGIN||`http://127.0.0.1:${port}`,DB:db,
-  ASSETS:{async fetch(request){let path=decodeURIComponent(new URL(request.url).pathname);if(path==='/'||path==='/play/checkers')path='/index.html';
+  ASSETS:{async fetch(request){let path=decodeURIComponent(new URL(request.url).pathname);if(path==='/'||path==='/play/typecheckers'||path==='/play/checkers')path='/index.html';
     const target=resolve(publicRoot,'.'+path);if(!target.startsWith(publicRoot+sep))return new Response('Not found',{status:404});
     try{return new Response(await readFile(target),{headers:{'content-type':types[extname(target)]||'application/octet-stream','cache-control':'no-cache'}});}catch{return new Response('Not found',{status:404});}}}};
 const server=createServer(async(req,res)=>{
@@ -30,7 +33,7 @@ const server=createServer(async(req,res)=>{
     res.end(Buffer.from(await response.arrayBuffer()));
   }catch(error){console.error(error.name);res.writeHead(500);res.end('Internal error');}
 });
-server.listen(port,host,()=>console.log(`Checkers: ${env.APP_ORIGIN}\nJEV: ${env.TYPESAFE_API_KEY?'configured':'not configured; local practice is available'}\nDatabase: SQLite file (ephemeral on Node hosting). Press Ctrl+C to stop.`));
+server.listen(port,host,()=>console.log(`Typecheckers: ${env.APP_ORIGIN}\nJev: ${env.TYPESAFE_API_KEY?'configured':'not configured; local practice is available'}\nDatabase: SQLite file (ephemeral on Node hosting). Press Ctrl+C to stop.`));
 const timer=setInterval(()=>worker.scheduled({},env,ctx),60000);timer.unref();
 async function stop(){clearInterval(timer);server.close();await Promise.allSettled([...tasks]);db.close();process.exit(0);}
 process.on('SIGINT',stop);process.on('SIGTERM',stop);

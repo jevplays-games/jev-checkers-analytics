@@ -14,8 +14,8 @@ Discord can launch the game as an Activity: an iframe on `https://<APPLICATION_I
 ## Developer Portal settings
 
 - Enable **Activities** for the application.
-- Under Activities > URL Mappings, map prefix `/` to `checkers.jevplay.games`.
-- Ranked play, channel context and `/play checkers` launch links still work only through the existing signed interaction flow; an Activity session is an ordinary signed-in session.
+- Under Activities > URL Mappings, map prefix `/` to `typecheckers.jevplay.games` (change it from the pre-rename host at cutover; see DEPLOYMENT.md).
+- Ranked play, channel context and `/play typecheckers` launch links still work only through the existing signed interaction flow; an Activity session is an ordinary signed-in session.
 
 ## Entry Point command
 

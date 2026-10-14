@@ -1,6 +1,6 @@
 import { createInitialState,getLegalActions,getOutcome,applyAction,serialize,deserialize,otherSide } from '../public/games/checkers/rules.js';
 import { profileFor,chooseLocalAction,features } from '../public/games/checkers/strategy.js';
-import { sha256,hashState,sealEvent,verifyReplay,canonical } from '../public/lib/audit.js';
+import { sha256,hashState,sealEvent,verifyReplay,canonical,GAME_ID,REPLAY_FORMAT,isGameId } from '../public/lib/audit.js';
 import { chooseJevAction } from './jev.js';
 import { one,all,run,uid,token,now,assert,keysOnly,requestId,rate,operation,json,HttpError } from './util.js';
 export async function ownedMatch(id,session,env){
@@ -16,15 +16,15 @@ export async function snapshot(m,env){
 }
 export async function createMatch(body,session,env){
   keysOnly(body,['gameId','mode','difficulty','requestId','opponent']);
-  assert(body.gameId==='checkers',400,'Unsupported game');requestId(body.requestId);
+  assert(isGameId(body.gameId),400,'Unsupported game');requestId(body.requestId);
   assert(['casual','ranked'].includes(body.mode),400,'Invalid mode');
   assert(['jev','local'].includes(body.opponent),400,'Invalid opponent');
   let profile;try{profile=profileFor(body.difficulty);}catch{throw new HttpError(400,'Unknown difficulty');}
   const startKey=`${session.id}:${body.requestId}`,requestHash=await sha256(body);
   const previous=await one(env,'SELECT * FROM matches WHERE start_key=?',startKey);
   if(previous){assert(previous.request_hash===requestHash,409,'Request ID reused with different content');return snapshot(previous,env);}
-  assert(body.opponent!=='jev'||env.TYPESAFE_API_KEY,503,'Remote JEV is not configured');
-  assert(body.mode!=='ranked'||(session.user_id&&body.opponent==='jev'&&env.TYPESAFE_API_KEY),403,'Ranked play requires Discord and the real JEV opponent');
+  assert(body.opponent!=='jev'||env.TYPESAFE_API_KEY,503,'Remote Jev is not configured');
+  assert(body.mode!=='ranked'||(session.user_id&&body.opponent==='jev'&&env.TYPESAFE_API_KEY),403,'Ranked play requires Discord and the real Jev opponent');
   const day=new Date().toISOString().slice(0,10);
   await rate(env,`match:${session.user_id||session.id}:${day}`,session.user_id?30:5,86400);
   if(body.opponent==='jev')await rate(env,`global-jev-starts:${day}`,Number(env.GLOBAL_DAILY_MATCH_LIMIT||200),86400);
@@ -35,7 +35,7 @@ export async function createMatch(body,session,env){
   const humanSide=body.mode==='ranked'&&played.count%2?'white':'red';
   const context=session.context_json?JSON.parse(session.context_json):null;
   const community=body.mode==='ranked'&&context&&!context.used&&context.expiresAt>time?context:null;
-  const manifest={formatVersion:1,matchId:id,gameId:'checkers',rulesVersion:state.rulesVersion,engineVersion:state.engineVersion,
+  const manifest={formatVersion:1,matchId:id,gameId:GAME_ID,rulesVersion:state.rulesVersion,engineVersion:state.engineVersion,
     buildId:env.BUILD_ID||'source-release-1.0.0',initialState:state,officialStart:true,humanSide,opponent:body.opponent,
     profile,profileHash:cohort,trust:'trusted_server',startedAt:new Date(time).toISOString()};
   const head=await sha256(manifest),status=humanSide==='red'?'human_turn':'jev_pending';
@@ -119,7 +119,7 @@ export async function advanceMatch(id,env){
 }
 export async function getReplay(m,env){
   const events=await all(env,'SELECT body_json FROM events WHERE match_id=? ORDER BY seq',m.id);
-  return {format:'jev-checkers-audit',version:1,manifest:JSON.parse(m.manifest_json),events:events.map(e=>JSON.parse(e.body_json)),
+  return {format:REPLAY_FORMAT,version:1,manifest:JSON.parse(m.manifest_json),events:events.map(e=>JSON.parse(e.body_json)),
     finalState:deserialize(m.state_json),finalHash:m.chain_head,outcome:m.outcome_json?JSON.parse(m.outcome_json):null,
     verification:m.verification,eligible:!!m.eligible};
 }

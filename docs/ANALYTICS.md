@@ -16,7 +16,7 @@ The browser and CLI share `public/lib/analytics.js`. `analyzeReplay()` is a deri
 
 ## Match and piece statistics
 
-`turns` counts move events, excluding resignations, failures, and administrative events. `sourceCounts` distinguishes human, JEV, forced, and local decisions. A forced move does not consume a model call.
+`turns` counts move events, excluding resignations, failures, and administrative events. `sourceCounts` distinguishes human, Jev, forced, and local decisions. A forced move does not consume a model call.
 
 For each color: moves, pieces captured, capture turns, multi-jump turns, promotions, king moves, and maximum captured pieces in one turn. `captures` counts pieces, not turns. A promotion is recorded only when the engine promotes the moved man. A king move means the piece was already a king at the start of that turn.
 
@@ -44,9 +44,9 @@ Record full legal count, actual evaluated shortlist, pruned count, node count, l
 
 `candidateCoverage = evaluatedCount / legalCount` for each opponent move with a positive legal count. It measures shortlist coverage, not proof coverage. `totalPruned` adds the recorded candidate-pruning counts. Node count includes work spent in an interrupted iteration; reported completed depth does not.
 
-Candidate rows include event/ply, rank, chosen status, action path ID, tactical score, JEV adjustment, final utility, promotion/mobility/support scores and trap assessment. Unused factors remain null. Frontiers and exact board features remain available in detailed decision/provider evidence rather than being flattened away.
+Candidate rows include event/ply, rank, chosen status, action path ID, tactical score, Jev adjustment, final utility, promotion/mobility/support scores and trap assessment. Unused factors remain null. Frontiers and exact board features remain available in detailed decision/provider evidence rather than being flattened away.
 
-`changedFromBaseline` counts decisions where the model-adjusted selected action differs from the search-only baseline. The rate divides by committed JEV decisions, not forced/local moves. It measures influence, not benefit.
+`changedFromBaseline` counts decisions where the model-adjusted selected action differs from the search-only baseline. The rate divides by committed Jev decisions, not forced/local moves. It measures influence, not benefit.
 
 `searchRegret = max(0, best shortlisted tactical score − selected tactical score)`. This is **heuristic disagreement in the implemented search units**, not regret against perfect play, and not a probability. It uses the same decision's candidate pool.
 

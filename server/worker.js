@@ -31,7 +31,7 @@ async function route(request,env,ctx){
   const url=new URL(request.url),path=url.pathname;
   if(!path.startsWith('/api/'))return env.ASSETS.fetch(request);
   assert(env.DB,503,'Database is not configured');
-  if(path==='/api/health'&&request.method==='GET')return json({ok:true,service:'jev-checkers',version:'1.0.0'});
+  if(path==='/api/health'&&request.method==='GET')return json({ok:true,service:'jev-typecheckers',version:'1.0.0'});
   if(path==='/api/discord/interactions'&&request.method==='POST')return interaction(request,env);
   if(path==='/api/activity/config'&&request.method==='GET')return activityConfig(env);
   if(path==='/api/activity/session'&&request.method==='POST')return createActivitySession(request,env);

@@ -1,6 +1,6 @@
 import { createInitialState,getLegalActions,getOutcome,applyAction,coords,squareAt,owner,isKing,otherSide,serialize } from './games/checkers/rules.js';
 import { profileFor,features } from './games/checkers/strategy.js';
-import { hashState,sha256,sealEvent,verifyReplay } from './lib/audit.js';
+import { hashState,sha256,sealEvent,verifyReplay,GAME_ID,REPLAY_FORMAT } from './lib/audit.js';
 import { analyzeReplay,toCSV,flatEvents } from './lib/analytics.js';
 import { makeZip } from './lib/zip.js';
 const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(n):'—';
@@ -9,9 +9,16 @@ const moveName=id=>id?.replace(/^[mj]:/,'').replaceAll('x',' × ').replaceAll('-
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function stored(key,fallback=null){try{const data=localStorage.getItem(key);return data?JSON.parse(data):fallback;}catch{return fallback;}}
 function store(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
+// Storage keys from before the Checkers -> Typecheckers rename are moved to the new keys once, so a returning
+// player on the same origin keeps an in-progress practice match and local history.
+const ACTIVE_KEY='jev-typecheckers-active',HISTORY_KEY='jev-typecheckers-history',LAUNCH_KEY='typecheckers-launch';
+function migrateStorage(storage=localStorage){
+  try{for(const [from,to] of [['jev-checkers-active',ACTIVE_KEY],['jev-checkers-history',HISTORY_KEY]]){const old=storage.getItem(from);if(old===null)continue;if(storage.getItem(to)===null)storage.setItem(to,old);storage.removeItem(from);}}catch{}
+}
+migrateStorage();
 function notice(message){$('notice').textContent=message||'';$('notice').hidden=!message;}
 let account=null,capabilities={jev:false,discord:false},csrfToken=null,serverOnline=false,active=null;
-let opponentChosen=false; // set once the player picks an opponent, so the JEV default never overrides them
+let opponentChosen=false; // set once the player picks an opponent, so the Jev default never overrides them
 let state=createInitialState(),record=null,imported=null,busy=false,path=[],flip=true,activeTab='overview',analytics=null;
 let localTurnStarted=performance.now(),localWorker=null,workerSequence=0,pollTimer=null,pollCount=0,leaderboardCursor=null,leaderboardRows=[];
 const pendingWorker=new Map();
@@ -70,12 +77,12 @@ function renderGame(){
   $('human-name').textContent=`${account?.displayName||'You'} · ${human==='red'?'Red':'Dark'}`;
   $('human-material').textContent=`${f[human].men+f[human].kings} pieces · ${f[human].kings} kings`;
   $('opponent-material').textContent=`${f[opponent].men+f[opponent].kings} pieces · ${f[opponent].kings} kings`;
-  const remote=active?.opponent==='jev';$('opponent-name').textContent=remote?'JEV + tactical search':'Local search opponent';
+  const remote=active?.opponent==='jev';$('opponent-name').textContent=remote?'Jev + tactical search':'Local search opponent';
   $('opponent-detail').textContent=remote?`${active.difficulty} · pinned structured opponent`:'Unranked practice · no model calls';
   $('mode-badge').textContent=active?.mode==='ranked'?'RANKED':'PRACTICE';
   const outcome=currentOutcome(),legal=getOutcome(state)?[]:getLegalActions(state);
   let status=!active?'Start a game to play.':outcome?outcome.reason==='service_failure'?'Provider unavailable · no contest':outcome.winner===null?`Draw · ${outcome.reason}`:`${outcome.winner===human?'You win':'Opponent wins'} · ${outcome.reason}`:
-    busy||state.toMove!==human?remote?'JEV is evaluating…':'Local opponent is searching…':path.length>1?'Complete the capture sequence.':legal[0]?.captured.length?'Your turn · a capture is mandatory.':'Your turn · select a piece.';
+    busy||state.toMove!==human?remote?'Jev is evaluating…':'Local opponent is searching…':path.length>1?'Complete the capture sequence.':legal[0]?.captured.length?'Your turn · a capture is mandatory.':'Your turn · select a piece.';
   $('turn-status').textContent=status;
   // The status line turns into the result plaque in place; the side to move is lit.
   const verdict=outcome&&outcome.reason!=='service_failure'?outcome.winner===null?'is-draw':outcome.winner===human?'is-win':'is-loss':'';
@@ -86,7 +93,7 @@ function renderGame(){
   $('legal-count').textContent=String(legal.length);$('move-count').textContent=`(${legal.length})`;
   $('legal-moves').replaceChildren(...legal.map(a=>{const b=element('button',moveName(a.id));b.disabled=!canMove();b.addEventListener('click',()=>play(a.id));return b;}));
   const decision=record?.events.filter(e=>e.actor==='opponent'&&e.kind==='move').at(-1);
-  $('decision-status').textContent=busy?'Evaluating legal candidates':decision?`${decision.evidence.source==='jev'?'JEV evaluation':decision.evidence.source==='forced'?'Rules-determined action':'Local search'} · completed`:'Awaiting first decision';
+  $('decision-status').textContent=busy?'Evaluating legal candidates':decision?`${decision.evidence.source==='jev'?'Jev evaluation':decision.evidence.source==='forced'?'Rules-determined action':'Local search'} · completed`:'Awaiting first decision';
   if(decision){const e=decision.evidence;$('selected-action').textContent=moveName(decision.action.id);$('search-depth').textContent=number(e.completedDepth);$('decision-time').textContent=ms(e.totalMs);$('search-nodes').textContent=number(e.searchedNodes);$('legal-count').textContent=number(e.legalCount);
     const candidate=e.candidates?.find(c=>c.actionId===decision.action.id);$('factor-list').replaceChildren();
     for(const [name,value] of Object.entries(candidate?.factors||{})){const row=element('div',undefined,'factor-row');const meter=element('meter');meter.min=0;meter.max=name==='trap'?1:4;meter.value=value;meter.setAttribute('aria-label',`${name}: ${value}`);row.append(element('span',name),meter,element('span',Number(value).toFixed(2)));$('factor-list').append(row);}
@@ -112,8 +119,8 @@ async function appendLocal(kind,action=null,evidence={},actor='human'){
 }
 function persistLocal(){
   if(active?.kind!=='local')return;
-  store('jev-checkers-active',{active,record});
-  if(record.outcome){const history=stored('jev-checkers-history',[]).filter(r=>r.manifest.matchId!==record.manifest.matchId);history.unshift(record);store('jev-checkers-history',history.slice(0,5));}
+  store(ACTIVE_KEY,{active,record});
+  if(record.outcome){const history=stored(HISTORY_KEY,[]).filter(r=>r.manifest.matchId!==record.manifest.matchId);history.unshift(record);store(HISTORY_KEY,history.slice(0,5));}
 }
 async function runLocalOpponent(){
   if(!active||active.kind!=='local'||state.toMove===active.humanSide||currentOutcome())return;
@@ -126,10 +133,10 @@ async function runLocalOpponent(){
 async function startLocal(initial=createInitialState(),humanSide='red'){
   clearTimeout(pollTimer);imported=null;path=[];state=structuredClone(initial);flip=humanSide==='red';busy=false;
   active={id:crypto.randomUUID(),kind:'local',opponent:'local',mode:'casual',difficulty:$('difficulty').value,humanSide,status:'playing',outcome:null};
-  const profile=profileFor(active.difficulty),manifest={formatVersion:1,matchId:active.id,gameId:'checkers',rulesVersion:state.rulesVersion,engineVersion:state.engineVersion,
+  const profile=profileFor(active.difficulty),manifest={formatVersion:1,matchId:active.id,gameId:GAME_ID,rulesVersion:state.rulesVersion,engineVersion:state.engineVersion,
     buildId:'browser-practice-1.0.0',initialState:structuredClone(initial),officialStart:serialize(initial)===serialize(createInitialState()),humanSide,opponent:'local',
     profile,profileHash:await sha256(profile),trust:'untrusted_client',startedAt:new Date().toISOString()};
-  record={format:'jev-checkers-audit',version:1,manifest,events:[],finalState:state,finalHash:await sha256(manifest),outcome:null,verification:'local-only',eligible:false};
+  record={format:REPLAY_FORMAT,version:1,manifest,events:[],finalState:state,finalHash:await sha256(manifest),outcome:null,verification:'local-only',eligible:false};
   localTurnStarted=performance.now();persistLocal();renderGame();renderAnalytics();await runLocalOpponent();
 }
 async function startGame(){
@@ -141,7 +148,7 @@ async function startGame(){
   try{
     if($('opponent').value==='local'){await startLocal();return;}
     busy=true;renderGame();
-    const result=await api('/api/matches',{gameId:'checkers',opponent:'jev',mode:$('mode').value,difficulty:$('difficulty').value,requestId:crypto.randomUUID()});
+    const result=await api('/api/matches',{gameId:GAME_ID,opponent:'jev',mode:$('mode').value,difficulty:$('difficulty').value,requestId:crypto.randomUUID()});
     imported=null;await acceptRemote(result);await refreshRemoteReplay();schedulePoll();
   }catch(error){busy=false;notice(error.message);renderGame();}
 }
@@ -225,7 +232,7 @@ function renderAnalytics(){
 function renderDecision(){
   const event=(imported||record)?.events.find(e=>e.seq===Number($('decision-select').value));
   if(!event){table($('candidate-table'),[],[]);$('raw-decision').textContent='No opponent decisions yet.';return;}
-  table($('candidate-table'),['Rank','Move','Search','JEV Δ','Utility','Promotion','Mobility','Support','Trap'],(event.evidence.candidates||[]).map((c,i)=>({selected:c.actionId===event.action.id,cells:[i+1,`${c.actionId===event.action.id?'✓ ':''}${moveName(c.actionId)}`,number(c.tacticalScore),number(c.adjustment),number(c.utility),number(c.factors?.promotion),number(c.factors?.mobility),number(c.factors?.support),number(c.factors?.trap)]})));
+  table($('candidate-table'),['Rank','Move','Search','Jev Δ','Utility','Promotion','Mobility','Support','Trap'],(event.evidence.candidates||[]).map((c,i)=>({selected:c.actionId===event.action.id,cells:[i+1,`${c.actionId===event.action.id?'✓ ':''}${moveName(c.actionId)}`,number(c.tacticalScore),number(c.adjustment),number(c.utility),number(c.factors?.promotion),number(c.factors?.mobility),number(c.factors?.support),number(c.factors?.trap)]})));
   $('raw-decision').textContent=JSON.stringify(event.evidence,null,2);
 }
 function renderReplay(){
@@ -258,8 +265,8 @@ async function exportAnalytics(){
       'moves.csv':toCSV(a.moves),'candidates.csv':toCSV(a.candidates),'positions.csv':toCSV(a.points),'events.csv':toCSV(flatEvents(r)),
       'events.ndjson':r.events.map(e=>JSON.stringify(e)).join('\n')+'\n','operations.ndjson':operations.map(e=>JSON.stringify(e)).join('\n')+'\n',
       'heatmaps.json':JSON.stringify(a.heatmaps,null,2),
-      'README.txt':'JEV Checkers analytics export\nAll recorded turns, with no sampling.\nVerify replay.json using the source package: npm run verify -- replay.json\nCSV string fields are escaped against spreadsheet formula injection.\nTrust: hash integrity is not a signature or proof of official score provenance.\nHuman elapsed time may include network delay and time away.\nProvider certainty and heuristic values are not win probabilities.\nMissing usage/cost stays unknown. Operations are available only for owned server records.\n'};
-    const blob=makeZip(files),url=URL.createObjectURL(blob),link=element('a');link.href=url;link.download=`checkers-analytics-${r.manifest.matchId}.zip`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notice(null);
+      'README.txt':'Typecheckers analytics export (jevplay.games)\nAll recorded turns, with no sampling.\nVerify replay.json using the source package: npm run verify -- replay.json\nCSV string fields are escaped against spreadsheet formula injection.\nTrust: hash integrity is not a signature or proof of official score provenance.\nHuman elapsed time may include network delay and time away.\nProvider certainty and heuristic values are not win probabilities.\nMissing usage/cost stays unknown. Operations are available only for owned server records.\n'};
+    const blob=makeZip(files),url=URL.createObjectURL(blob),link=element('a');link.href=url;link.download=`typecheckers-analytics-${r.manifest.matchId}.zip`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notice(null);
   }catch(error){notice(`Export failed: ${error.message}`);}finally{$('export').disabled=false;}
 }
 async function importReplay(file){
@@ -275,7 +282,7 @@ async function loadLeaderboard(more=false){
   }catch(error){notice(error.message);}
 }
 async function loadHistory(){
-  const local=stored('jev-checkers-history',[]),rows=[];
+  const local=stored(HISTORY_KEY,[]),rows=[];
   for(const r of local){const b=element('button','Inspect');b.onclick=()=>{imported=r;renderAnalytics();showTab('replay');};rows.push(['Local practice',r.manifest.profile.difficulty,r.outcome?.reason||'unfinished',r.events.length,b]);}
   if(serverOnline)try{const data=await api('/api/analytics/me');for(const m of data.recent){const b=element('button','Inspect');b.onclick=async()=>{try{imported=await api(`/api/matches/${m.id}/replay`);renderAnalytics();showTab('replay');}catch(e){notice(e.message);}};rows.push([`${m.opponent} · ${m.mode}`,m.difficulty,m.status,m.revision,b]);}}catch(error){notice(error.message);}
   table($('history-table'),['Source','Difficulty','Status','Events','Record'],rows);
@@ -283,10 +290,10 @@ async function loadHistory(){
 function showTab(name){activeTab=name;for(const tab of document.querySelectorAll('[data-tab]')){const selected=tab.dataset.tab===name;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;$(`${tab.dataset.tab}-panel`).hidden=!selected;}
   if(name==='leaderboard')loadLeaderboard();if(name==='history')loadHistory();}
 function applyCapabilities(){
-  $('opponent').querySelector('[value=jev]').disabled=!capabilities.jev;$('opponent').querySelector('[value=jev]').textContent=capabilities.jev?'JEV · structured model + search':'JEV · connect API to enable';
-  // Default to JEV once the server reports it available. The <option> order puts
+  $('opponent').querySelector('[value=jev]').disabled=!capabilities.jev;$('opponent').querySelector('[value=jev]').textContent=capabilities.jev?'Jev · structured model + search':'Jev · connect API to enable';
+  // Default to Jev once the server reports it available. The <option> order puts
   // local first, so without this the select stays on the local search opponent
-  // even while the header reads "JEV CONNECTED". Applied once, and never over a
+  // even while the header reads "Jev CONNECTED". Applied once, and never over a
   // choice the player has already made.
   if(capabilities.jev&&!opponentChosen&&$('opponent').value!=='jev'){$('opponent').value='jev';opponentChosen=true;}
   $('mode').querySelector('[value=ranked]').disabled=!account||!capabilities.jev||$('opponent').value!=='jev';
@@ -295,7 +302,7 @@ function applyCapabilities(){
 }
 async function bootstrap(){
   const launch=new URL(location.href).searchParams.get('launch');
-  if(launch&&/^[a-f0-9]{64}$/.test(launch)){sessionStorage.setItem('checkers-launch',launch);history.replaceState(null,'',location.pathname);}
+  if(launch&&/^[a-f0-9]{64}$/.test(launch)){sessionStorage.setItem(LAUNCH_KEY,launch);history.replaceState(null,'',location.pathname);}
   $('analysis-on').checked=stored('jev-analysis-on',true);$('decision-body').hidden=!$('analysis-on').checked;
   $('telemetry-consent').checked=stored('jev-telemetry-consent',false);$('difficulty').value=stored('jev-difficulty','jev');
   if(!['easy','normal','hard','jev'].includes($('difficulty').value))$('difficulty').value='jev';
@@ -306,16 +313,16 @@ async function bootstrap(){
   }
   try{
     const result=await api('/api/me');serverOnline=true;account=result.user;csrfToken=result.csrf;capabilities=result.capabilities;
-    $('connection').textContent=capabilities.jev?'JEV CONNECTED':'LOCAL READY';
+    $('connection').textContent=capabilities.jev?'Jev connected':'LOCAL READY';
     if(result.activeMatchId){serverActiveId=result.activeMatchId;$('resume').hidden=false;$('resume').onclick=()=>resumeRemote(result.activeMatchId);}
-    const pending=sessionStorage.getItem('checkers-launch');
-    if(pending&&account){try{await api('/api/launch/redeem',{token:pending});sessionStorage.removeItem('checkers-launch');notice('Discord channel context verified. Your next ranked match can count for Channel, Server and World.');}catch(error){sessionStorage.removeItem('checkers-launch');notice(error.message);}}
-    else if(pending)notice('Sign in with the Discord account that invoked /play checkers to redeem this launch.');
+    const pending=sessionStorage.getItem(LAUNCH_KEY)??sessionStorage.getItem('checkers-launch');sessionStorage.removeItem('checkers-launch');if(pending)sessionStorage.setItem(LAUNCH_KEY,pending);
+    if(pending&&account){try{await api('/api/launch/redeem',{token:pending});sessionStorage.removeItem(LAUNCH_KEY);notice('Discord channel context verified. Your next ranked match can count for Channel, Server and World.');}catch(error){sessionStorage.removeItem(LAUNCH_KEY);notice(error.message);}}
+    else if(pending)notice('Sign in with the Discord account that invoked /play typecheckers to redeem this launch.');
   }catch{$('connection').textContent='LOCAL ONLY';}
   applyCapabilities();renderGame();
-  const saved=stored('jev-checkers-active');
+  const saved=stored(ACTIVE_KEY);
   if(saved?.record&&!saved.record.outcome&&saved.active?.kind==='local'){
-    try{await verifyReplay(saved.record);active=saved.active;record=saved.record;state=record.finalState;localTurnStarted=performance.now();renderGame();renderAnalytics();await runLocalOpponent();}catch{store('jev-checkers-active',null);}
+    try{await verifyReplay(saved.record);active=saved.active;record=saved.record;state=record.finalState;localTurnStarted=performance.now();renderGame();renderAnalytics();await runLocalOpponent();}catch{store(ACTIVE_KEY,null);}
   }
   await autoStart(serverActiveId);
 }
@@ -324,9 +331,9 @@ async function bootstrap(){
    live SERVER match is rejoined here rather than started over, so a reload can
    never open a second match alongside one the server still holds a lease on.
    Ranked is taken only when the <option> is enabled, which is the same gate the
-   player faces by hand (signed in, JEV available, JEV selected). When JEV is
+   player faces by hand (signed in, Jev available, Jev selected). When Jev is
    not configured the opponent select stays on 'local' and startGame() routes to
-   startLocal(), so an auto-started game is never relabeled as JEV. */
+   startLocal(), so an auto-started game is never relabeled as Jev. */
 async function autoStart(serverActiveId){
   if(active&&!currentOutcome())return;
   if(serverActiveId){try{await resumeRemote(serverActiveId);return;}catch{/* fall through to a fresh game */}}

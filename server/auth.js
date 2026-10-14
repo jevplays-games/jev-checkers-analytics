@@ -32,7 +32,7 @@ export async function loginStart(request,env){
   assert(authEnabled(env),503,'Discord sign-in has not been configured');
   const {session,cookie}=await ensureSession(request,env);await rate(env,`oauth:${session.id}`,10,600);
   const state=token(),url=new URL(request.url),returnTo=url.searchParams.get('return')||'/';
-  assert(returnTo==='/'||returnTo==='/play/checkers',400,'Invalid return path');
+  assert(['/','/play/typecheckers','/play/checkers'].includes(returnTo),400,'Invalid return path');
   await run(env,'INSERT INTO grants(token_hash,purpose,session_id,payload_json,expires_at) VALUES (?,?,?,?,?)',await sha256(state),'oauth',session.id,JSON.stringify({returnTo}),now()+600000);
   const target=new URL('https://discord.com/oauth2/authorize');
   target.search=new URLSearchParams({client_id:env.DISCORD_APPLICATION_ID,response_type:'code',redirect_uri:`${origin(env,request)}/api/auth/discord/callback`,scope:'identify',state});

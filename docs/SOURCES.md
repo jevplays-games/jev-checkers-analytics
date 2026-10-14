@@ -1,6 +1,6 @@
 # Technical references
 
-The implementation follows the supplied Checkers/JEV plan and game specification. The following official documentation informed the integration boundary. Reviewed during package development on 2026-09-22; APIs, deployment tooling, and model availability should be rechecked before deployment.
+The implementation follows the supplied Checkers/Jev plan (the game is now Typecheckers) and game specification. The following official documentation informed the integration boundary. Reviewed during package development on 2026-09-22; APIs, deployment tooling, and model availability should be rechecked before deployment.
 
 - TypeSafe HTTP API and typed answers: https://docs.typesafe.ai/api
 - TypeSafe versioned models and context limits: https://docs.typesafe.ai/models

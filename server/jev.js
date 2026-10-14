@@ -26,7 +26,7 @@ export function buildRequest(state,search,profile) {
   }
   const request={model:profile.model,state:packet,questions};
   if(new TextEncoder().encode(JSON.stringify(packet)).length>28000 || new TextEncoder().encode(JSON.stringify(request)).length>60000)
-    throw new HttpError(503,'JEV request exceeds the application context budget','context_budget');
+    throw new HttpError(503,'Jev request exceeds the application context budget','context_budget');
   return request;
 }
 export function validateAnswers(response,request) {
@@ -70,7 +70,7 @@ export async function chooseJevAction(state,difficulty,env,{matchId=null,profile
       reason:search.forced?'only-legal-action':'immediate-terminal-win',decisionId,stateHash,profileHash,
       totalMs:performance.now()-started,providerMs:0,questionCount:0,attempts:[],usage:null,changedFromBaseline:false}};
   }
-  if(!env.TYPESAFE_API_KEY)throw new HttpError(503,'JEV is not configured','jev_not_configured');
+  if(!env.TYPESAFE_API_KEY)throw new HttpError(503,'Jev is not configured','jev_not_configured');
   const request=buildRequest(state,search,profile),requestHash=await sha256(request),attempts=[];
   await operation(env,'jev_request_prepared',{decisionId,stateHash,profileHash,requestHash,request,
     search:searchEvidence(search)},matchId,decisionId);
@@ -105,7 +105,7 @@ export async function chooseJevAction(state,difficulty,env,{matchId=null,profile
       await sleep(retryDelay);
     }finally{clearTimeout(timer);}
   }
-  if(!result){const error=new HttpError(503,'JEV could not complete this turn. The match will not count as a loss.','jev_failed');error.evidence={decisionId,stateHash,profileHash,requestHash,attempts,providerMs:performance.now()-providerStart,totalMs:performance.now()-started,failureCode:lastCode};throw error;}
+  if(!result){const error=new HttpError(503,'Jev could not complete this turn. The match will not count as a loss.','jev_failed');error.evidence={decisionId,stateHash,profileHash,requestHash,attempts,providerMs:performance.now()-providerStart,totalMs:performance.now()-started,failureCode:lastCode};throw error;}
   const ranked=rankCandidates(search,factorsFromAnswers(search,profile,result.answers),profile);
   return {actionId:ranked[0].action.id,source:'jev',model:result.model,evidence:{...searchEvidence(search,ranked),
     decisionId,stateHash,profileHash,requestHash,answers:result.answers,usage:result.usage,

@@ -43,11 +43,11 @@ For the normal browser/real module Worker suite, install the optional JavaScript
 
 ## Benchmark interpretation
 
-Both included smoke runs use Easy local tactical search, not JEV. All sixteen games completed; no move-cap result was converted into a draw. The local-search agent won these small fixture suites. That is a regression/sanity observation, not a calibrated strength rating or evidence of JEV improvement.
+Both included smoke runs use Easy local tactical search, not Jev. All sixteen games completed; no move-cap result was converted into a draw. The local-search agent won these small fixture suites. That is a regression/sanity observation, not a calibrated strength rating or evidence of Jev improvement.
 
 Only four independent starting-position clusters occur per opponent. A degenerate bootstrap interval when every sampled cluster has the same result must not be read as certainty about unseen positions. Increase fixture diversity and sample count before interpreting performance; keep tuning and evaluation suites separate.
 
-The harness supports real JEV treatment, JEV opposition, and a same-budget search-only ablation with explicit remote opt-in. Those remote experiments were not executed. Operational exports retain attempted requests and failures in addition to accepted decision evidence.
+The harness supports real Jev treatment, Jev opposition, and a same-budget search-only ablation with explicit remote opt-in. Those remote experiments were not executed. Operational exports retain attempted requests and failures in addition to accepted decision evidence.
 
 ## Not verified in this release build
 
