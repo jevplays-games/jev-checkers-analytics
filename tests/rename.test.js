@@ -78,3 +78,21 @@ test('a same-host mutation works on either hostname; a cross-host one is refused
  const cross=on(OLD);await cross('/api/me');assert.equal((await cross('/api/matches',{method:'POST',body:body(),origin:NEW})).status,403);
  t.DB.close();
 });
+
+// Browser storage keys move from jev-checkers-* / checkers-launch to the new keys once.
+import { migrateStorage,ACTIVE_KEY,HISTORY_KEY,LAUNCH_KEY } from '../public/lib/storage.js';
+const memoryStorage=(entries={})=>{const m=new Map(Object.entries(entries));return {m,getItem:k=>m.has(k)?m.get(k):null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k)};};
+test('pre-rename storage keys are moved to the jev-typecheckers-* keys',()=>{
+ assert.equal(ACTIVE_KEY,'jev-typecheckers-active');assert.equal(HISTORY_KEY,'jev-typecheckers-history');assert.equal(LAUNCH_KEY,'typecheckers-launch');
+ const local=memoryStorage({'jev-checkers-active':'{"a":1}','jev-checkers-history':'[1]','jev-analysis-on':'true'}),session=memoryStorage({'checkers-launch':'f'.repeat(64)});
+ migrateStorage(local,session);
+ assert.deepEqual(Object.fromEntries(local.m),{'jev-typecheckers-active':'{"a":1}','jev-typecheckers-history':'[1]','jev-analysis-on':'true'});
+ assert.deepEqual(Object.fromEntries(session.m),{'typecheckers-launch':'f'.repeat(64)});
+ migrateStorage(local,session);assert.equal(local.m.size,3);
+});
+test('storage migration keeps newer data, drops the stale key, and survives blocked storage',()=>{
+ const local=memoryStorage({'jev-checkers-history':'[old]','jev-typecheckers-history':'[new]'});migrateStorage(local,null);
+ assert.deepEqual(Object.fromEntries(local.m),{'jev-typecheckers-history':'[new]'});
+ const blocked={getItem(){throw new Error('SecurityError');},setItem(){throw new Error('SecurityError');},removeItem(){throw new Error('SecurityError');}};
+ assert.doesNotThrow(()=>migrateStorage(blocked,blocked));
+});

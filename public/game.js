@@ -3,19 +3,14 @@ import { profileFor,features } from './games/checkers/strategy.js';
 import { hashState,sha256,sealEvent,verifyReplay,GAME_ID,REPLAY_FORMAT } from './lib/audit.js';
 import { analyzeReplay,toCSV,flatEvents } from './lib/analytics.js';
 import { makeZip } from './lib/zip.js';
+import { ACTIVE_KEY,HISTORY_KEY,LAUNCH_KEY,migrateStorage } from './lib/storage.js';
 const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(n):'—';
 const ms=n=>Number.isFinite(n)?n>=1000?`${(n/1000).toFixed(2)} s`:`${Math.round(n)} ms`:'—';
 const moveName=id=>id?.replace(/^[mj]:/,'').replaceAll('x',' × ').replaceAll('-',' – ')||'—';
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function stored(key,fallback=null){try{const data=localStorage.getItem(key);return data?JSON.parse(data):fallback;}catch{return fallback;}}
 function store(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
-// Storage keys from before the Checkers -> Typecheckers rename are moved to the new keys once, so a returning
-// player on the same origin keeps an in-progress practice match and local history.
-const ACTIVE_KEY='jev-typecheckers-active',HISTORY_KEY='jev-typecheckers-history',LAUNCH_KEY='typecheckers-launch';
-function migrateStorage(storage=localStorage){
-  try{for(const [from,to] of [['jev-checkers-active',ACTIVE_KEY],['jev-checkers-history',HISTORY_KEY]]){const old=storage.getItem(from);if(old===null)continue;if(storage.getItem(to)===null)storage.setItem(to,old);storage.removeItem(from);}}catch{}
-}
-migrateStorage();
+try{migrateStorage(localStorage,sessionStorage);}catch{} // the storage getters throw when storage is blocked
 function notice(message){$('notice').textContent=message||'';$('notice').hidden=!message;}
 let account=null,capabilities={jev:false,discord:false},csrfToken=null,serverOnline=false,active=null;
 let opponentChosen=false; // set once the player picks an opponent, so the Jev default never overrides them
@@ -293,7 +288,7 @@ function applyCapabilities(){
   $('opponent').querySelector('[value=jev]').disabled=!capabilities.jev;$('opponent').querySelector('[value=jev]').textContent=capabilities.jev?'Jev · structured model + search':'Jev · connect API to enable';
   // Default to Jev once the server reports it available. The <option> order puts
   // local first, so without this the select stays on the local search opponent
-  // even while the header reads "Jev CONNECTED". Applied once, and never over a
+  // even while the header reads "Jev connected" (shown uppercase by CSS). Applied once, and never over a
   // choice the player has already made.
   if(capabilities.jev&&!opponentChosen&&$('opponent').value!=='jev'){$('opponent').value='jev';opponentChosen=true;}
   $('mode').querySelector('[value=ranked]').disabled=!account||!capabilities.jev||$('opponent').value!=='jev';
@@ -315,7 +310,7 @@ async function bootstrap(){
     const result=await api('/api/me');serverOnline=true;account=result.user;csrfToken=result.csrf;capabilities=result.capabilities;
     $('connection').textContent=capabilities.jev?'Jev connected':'LOCAL READY';
     if(result.activeMatchId){serverActiveId=result.activeMatchId;$('resume').hidden=false;$('resume').onclick=()=>resumeRemote(result.activeMatchId);}
-    const pending=sessionStorage.getItem(LAUNCH_KEY)??sessionStorage.getItem('checkers-launch');sessionStorage.removeItem('checkers-launch');if(pending)sessionStorage.setItem(LAUNCH_KEY,pending);
+    const pending=sessionStorage.getItem(LAUNCH_KEY);
     if(pending&&account){try{await api('/api/launch/redeem',{token:pending});sessionStorage.removeItem(LAUNCH_KEY);notice('Discord channel context verified. Your next ranked match can count for Channel, Server and World.');}catch(error){sessionStorage.removeItem(LAUNCH_KEY);notice(error.message);}}
     else if(pending)notice('Sign in with the Discord account that invoked /play typecheckers to redeem this launch.');
   }catch{$('connection').textContent='LOCAL ONLY';}
