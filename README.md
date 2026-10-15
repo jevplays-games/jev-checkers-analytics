@@ -185,7 +185,7 @@ public/                 browser app: index.html, game.js, game.css
   brand/                shared jevplay.games brand.css, fonts (Inter, VT323), icons, OG card and result badges
   art/                  piece SVGs (red, dark, red-king, dark-king)
   games/checkers/       pure rules, search engine and strategy
-  lib/                  audit (hash chain, replay verification), analytics, ZIP writer
+  lib/                  audit (hash chain, replay verification), analytics, charts, storage keys, ZIP writer
 server/                 Worker API: matches, Jev adapter, auth, Discord, leaderboards
 migrations/             D1 / SQLite schema
 scripts/                dev server, replay verify/analyze, Discord registration

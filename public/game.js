@@ -3,13 +3,15 @@ import { profileFor,features } from './games/checkers/strategy.js';
 import { hashState,sha256,sealEvent,verifyReplay,GAME_ID,REPLAY_FORMAT } from './lib/audit.js';
 import { analyzeReplay,toCSV,flatEvents,materialSeries,mobilitySeries,opponentName,sideName } from './lib/analytics.js';
 import { makeZip } from './lib/zip.js';
+import { chart,number,plural } from './lib/chart.js';
 import { ACTIVE_KEY,HISTORY_KEY,LAUNCH_KEY,migrateStorage } from './lib/storage.js';
-const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(n):'—';
+const $=id=>document.getElementById(id);
 const ms=n=>Number.isFinite(n)?n>=1000?`${(n/1000).toFixed(2)} s`:`${Math.round(n)} ms`:'—';
 const moveName=id=>id?.replace(/^[mj]:/,'').replaceAll('x',' × ').replaceAll('-',' – ')||'—';
-const plural=(n,word)=>`${n} ${word}${n===1?'':'s'}`;
 // Display labels for stored ids (history rows print these, never the raw ids).
-const LABELS={opponent:{jev:'Jev',local:'Local search'},mode:{casual:'Casual',ranked:'Ranked'},difficulty:{easy:'Easy',normal:'Normal',hard:'Hard',jev:'Jev profile'}};
+const LABELS={opponent:{jev:'Jev',local:'Local search'},mode:{casual:'Casual',ranked:'Ranked'},difficulty:{easy:'Easy',normal:'Normal',hard:'Hard',jev:'Jev profile'},
+  status:{human_turn:'Your turn',jev_pending:'Jev to move',verifying:'Verifying',complete:'Complete',void:'No contest',abandoned:'Abandoned'},
+  reason:{'no-pieces':'No pieces left',blocked:'Blocked',repetition:'Draw · repetition','no-progress':'Draw · no progress',resign:'Resigned',abandoned:'Abandoned',service_failure:'No contest'}};
 const label=(kind,id)=>LABELS[kind][id]??id;
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function stored(key,fallback=null){try{const data=localStorage.getItem(key);return data?JSON.parse(data):fallback;}catch{return fallback;}}
@@ -193,29 +195,11 @@ function table(target,headers,rows){
   const t=element('table'),head=element('thead'),hr=element('tr');headers.forEach(h=>hr.append(element('th',h)));head.append(hr);t.append(head);
   const body=element('tbody');for(const row of rows){const tr=element('tr');if(row.selected)tr.className='selected';for(const cell of row.cells||row){const td=element('td');if(cell instanceof Node)td.append(cell);else td.textContent=cell??'—';tr.append(td);}body.append(tr);}t.append(body);target.append(t);
 }
-const svgNS='http://www.w3.org/2000/svg';
-function svgNode(tag,attributes={},text){const e=document.createElementNS(svgNS,tag);for(const [k,v]of Object.entries(attributes))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;return e;}
-function chart(target,series,label,bars=false){
-  target.replaceChildren();const values=series.flatMap(s=>s.values).filter(Number.isFinite);
-  if(!values.length){target.append(element('div','Metrics appear as the game progresses.','empty-chart'));return;}
-  const svg=svgNode('svg',{viewBox:`0 0 500 ${series.length>1?192:180}`,role:'img','aria-label':label});svg.append(svgNode('title',{},label));
-  let min=Math.min(0,...values),max=Math.max(1,...values);if(min===max)max=min+1;
-  const width=445,height=125,left=42,top=12,y=v=>top+height-(v-min)/(max-min)*height;
-  for(let i=0;i<4;i++){const value=min+(max-min)*i/3;svg.append(svgNode('line',{x1:left,x2:left+width,y1:y(value),y2:y(value),class:'grid-line'}),svgNode('text',{x:3,y:y(value)+5},number(value)));}
-  for(const [s,entry]of series.entries()){
-    const n=entry.values.length,x=i=>left+(n>1?i/(n-1):.5)*width;
-    if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:`bar${entry.opponent?' secondary':''}`});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
-    else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${entry.opponent?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:`bar${entry.opponent?' secondary':''}`}));}
-    // Legend: a swatch drawn like its series (solid, dashed or a bar) so colour is not the only cue; the label is ink.
-    // One legend row per series: chart text is 15 user units (readable at about 9px when the chart is 300px wide).
-    const lx=left,ly=156+s*18;svg.append(bars?svgNode('rect',{x:lx,y:ly-10,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:ly-4,y2:ly-4,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:ly},`${entry.name} · ${plural(entry.values.length,'observation')}`));
-  }target.append(svg);
-}
 function renderAnalytics(){
   const r=imported||record;
   if(!r){$('audit-status').textContent='No match recorded yet. Local records are untrusted; official scores require server verification.';return;}
   analytics=analyzeReplay(r);const a=analytics;
-  $('audit-status').textContent=`${imported?'Imported record':r.manifest.trust==='trusted_server'?'Server-recorded match':'Local practice · untrusted client'} · ${r.events.length} events · ${r.verification||'not verified'} · profile ${r.manifest.profileHash.slice(0,12)}…`;
+  $('audit-status').textContent=`${imported?'Imported record':r.manifest.trust==='trusted_server'?'Server-recorded match':'Local practice · untrusted client'} · ${plural(r.events.length,'event')} · ${r.verification||'not verified'} · profile ${r.manifest.profileHash.slice(0,12)}…`;
   $('metric-turns').textContent=number(a.turns);$('metric-captures').textContent=`${plural(a.bySide.red.captures+a.bySide.white.captures,'capture')} · ${plural(a.bySide.red.promotions+a.bySide.white.promotions,'promotion')}`;
   $('metric-latency').textContent=ms(a.timing.opponent.p50);$('metric-p95').textContent=`p95 ${ms(a.timing.opponent.p95)}`;
   $('metric-calls').textContent=number(a.jev.decisions);$('metric-tokens').textContent=a.jev.calls?`${number(a.jev.inputTokens)} input tokens · ${a.jev.calls} attempts`:'No provider usage';
@@ -287,8 +271,8 @@ async function loadLeaderboard(more=false){
 }
 async function loadHistory(){
   const local=stored(HISTORY_KEY,[]),rows=[];
-  for(const r of local){const b=element('button','Inspect');b.onclick=()=>{imported=r;renderAnalytics();showTab('replay');};rows.push(['Local practice',label('difficulty',r.manifest.profile.difficulty),r.outcome?.reason||'unfinished',r.events.length,b]);}
-  if(serverOnline)try{const data=await api('/api/analytics/me');for(const m of data.recent){const b=element('button','Inspect');b.onclick=async()=>{try{imported=await api(`/api/matches/${m.id}/replay`);renderAnalytics();showTab('replay');}catch(e){notice(e.message);}};rows.push([`${label('opponent',m.opponent)} · ${label('mode',m.mode)}`,label('difficulty',m.difficulty),m.status,m.revision,b]);}}catch(error){notice(error.message);}
+  for(const r of local){const b=element('button','Inspect');b.onclick=()=>{imported=r;renderAnalytics();showTab('replay');};rows.push(['Local practice',label('difficulty',r.manifest.profile.difficulty),r.outcome?label('reason',r.outcome.reason):'Unfinished',r.events.length,b]);}
+  if(serverOnline)try{const data=await api('/api/analytics/me');for(const m of data.recent){const b=element('button','Inspect');b.onclick=async()=>{try{imported=await api(`/api/matches/${m.id}/replay`);renderAnalytics();showTab('replay');}catch(e){notice(e.message);}};rows.push([`${label('opponent',m.opponent)} · ${label('mode',m.mode)}`,label('difficulty',m.difficulty),label('status',m.status),m.revision,b]);}}catch(error){notice(error.message);}
   table($('history-table'),['Source','Difficulty','Status','Events','Record'],rows);
 }
 function showTab(name){activeTab=name;for(const tab of document.querySelectorAll('[data-tab]')){const selected=tab.dataset.tab===name;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;$(`${tab.dataset.tab}-panel`).hidden=!selected;}

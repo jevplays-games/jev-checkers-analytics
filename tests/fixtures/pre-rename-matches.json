@@ -1,0 +1,419 @@
+{
+ "build": "588c07b",
+ "cookies": {
+  "finish": "jev_dev_session=4e3866375c44cbb9429710e9fa199144c073f47ba12acfbe7ff898607366468a",
+  "resign": "jev_dev_session=19a090308437bffc28344b8fa75ba54bf1f1b42bb0380d3c23b732f376a0e312",
+  "expire": "jev_dev_session=db5755368d7cada0e97e5a9e56f60dc0b29997e1b47c7699b72c97d9e9c9441a",
+  "pending": "jev_dev_session=5f43f8a67fe31032a370a0b9ae3e7a13c8e9d3ef4d281e62823e282fc814da30"
+ },
+ "matches": {
+  "finish": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+  "resign": "5767e110-436f-4a6f-b33a-0d5baebbdc0b",
+  "expire": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+  "pending": "100acd7c-6426-4ac8-9f74-b17dd418e18a"
+ },
+ "status": {
+  "finish": {
+   "status": "human_turn",
+   "revision": 2
+  },
+  "resign": {
+   "status": "human_turn",
+   "revision": 0
+  },
+  "expire": {
+   "status": "human_turn",
+   "revision": 2
+  },
+  "pending": {
+   "status": "jev_pending",
+   "revision": 1
+  }
+ },
+ "tables": {
+  "users": [
+   {
+    "id": "expire-user",
+    "discord_id": "1000000000",
+    "display_name": "expire-user",
+    "avatar_ref": null,
+    "created_at": 1792048943031,
+    "last_seen": 1792048943031,
+    "disabled": 0
+   },
+   {
+    "id": "pending-user",
+    "discord_id": "1000000001",
+    "display_name": "pending-user",
+    "avatar_ref": null,
+    "created_at": 1792048943035,
+    "last_seen": 1792048943035,
+    "disabled": 0
+   }
+  ],
+  "sessions": [
+   {
+    "id": "ecde45f5-9de1-449a-84ae-852a504b8858",
+    "token_hash": "3dda99a318ecd2b6ffab968a2441b36910c570e50643575ca54edb3af9013645",
+    "user_id": "expire-user",
+    "csrf": "d2349879f50fb6ebe159183aef003eda32cb17094b0d597e39358a4d98505fc8",
+    "context_json": null,
+    "created_at": 1792048943022,
+    "expires_at": 1792653743022
+   },
+   {
+    "id": "6057723f-3115-4e6e-80c1-89ee1ed99847",
+    "token_hash": "945ef048759291942ee7659b8df7a3ddd1f681cc56c56d79f826d9b7936f8025",
+    "user_id": "expire-user",
+    "csrf": "f392bc152dd3b53049b01da6a9d55db769c3500fd8f91fe7933e802faa17b65c",
+    "context_json": null,
+    "created_at": 1792048943030,
+    "expires_at": 1792653743030
+   },
+   {
+    "id": "a655d3c8-d650-42c7-a458-dafef1cc1665",
+    "token_hash": "247eb2aa1690bf6c95e51172c69c5a70dd6b55e82916c031a9562bacad6d771c",
+    "user_id": "expire-user",
+    "csrf": "8ac870f919204c8e8031b024233e9d6819c6da21918fd43ae8cec41a09fce1e1",
+    "context_json": null,
+    "created_at": 1792048943030,
+    "expires_at": 1792653743030
+   },
+   {
+    "id": "ed86e6be-7394-4d0f-9460-7a5fe5b9c45a",
+    "token_hash": "b0840760a899ed2744c22fb53b2ee46a2e48738ecc3e10302db8f080e2501d69",
+    "user_id": "pending-user",
+    "csrf": "66c6aa080277a63a49d5ad04cb695a6ae30d5fd337082f4712fe747ed5267d87",
+    "context_json": null,
+    "created_at": 1792048943035,
+    "expires_at": 1792653743035
+   }
+  ],
+  "grants": [],
+  "matches": [
+   {
+    "id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "start_key": "ecde45f5-9de1-449a-84ae-852a504b8858:16cfc89a-4c45-433f-8e68-b5b3e7d40a70",
+    "request_hash": "4546def4ef1154bb4f21e7d306df70e2553047bf0717578b76a0f033c0c6e785",
+    "owner_session": "ecde45f5-9de1-449a-84ae-852a504b8858",
+    "user_id": null,
+    "mode": "casual",
+    "opponent": "local",
+    "difficulty": "easy",
+    "human_side": "red",
+    "guild_id": null,
+    "channel_id": null,
+    "launch_hash": null,
+    "cohort": "f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad",
+    "manifest_json": "{\"formatVersion\":1,\"matchId\":\"fb4586c6-e30e-4105-a448-97910a76fbc8\",\"gameId\":\"checkers\",\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"buildId\":\"source-release-1.0.0\",\"initialState\":{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":0,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111111100000000333333333333\":1}},\"officialStart\":true,\"humanSide\":\"red\",\"opponent\":\"local\",\"profile\":{\"version\":\"checkers-strategy-1.0.0\",\"model\":\"jev-1.13.0\",\"difficulty\":\"easy\",\"depth\":1,\"nodes\":1000,\"candidates\":8,\"factors\":[\"mobility\"],\"captureExtension\":4,\"weights\":{\"promotion\":40,\"mobility\":30,\"support\":30,\"trap\":-60},\"evaluation\":{\"man\":100,\"king\":175,\"advancement\":4,\"mobility\":6,\"center\":8},\"tieBreak\":\"ascii-action-id\",\"quantization\":4,\"rubricVersion\":\"checkers-factors-v1\"},\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"trust\":\"trusted_server\",\"startedAt\":\"2026-10-15T07:22:23.025Z\"}",
+    "state_json": "{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":2,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111011110003000303333333333\":1}}",
+    "revision": 2,
+    "chain_head": "ce7f204080f271e4abe9e83fb502a6fc5bad0ee425ffbf8688231c7fa2984968",
+    "status": "human_turn",
+    "lease_token": null,
+    "lease_until": null,
+    "last_commit": "db6df1c7fc0fda52c95227b96a7aa41d006d03d9f771d4de67aa285a73c53d4b",
+    "outcome_json": null,
+    "result_units": null,
+    "eligible": 0,
+    "verification": "pending",
+    "created_at": 1792048943025,
+    "updated_at": 1792048943029,
+    "human_deadline": 1792135343029,
+    "finished_at": null
+   },
+   {
+    "id": "5767e110-436f-4a6f-b33a-0d5baebbdc0b",
+    "start_key": "6057723f-3115-4e6e-80c1-89ee1ed99847:073b8de6-0b92-4b08-a5b7-d4461e538a26",
+    "request_hash": "e570ebdb010d47e49858e3d6467e24bf2872391463f5fc48b3711cc4daaa64fa",
+    "owner_session": "6057723f-3115-4e6e-80c1-89ee1ed99847",
+    "user_id": null,
+    "mode": "casual",
+    "opponent": "local",
+    "difficulty": "easy",
+    "human_side": "red",
+    "guild_id": null,
+    "channel_id": null,
+    "launch_hash": null,
+    "cohort": "f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad",
+    "manifest_json": "{\"formatVersion\":1,\"matchId\":\"5767e110-436f-4a6f-b33a-0d5baebbdc0b\",\"gameId\":\"checkers\",\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"buildId\":\"source-release-1.0.0\",\"initialState\":{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":0,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111111100000000333333333333\":1}},\"officialStart\":true,\"humanSide\":\"red\",\"opponent\":\"local\",\"profile\":{\"version\":\"checkers-strategy-1.0.0\",\"model\":\"jev-1.13.0\",\"difficulty\":\"easy\",\"depth\":1,\"nodes\":1000,\"candidates\":8,\"factors\":[\"mobility\"],\"captureExtension\":4,\"weights\":{\"promotion\":40,\"mobility\":30,\"support\":30,\"trap\":-60},\"evaluation\":{\"man\":100,\"king\":175,\"advancement\":4,\"mobility\":6,\"center\":8},\"tieBreak\":\"ascii-action-id\",\"quantization\":4,\"rubricVersion\":\"checkers-factors-v1\"},\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"trust\":\"trusted_server\",\"startedAt\":\"2026-10-15T07:22:23.030Z\"}",
+    "state_json": "{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":0,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111111100000000333333333333\":1}}",
+    "revision": 0,
+    "chain_head": "91c7363d7beccde11440e30ebbd9693dddee8f160deeef925d2c55549578411d",
+    "status": "human_turn",
+    "lease_token": null,
+    "lease_until": null,
+    "last_commit": null,
+    "outcome_json": null,
+    "result_units": null,
+    "eligible": 0,
+    "verification": "pending",
+    "created_at": 1792048943030,
+    "updated_at": 1792048943030,
+    "human_deadline": 1792135343030,
+    "finished_at": null
+   },
+   {
+    "id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "start_key": "a655d3c8-d650-42c7-a458-dafef1cc1665:b8e68495-1157-4e49-9361-5bd815cd6724",
+    "request_hash": "1686663c3f8b80333c29382afbe58d6d21cdaff00eb6470d0b6e0e444df07430",
+    "owner_session": "a655d3c8-d650-42c7-a458-dafef1cc1665",
+    "user_id": "expire-user",
+    "mode": "ranked",
+    "opponent": "jev",
+    "difficulty": "easy",
+    "human_side": "red",
+    "guild_id": null,
+    "channel_id": null,
+    "launch_hash": null,
+    "cohort": "f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad",
+    "manifest_json": "{\"formatVersion\":1,\"matchId\":\"481c11a4-7d9b-40bf-8a28-57992989cbaa\",\"gameId\":\"checkers\",\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"buildId\":\"source-release-1.0.0\",\"initialState\":{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":0,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111111100000000333333333333\":1}},\"officialStart\":true,\"humanSide\":\"red\",\"opponent\":\"jev\",\"profile\":{\"version\":\"checkers-strategy-1.0.0\",\"model\":\"jev-1.13.0\",\"difficulty\":\"easy\",\"depth\":1,\"nodes\":1000,\"candidates\":8,\"factors\":[\"mobility\"],\"captureExtension\":4,\"weights\":{\"promotion\":40,\"mobility\":30,\"support\":30,\"trap\":-60},\"evaluation\":{\"man\":100,\"king\":175,\"advancement\":4,\"mobility\":6,\"center\":8},\"tieBreak\":\"ascii-action-id\",\"quantization\":4,\"rubricVersion\":\"checkers-factors-v1\"},\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"trust\":\"trusted_server\",\"startedAt\":\"2026-10-15T07:22:23.031Z\"}",
+    "state_json": "{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":2,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111011110003000303333333333\":1}}",
+    "revision": 2,
+    "chain_head": "d3fc46ce2a5493e38f3865af782d50222380ea9db19476f4b2f2e44630a0e852",
+    "status": "human_turn",
+    "lease_token": null,
+    "lease_until": null,
+    "last_commit": "2a41bc3e0fcd859b3d70f461d678f66ae3c362d221aa767d23eff82105b8e41a",
+    "outcome_json": null,
+    "result_units": null,
+    "eligible": 0,
+    "verification": "pending",
+    "created_at": 1792048943031,
+    "updated_at": 1792048943035,
+    "human_deadline": 1792135343035,
+    "finished_at": null
+   },
+   {
+    "id": "100acd7c-6426-4ac8-9f74-b17dd418e18a",
+    "start_key": "ed86e6be-7394-4d0f-9460-7a5fe5b9c45a:f61414d5-6235-4262-88e9-149c1dd9feec",
+    "request_hash": "0a0f3c3e844c52f6e27daf2f9496facb77eadf6e3d78ea61e084f4b97b051475",
+    "owner_session": "ed86e6be-7394-4d0f-9460-7a5fe5b9c45a",
+    "user_id": "pending-user",
+    "mode": "ranked",
+    "opponent": "jev",
+    "difficulty": "easy",
+    "human_side": "red",
+    "guild_id": null,
+    "channel_id": null,
+    "launch_hash": null,
+    "cohort": "f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad",
+    "manifest_json": "{\"formatVersion\":1,\"matchId\":\"100acd7c-6426-4ac8-9f74-b17dd418e18a\",\"gameId\":\"checkers\",\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"buildId\":\"source-release-1.0.0\",\"initialState\":{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"red\",\"ply\":0,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|red|11111111111100000000333333333333\":1}},\"officialStart\":true,\"humanSide\":\"red\",\"opponent\":\"jev\",\"profile\":{\"version\":\"checkers-strategy-1.0.0\",\"model\":\"jev-1.13.0\",\"difficulty\":\"easy\",\"depth\":1,\"nodes\":1000,\"candidates\":8,\"factors\":[\"mobility\"],\"captureExtension\":4,\"weights\":{\"promotion\":40,\"mobility\":30,\"support\":30,\"trap\":-60},\"evaluation\":{\"man\":100,\"king\":175,\"advancement\":4,\"mobility\":6,\"center\":8},\"tieBreak\":\"ascii-action-id\",\"quantization\":4,\"rubricVersion\":\"checkers-factors-v1\"},\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"trust\":\"trusted_server\",\"startedAt\":\"2026-10-15T07:22:23.036Z\"}",
+    "state_json": "{\"rulesVersion\":\"american-8x8-web-v1\",\"engineVersion\":\"1.0.0\",\"board\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"toMove\":\"white\",\"ply\":1,\"noProgressPly\":0,\"repetitions\":{\"american-8x8-web-v1|white|11111111011110000000333333333333\":1}}",
+    "revision": 1,
+    "chain_head": "d46b26e303fb88c4bad1474ffd1740af340dfdb10c245e380b9b53327777b83c",
+    "status": "jev_pending",
+    "lease_token": "5e77924718abafe5958a93aa1b33abbc0602d638d5aca99a2b9421e0c00423eb",
+    "lease_until": 1792048973036,
+    "last_commit": "ac5acd21feb1dd4d95a4a46e53b08f810488d3f745959b7b2b9167793523de47",
+    "outcome_json": null,
+    "result_units": null,
+    "eligible": 0,
+    "verification": "pending",
+    "created_at": 1792048943036,
+    "updated_at": 1792048943036,
+    "human_deadline": null,
+    "finished_at": null
+   }
+  ],
+  "events": [
+   {
+    "match_id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "seq": 1,
+    "request_key": "a53c4f18-3dfa-4bfb-9b79-4230282b5f42",
+    "request_hash": "9908ef6af6b443375dd39c4b9e4843f3e7eed368576181ad658f1259c8c079d6",
+    "kind": "move",
+    "body_json": "{\"schemaVersion\":1,\"matchId\":\"fb4586c6-e30e-4105-a448-97910a76fbc8\",\"seq\":1,\"at\":\"2026-10-15T07:22:23.027Z\",\"kind\":\"move\",\"actor\":\"human\",\"action\":{\"id\":\"m:09-13\",\"path\":[9,13],\"captured\":[],\"promotes\":false},\"evidence\":{\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},\"turnMs\":2,\"preHash\":\"de8e2cdf375c7066b327dd7aed6da869f9f91a3144ff5c1e01beba994190185e\",\"postHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"previousHash\":\"eeeeedeb66dc05431614633af3d3eca57114e3659b11992e7b9e8bf8beb3e030\",\"eventHash\":\"2d6256877a9b44653b15b6cf87ba81cfdd442300222d99b262a1c2ae2aec3291\"}",
+    "created_at": 1792048943027
+   },
+   {
+    "match_id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "seq": 2,
+    "request_key": "opponent-1-ef8ed369351e12b1cef409c00972908d552077201f4c6c6a57126694be72e619",
+    "request_hash": "33198d6b5336bd3298db05640f844733599a139e14a65f60859c434264734df9",
+    "kind": "move",
+    "body_json": "{\"schemaVersion\":1,\"matchId\":\"fb4586c6-e30e-4105-a448-97910a76fbc8\",\"seq\":2,\"at\":\"2026-10-15T07:22:23.029Z\",\"kind\":\"move\",\"actor\":\"opponent\",\"action\":{\"id\":\"m:22-17\",\"path\":[22,17],\"captured\":[],\"promotes\":false},\"evidence\":{\"legalCount\":7,\"evaluatedCount\":7,\"prunedCount\":0,\"excludedImmediateLosses\":0,\"completedDepth\":1,\"searchedNodes\":10,\"cutoffs\":0,\"budgetExhausted\":false,\"searchMs\":0.9394579999999877,\"forced\":false,\"tacticalWin\":false,\"baselineActionId\":\"m:22-17\",\"candidates\":[{\"actionId\":\"m:22-17\",\"path\":[22,17],\"captured\":[],\"promotes\":false,\"tacticalScore\":20,\"adjustment\":0,\"utility\":20,\"factors\":{},\"principalVariation\":[\"m:22-17\",\"j:13x22\",\"j:25x18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,3,0,0,3,0,3,3,0,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":1,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":1,\"maxCapture\":1},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":1,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:24-19\",\"path\":[24,19],\"captured\":[],\"promotes\":false,\"tacticalScore\":8,\"adjustment\":0,\"utility\":8,\"factors\":{},\"principalVariation\":[\"m:24-19\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":3,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:21-17\",\"path\":[21,17],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{},\"principalVariation\":[\"m:21-17\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":2,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:22-18\",\"path\":[22,18],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{},\"principalVariation\":[\"m:22-18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:23-18\",\"path\":[23,18],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{},\"principalVariation\":[\"m:23-18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:23-19\",\"path\":[23,19],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{},\"principalVariation\":[\"m:23-19\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:24-20\",\"path\":[24,20],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{},\"principalVariation\":[\"m:24-20\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}}],\"totalMs\":1.3487500000000097,\"providerMs\":0,\"questionCount\":0,\"attempts\":[],\"usage\":null,\"changedFromBaseline\":false,\"source\":\"local\",\"model\":null,\"stateHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\"},\"turnMs\":2,\"preHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"postHash\":\"baad6a536a1dfbfe2b4d23d2d877d328fa93a3974a9533d535479b66d34432ba\",\"previousHash\":\"2d6256877a9b44653b15b6cf87ba81cfdd442300222d99b262a1c2ae2aec3291\",\"eventHash\":\"ce7f204080f271e4abe9e83fb502a6fc5bad0ee425ffbf8688231c7fa2984968\"}",
+    "created_at": 1792048943029
+   },
+   {
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "seq": 1,
+    "request_key": "3e2c90f7-35e7-43c5-904d-e96ae57e5eb8",
+    "request_hash": "4268c9c77b3defb03c54f3cd88eec0a3d3d08a14138886f927dc06d8f192c6ad",
+    "kind": "move",
+    "body_json": "{\"schemaVersion\":1,\"matchId\":\"481c11a4-7d9b-40bf-8a28-57992989cbaa\",\"seq\":1,\"at\":\"2026-10-15T07:22:23.032Z\",\"kind\":\"move\",\"actor\":\"human\",\"action\":{\"id\":\"m:09-13\",\"path\":[9,13],\"captured\":[],\"promotes\":false},\"evidence\":{\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},\"turnMs\":1,\"preHash\":\"de8e2cdf375c7066b327dd7aed6da869f9f91a3144ff5c1e01beba994190185e\",\"postHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"previousHash\":\"98c8a618b43d220930e5c09e09fcdd8f8a51bc449104a838ce348dc4cdb1ad00\",\"eventHash\":\"670f8d1c39cbe0a871a346c9e81cc061f72a4fa4eeaff19f981e4e12de4a5a4e\"}",
+    "created_at": 1792048943032
+   },
+   {
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "seq": 2,
+    "request_key": "opponent-1-708bfc61fa64c5c80dd06d7c3e56e59f3abbbced2d3eb7bfd0da3d3f0bc8fa9c",
+    "request_hash": "a2b906d655cf54d8ed9dc13d9a556a3a52035c25f7a4c10123621c6f6db2b086",
+    "kind": "move",
+    "body_json": "{\"schemaVersion\":1,\"matchId\":\"481c11a4-7d9b-40bf-8a28-57992989cbaa\",\"seq\":2,\"at\":\"2026-10-15T07:22:23.035Z\",\"kind\":\"move\",\"actor\":\"opponent\",\"action\":{\"id\":\"m:22-17\",\"path\":[22,17],\"captured\":[],\"promotes\":false},\"evidence\":{\"legalCount\":7,\"evaluatedCount\":7,\"prunedCount\":0,\"excludedImmediateLosses\":0,\"completedDepth\":1,\"searchedNodes\":10,\"cutoffs\":0,\"budgetExhausted\":false,\"searchMs\":0.1430830000000043,\"forced\":false,\"tacticalWin\":false,\"baselineActionId\":\"m:22-17\",\"candidates\":[{\"actionId\":\"m:22-17\",\"path\":[22,17],\"captured\":[],\"promotes\":false,\"tacticalScore\":20,\"adjustment\":0,\"utility\":20,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:22-17\",\"j:13x22\",\"j:25x18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,3,0,0,3,0,3,3,0,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":1,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":1,\"maxCapture\":1},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":1,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:24-19\",\"path\":[24,19],\"captured\":[],\"promotes\":false,\"tacticalScore\":8,\"adjustment\":0,\"utility\":8,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:24-19\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":3,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:21-17\",\"path\":[21,17],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:21-17\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":2,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:22-18\",\"path\":[22,18],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:22-18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:23-18\",\"path\":[23,18],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:23-18\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:23-19\",\"path\":[23,19],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:23-19\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":13,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},{\"actionId\":\"m:24-20\",\"path\":[24,20],\"captured\":[],\"promotes\":false,\"tacticalScore\":0,\"adjustment\":0,\"utility\":0,\"factors\":{\"mobility\":2},\"principalVariation\":[\"m:24-20\"],\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":13,\"mobility\":8,\"center\":2,\"support\":12,\"edge\":4,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}}],\"decisionId\":\"32258cc0-994f-4fa8-8c6d-87955b90b514\",\"stateHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"requestHash\":\"0eb11ff6a46fafcf2d3845c9135e962b11c6b59f00f591a3df92b05702d03530\",\"answers\":{\"c0_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c1_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c2_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c3_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c4_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c5_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}},\"c6_mobility\":{\"type\":\"score\",\"score\":2,\"confidence\":1,\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"}}},\"usage\":{\"input_tokens\":100,\"output_tokens\":20},\"questionCount\":7,\"requestBytes\":8266,\"attempts\":[{\"attempt\":1,\"status\":\"ok\",\"httpStatus\":200,\"latencyMs\":0.5157080000000036,\"usage\":{\"input_tokens\":100,\"output_tokens\":20}}],\"totalMs\":1.7756669999999986,\"providerMs\":0.853082999999998,\"changedFromBaseline\":false,\"source\":\"jev\",\"model\":\"jev-1.13.0\"},\"turnMs\":3,\"preHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"postHash\":\"baad6a536a1dfbfe2b4d23d2d877d328fa93a3974a9533d535479b66d34432ba\",\"previousHash\":\"670f8d1c39cbe0a871a346c9e81cc061f72a4fa4eeaff19f981e4e12de4a5a4e\",\"eventHash\":\"d3fc46ce2a5493e38f3865af782d50222380ea9db19476f4b2f2e44630a0e852\"}",
+    "created_at": 1792048943035
+   },
+   {
+    "match_id": "100acd7c-6426-4ac8-9f74-b17dd418e18a",
+    "seq": 1,
+    "request_key": "3e1f2808-9b76-4241-a609-adc8e1e1ff8d",
+    "request_hash": "5b350e681a0b7d162fdb84138facc6b18a5ae4cc4eb6192c1c9248f3016a9321",
+    "kind": "move",
+    "body_json": "{\"schemaVersion\":1,\"matchId\":\"100acd7c-6426-4ac8-9f74-b17dd418e18a\",\"seq\":1,\"at\":\"2026-10-15T07:22:23.036Z\",\"kind\":\"move\",\"actor\":\"human\",\"action\":{\"id\":\"m:09-13\",\"path\":[9,13],\"captured\":[],\"promotes\":false},\"evidence\":{\"features\":{\"red\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"white\":{\"men\":12,\"kings\":0,\"material\":1200,\"advancement\":12,\"mobility\":7,\"center\":2,\"support\":14,\"edge\":3,\"backRank\":4,\"nearPromotion\":0,\"captureActions\":0,\"maxCapture\":0},\"pieceCount\":24,\"phase\":\"opening\"}},\"turnMs\":0,\"preHash\":\"de8e2cdf375c7066b327dd7aed6da869f9f91a3144ff5c1e01beba994190185e\",\"postHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\",\"previousHash\":\"6b44ec066bcd4777cd5937053ee9f9eb39e76a0478a9fb00e42c363c970fdca9\",\"eventHash\":\"d46b26e303fb88c4bad1474ffd1740af340dfdb10c245e380b9b53327777b83c\"}",
+    "created_at": 1792048943036
+   }
+  ],
+  "operations": [
+   {
+    "id": "61fa6031-2467-4761-b386-c8e8cfa3b417",
+    "match_id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "request_id": null,
+    "kind": "game_started",
+    "trust": "trusted_server",
+    "payload_json": "{\"cohort\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"mode\":\"casual\",\"opponent\":\"local\"}",
+    "created_at": 1792048943025
+   },
+   {
+    "id": "ef81e31c-c528-4776-936a-0f40a4196ee6",
+    "match_id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "request_id": "a53c4f18-3dfa-4bfb-9b79-4230282b5f42",
+    "kind": "human_action",
+    "trust": "trusted_server",
+    "payload_json": "{\"actionId\":\"m:09-13\",\"seq\":1,\"source\":null}",
+    "created_at": 1792048943027
+   },
+   {
+    "id": "63d3144d-b586-4aec-9d64-e842cee05171",
+    "match_id": "fb4586c6-e30e-4105-a448-97910a76fbc8",
+    "request_id": "opponent-1-ef8ed369351e12b1cef409c00972908d552077201f4c6c6a57126694be72e619",
+    "kind": "opponent_action",
+    "trust": "trusted_server",
+    "payload_json": "{\"actionId\":\"m:22-17\",\"seq\":2,\"source\":\"local\"}",
+    "created_at": 1792048943029
+   },
+   {
+    "id": "15dd9e93-7117-4e4b-b639-001fda5403c0",
+    "match_id": "5767e110-436f-4a6f-b33a-0d5baebbdc0b",
+    "request_id": null,
+    "kind": "game_started",
+    "trust": "trusted_server",
+    "payload_json": "{\"cohort\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"mode\":\"casual\",\"opponent\":\"local\"}",
+    "created_at": 1792048943030
+   },
+   {
+    "id": "3729d65b-c269-4978-a384-26be78ce956a",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": null,
+    "kind": "game_started",
+    "trust": "trusted_server",
+    "payload_json": "{\"cohort\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"mode\":\"ranked\",\"opponent\":\"jev\"}",
+    "created_at": 1792048943031
+   },
+   {
+    "id": "13378876-2c51-40ca-9312-9bf48e2f68e2",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": "3e2c90f7-35e7-43c5-904d-e96ae57e5eb8",
+    "kind": "human_action",
+    "trust": "trusted_server",
+    "payload_json": "{\"actionId\":\"m:09-13\",\"seq\":1,\"source\":null}",
+    "created_at": 1792048943032
+   },
+   {
+    "id": "22a9b128-8572-4565-9d1c-5b9e10201390",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": "32258cc0-994f-4fa8-8c6d-87955b90b514",
+    "kind": "jev_request_prepared",
+    "trust": "trusted_server",
+    "payload_json": "{\"decisionId\":\"32258cc0-994f-4fa8-8c6d-87955b90b514\",\"profileHash\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"request\":{\"model\":\"jev-1.13.0\",\"questions\":{\"c0_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[0] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c1_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[1] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c2_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[2] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c3_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[3] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c4_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[4] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c5_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[5] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"},\"c6_mobility\":{\"criteria\":[\"Severely confined relative to the opponent\",\"Worse useful mobility\",\"Balanced useful mobility\",\"Better useful mobility\",\"Strong durable mobility advantage\"],\"instructions\":\"Evaluate state.candidates[6] from state.perspective. Assess useful mobility and resistance to confinement. Use the supplied exact board features. Search frontiers are horizon-limited, not proven game outcomes. Answer independently of all other questions.\",\"type\":\"score\"}},\"state\":{\"candidates\":[{\"actionId\":\"m:22-17\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":1,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":1,\"men\":12,\"mobility\":1,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":1,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,3,0,0,3,0,3,3,0,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[22,17],\"searchDepth\":1},{\"actionId\":\"m:24-19\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":3,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[24,19],\"searchDepth\":1},{\"actionId\":\"m:21-17\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":2,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":14}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[21,17],\"searchDepth\":1},{\"actionId\":\"m:22-18\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[22,18],\"searchDepth\":1},{\"actionId\":\"m:23-18\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[23,18],\"searchDepth\":1},{\"actionId\":\"m:23-19\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[23,19],\"searchDepth\":1},{\"actionId\":\"m:24-20\",\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"horizonLimited\":true,\"path\":[24,20],\"searchDepth\":1}],\"currentBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3],\"noProgressPly\":0,\"perspective\":\"white\",\"rules\":{\"id\":\"american-8x8-web-v1\",\"movement\":\"Men move and capture forward only. Kings one square diagonally or short jumps in both directions. Capture mandatory; no longest-chain rule. Crowning ends turn.\",\"numbering\":\"Playable squares 1-32, row-major. Red moves toward increasing rows.\",\"pieces\":{\"0\":\"empty\",\"1\":\"red man\",\"2\":\"red king\",\"3\":\"white man\",\"4\":\"white king\"}}}},\"requestHash\":\"0eb11ff6a46fafcf2d3845c9135e962b11c6b59f00f591a3df92b05702d03530\",\"search\":{\"baselineActionId\":\"m:22-17\",\"budgetExhausted\":false,\"candidates\":[{\"actionId\":\"m:22-17\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":1,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":1,\"men\":12,\"mobility\":1,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":1,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,3,0,0,3,0,3,3,0,3,3,3,3,3,3,3],\"path\":[22,17],\"principalVariation\":[\"m:22-17\",\"j:13x22\",\"j:25x18\"],\"promotes\":false,\"tacticalScore\":20,\"utility\":20},{\"actionId\":\"m:24-19\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":3,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,3,0,3,3,3,3,3,3,3,3],\"path\":[24,19],\"principalVariation\":[\"m:24-19\"],\"promotes\":false,\"tacticalScore\":8,\"utility\":8},{\"actionId\":\"m:21-17\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":2,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":7,\"nearPromotion\":0,\"support\":14}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,3,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3],\"path\":[21,17],\"principalVariation\":[\"m:21-17\"],\"promotes\":false,\"tacticalScore\":0,\"utility\":0},{\"actionId\":\"m:22-18\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,0,3,3,3,3,3,3,3,3,3,3],\"path\":[22,18],\"principalVariation\":[\"m:22-18\"],\"promotes\":false,\"tacticalScore\":0,\"utility\":0},{\"actionId\":\"m:23-18\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,3,0,0,3,3,0,3,3,3,3,3,3,3,3,3],\"path\":[23,18],\"principalVariation\":[\"m:23-18\"],\"promotes\":false,\"tacticalScore\":0,\"utility\":0},{\"actionId\":\"m:23-19\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":3,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":13}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,3,0,3,3,0,3,3,3,3,3,3,3,3,3],\"path\":[23,19],\"principalVariation\":[\"m:23-19\"],\"promotes\":false,\"tacticalScore\":0,\"utility\":0},{\"actionId\":\"m:24-20\",\"adjustment\":0,\"afterBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"captured\":[],\"factors\":{},\"features\":{\"phase\":\"opening\",\"pieceCount\":24,\"red\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12},\"white\":{\"advancement\":13,\"backRank\":4,\"captureActions\":0,\"center\":2,\"edge\":4,\"kings\":0,\"material\":1200,\"maxCapture\":0,\"men\":12,\"mobility\":8,\"nearPromotion\":0,\"support\":12}},\"frontierBoard\":[1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,3,3,3,3,0,3,3,3,3,3,3,3,3],\"path\":[24,20],\"principalVariation\":[\"m:24-20\"],\"promotes\":false,\"tacticalScore\":0,\"utility\":0}],\"completedDepth\":1,\"cutoffs\":0,\"evaluatedCount\":7,\"excludedImmediateLosses\":0,\"forced\":false,\"legalCount\":7,\"prunedCount\":0,\"searchMs\":0.1430830000000043,\"searchedNodes\":10,\"tacticalWin\":false},\"stateHash\":\"73b758f6713afe11bcb53d86405b0d26cbfbabb218777045de07f5f3be365615\"}",
+    "created_at": 1792048943033
+   },
+   {
+    "id": "0a433519-259f-45a2-ac1b-aefe1fd80f86",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": "32258cc0-994f-4fa8-8c6d-87955b90b514",
+    "kind": "jev_attempt_started",
+    "trust": "trusted_server",
+    "payload_json": "{\"attempt\":1,\"decisionId\":\"32258cc0-994f-4fa8-8c6d-87955b90b514\",\"requestHash\":\"0eb11ff6a46fafcf2d3845c9135e962b11c6b59f00f591a3df92b05702d03530\"}",
+    "created_at": 1792048943034
+   },
+   {
+    "id": "97aa3f47-1c7a-4489-bcb1-2be16e2956da",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": "32258cc0-994f-4fa8-8c6d-87955b90b514",
+    "kind": "jev_response_validated",
+    "trust": "trusted_server",
+    "payload_json": "{\"attempt\":{\"attempt\":1,\"httpStatus\":200,\"latencyMs\":0.5157080000000036,\"status\":\"ok\",\"usage\":{\"input_tokens\":100,\"output_tokens\":20}},\"decisionId\":\"32258cc0-994f-4fa8-8c6d-87955b90b514\",\"requestHash\":\"0eb11ff6a46fafcf2d3845c9135e962b11c6b59f00f591a3df92b05702d03530\",\"response\":{\"answers\":{\"c0_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c1_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c2_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c3_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c4_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c5_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"},\"c6_mobility\":{\"confidence\":1,\"legend\":{\"0\":\"Severely confined relative to the opponent\",\"1\":\"Worse useful mobility\",\"2\":\"Balanced useful mobility\",\"3\":\"Better useful mobility\",\"4\":\"Strong durable mobility advantage\"},\"probabilities\":{\"0\":0,\"1\":0,\"2\":1,\"3\":0,\"4\":0},\"score\":2,\"type\":\"score\"}},\"model\":\"jev-1.13.0\",\"usage\":{\"input_tokens\":100,\"output_tokens\":20}}}",
+    "created_at": 1792048943034
+   },
+   {
+    "id": "841802f3-f2de-4e35-9594-b34cf68dfe52",
+    "match_id": "481c11a4-7d9b-40bf-8a28-57992989cbaa",
+    "request_id": "opponent-1-708bfc61fa64c5c80dd06d7c3e56e59f3abbbced2d3eb7bfd0da3d3f0bc8fa9c",
+    "kind": "opponent_action",
+    "trust": "trusted_server",
+    "payload_json": "{\"actionId\":\"m:22-17\",\"seq\":2,\"source\":\"jev\"}",
+    "created_at": 1792048943035
+   },
+   {
+    "id": "b2a80309-337c-4b06-913c-7ea1f8394679",
+    "match_id": "100acd7c-6426-4ac8-9f74-b17dd418e18a",
+    "request_id": null,
+    "kind": "game_started",
+    "trust": "trusted_server",
+    "payload_json": "{\"cohort\":\"f29b62f30f2f5118a29d959b8b56825a342059f23f4e737535b1be07ddfa0aad\",\"mode\":\"ranked\",\"opponent\":\"jev\"}",
+    "created_at": 1792048943036
+   },
+   {
+    "id": "8f774b5f-800c-433a-8bfe-dd473d7bcdda",
+    "match_id": "100acd7c-6426-4ac8-9f74-b17dd418e18a",
+    "request_id": "3e1f2808-9b76-4241-a609-adc8e1e1ff8d",
+    "kind": "human_action",
+    "trust": "trusted_server",
+    "payload_json": "{\"actionId\":\"m:09-13\",\"seq\":1,\"source\":null}",
+    "created_at": 1792048943036
+   }
+  ],
+  "quotas": [
+   {
+    "bucket": "match:ecde45f5-9de1-449a-84ae-852a504b8858:2026-10-15",
+    "hits": 1,
+    "expires_at": 1792135343025
+   },
+   {
+    "bucket": "actions:ecde45f5-9de1-449a-84ae-852a504b8858",
+    "hits": 1,
+    "expires_at": 1792049003026
+   },
+   {
+    "bucket": "match:6057723f-3115-4e6e-80c1-89ee1ed99847:2026-10-15",
+    "hits": 1,
+    "expires_at": 1792135343030
+   },
+   {
+    "bucket": "match:expire-user:2026-10-15",
+    "hits": 1,
+    "expires_at": 1792135343031
+   },
+   {
+    "bucket": "global-jev-starts:2026-10-15",
+    "hits": 2,
+    "expires_at": 1792135343031
+   },
+   {
+    "bucket": "actions:a655d3c8-d650-42c7-a458-dafef1cc1665",
+    "hits": 1,
+    "expires_at": 1792049003032
+   },
+   {
+    "bucket": "match:pending-user:2026-10-15",
+    "hits": 1,
+    "expires_at": 1792135343035
+   },
+   {
+    "bucket": "actions:ed86e6be-7394-4d0f-9460-7a5fe5b9c45a",
+    "hits": 1,
+    "expires_at": 1792049003036
+   }
+  ]
+ }
+}
