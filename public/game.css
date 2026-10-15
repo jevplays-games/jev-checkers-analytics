@@ -40,6 +40,8 @@
 .player-strip.is-turn .avatar{border-color:var(--ink)}
 .human-avatar{color:var(--ink);background:var(--piece-red)}
 .opponent-avatar{background:var(--piece-dark);color:var(--pink)}
+/* game.js sets data-side on both avatars, so each wears its own pieces' colour when the human plays the ink side. */
+.avatar[data-side=red]{background:var(--piece-red);color:var(--ink)}.avatar[data-side=white]{background:var(--piece-dark);color:var(--pink)}
 .player-strip span:not(.avatar):not(.material-count).jv-plaque{display:flex;font-size:var(--fs-xs);color:var(--text);margin-top:var(--s1)}
 .jv-plaque.is-win{--plaque-art:url(/brand/result-win.svg)}.jv-plaque.is-draw{--plaque-art:url(/brand/result-draw.svg)}.jv-plaque.is-loss{--plaque-art:url(/brand/result-loss.svg)}
 /* Short and wide (landscape phone, picture-in-picture): the board takes the viewport height on the left and the

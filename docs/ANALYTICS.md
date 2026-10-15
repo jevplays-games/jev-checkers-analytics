@@ -24,6 +24,8 @@ For each color: moves, pieces captured, capture turns, multi-jump turns, promoti
 
 Material values are man=100 and king=175 heuristic units. Material balance and heuristic balance are separate. Neither is a probability or a tournament rating. Mobility is the legal-action count according to the implemented capture rules; a jump chain is one action.
 
+The live charts are drawn from the player's side, whichever colour they play: the material chart plots your material minus your opponent's (positive means you are ahead), and your mobility is the solid line while your opponent's is the dashed one. The interface names the sides after the piece art, pink (moves first) and ink. Replays, exports and leaderboards keep the rules identifiers `red` and `white` (for example `bySide.red`, `redMaterial` and `materialBalance` = red − white), so stored records and analysis scripts are unchanged.
+
 ## Timing
 
 Every distribution returns finite-value `count`, `sum`, `min`, `max`, `mean`, `p50`, `p90`, `p95`, and `p99`. Quantiles linearly interpolate between sorted samples at index `(n−1)×p`. Missing values are excluded; an empty set has null extrema/mean/quantiles and a sum of zero.

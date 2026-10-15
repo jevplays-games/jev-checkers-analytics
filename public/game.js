@@ -1,12 +1,13 @@
 import { createInitialState,getLegalActions,getOutcome,applyAction,coords,squareAt,owner,isKing,otherSide,serialize } from './games/checkers/rules.js';
 import { profileFor,features } from './games/checkers/strategy.js';
 import { hashState,sha256,sealEvent,verifyReplay,GAME_ID,REPLAY_FORMAT } from './lib/audit.js';
-import { analyzeReplay,toCSV,flatEvents,mobilitySeries,opponentName } from './lib/analytics.js';
+import { analyzeReplay,toCSV,flatEvents,materialSeries,mobilitySeries,opponentName,sideName } from './lib/analytics.js';
 import { makeZip } from './lib/zip.js';
 import { ACTIVE_KEY,HISTORY_KEY,LAUNCH_KEY,migrateStorage } from './lib/storage.js';
 const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(n):'—';
 const ms=n=>Number.isFinite(n)?n>=1000?`${(n/1000).toFixed(2)} s`:`${Math.round(n)} ms`:'—';
 const moveName=id=>id?.replace(/^[mj]:/,'').replaceAll('x',' × ').replaceAll('-',' – ')||'—';
+const plural=(n,word)=>`${n} ${word}${n===1?'':'s'}`;
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function stored(key,fallback=null){try{const data=localStorage.getItem(key);return data?JSON.parse(data):fallback;}catch{return fallback;}}
 function store(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
@@ -52,7 +53,7 @@ function drawBoard(target,board,interactive=false){
       if(!sq){const light=element('span',undefined,'square light');light.setAttribute('role','gridcell');light.setAttribute('aria-disabled','true');row.append(light);continue;}
       const p=board[sq-1],button=element(interactive?'button':'div',undefined,'square dark');
       button.dataset.square=sq;button.setAttribute('role','gridcell');
-      button.setAttribute('aria-label',`Square ${sq}, ${p?`${owner(p)} ${isKing(p)?'king':'man'}`:'empty'}${path.includes(sq)&&interactive?', selected':''}${nextSquares.has(sq)?', available destination':''}`);
+      button.setAttribute('aria-label',`Square ${sq}, ${p?`${sideName(owner(p)).toLowerCase()} ${isKing(p)?'king':'man'}`:'empty'}${path.includes(sq)&&interactive?', selected':''}${nextSquares.has(sq)?', available destination':''}`);
       if(interactive){button.tabIndex=Number(focus)===sq||(!focus&&sq===1)?0:-1;button.addEventListener('click',()=>selectSquare(sq));}
       if(interactive&&path.includes(sq))button.classList.add('selected');if(interactive&&nextSquares.has(sq))button.classList.add('next');
       if(interactive&&latest?.path.includes(sq))button.classList.add('last');
@@ -69,10 +70,13 @@ function currentOutcome(){return active?.outcome||getOutcome(state);}
 function canMove(){return !!active&&!busy&&!currentOutcome()&&state.toMove===active.humanSide&&active.status!=='void';}
 function renderGame(){
   const start=performance.now();drawBoard($('board'),state.board,true);const f=features(state),human=active?.humanSide||'red',opponent=otherSide(human);
-  $('human-name').textContent=`${account?.displayName||'You'} · ${human==='red'?'Red':'Dark'}`;
-  $('human-material').textContent=`${f[human].men+f[human].kings} pieces · ${f[human].kings} kings`;
-  $('opponent-material').textContent=`${f[opponent].men+f[opponent].kings} pieces · ${f[opponent].kings} kings`;
+  $('human-name').textContent=`${account?.displayName||'You'} · ${sideName(human)}`;
+  $('human-material').textContent=`${plural(f[human].men+f[human].kings,'piece')} · ${plural(f[human].kings,'king')}`;
+  $('opponent-material').textContent=`${plural(f[opponent].men+f[opponent].kings,'piece')} · ${plural(f[opponent].kings,'king')}`;
   const remote=active?.opponent==='jev';$('opponent-name').textContent=remote?'Jev + tactical search':'Local search opponent';
+  // Each avatar wears its player's piece colour; the opponent's initial is J only when the opponent is Jev.
+  const humanAvatar=document.querySelector('.human-avatar'),opponentAvatar=document.querySelector('.opponent-avatar');
+  humanAvatar.dataset.side=human;opponentAvatar.dataset.side=opponent;opponentAvatar.textContent=remote?'J':'L';
   $('opponent-detail').textContent=remote?`${active.difficulty} · pinned structured opponent`:'Unranked practice · no model calls';
   $('mode-badge').textContent=active?.mode==='ranked'?'RANKED':'PRACTICE';
   const outcome=currentOutcome(),legal=getOutcome(state)?[]:getLegalActions(state);
@@ -200,7 +204,7 @@ function chart(target,series,label,bars=false){
     if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:`bar${entry.opponent?' secondary':''}`});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
     else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${entry.opponent?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:`bar${entry.opponent?' secondary':''}`}));}
     // Legend: a swatch drawn like its series (solid, dashed or a bar) so colour is not the only cue; the label is ink.
-    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${entry.values.length} observations`));
+    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${plural(entry.values.length,'observation')}`));
   }target.append(svg);
 }
 function renderAnalytics(){
@@ -212,7 +216,7 @@ function renderAnalytics(){
   $('metric-latency').textContent=ms(a.timing.opponent.p50);$('metric-p95').textContent=`p95 ${ms(a.timing.opponent.p95)}`;
   $('metric-calls').textContent=number(a.jev.decisions);$('metric-tokens').textContent=a.jev.calls?`${number(a.jev.inputTokens)} input tokens · ${a.jev.calls} attempts`:'No provider usage';
   $('metric-changed').textContent=a.jev.changedRate===null?'—':`${(100*a.jev.changedRate).toFixed(1)}%`;
-  chart($('material-chart'),[{name:'Red − White',values:a.points.map(p=>p.materialBalance)}],'Material balance over all recorded positions');
+  chart($('material-chart'),materialSeries(a.points,r.manifest.humanSide,r.manifest.opponent),'Your material minus your opponent\'s over all recorded positions');
   chart($('latency-chart'),[{name:`${opponentName(r.manifest.opponent)} latency (ms)`,opponent:true,values:a.moves.filter(m=>m.actor==='opponent').map(m=>m.totalMs).filter(Number.isFinite)}],'Opponent decision latency in milliseconds',true);
   chart($('mobility-chart'),mobilitySeries(a.points,r.manifest.humanSide,r.manifest.opponent),'Your and your opponent\'s legal moves over all recorded positions');
   const heat=$('heatmap'),max=Math.max(1,...a.heatmaps.landings);heat.replaceChildren();
