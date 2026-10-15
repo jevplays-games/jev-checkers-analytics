@@ -1,34 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <radialGradient id="ground" cx="0.28" cy="0.2" r="1">
-      <stop offset="0" stop-color="#b02a31"/>
-      <stop offset="0.45" stop-color="#4a1418"/>
-      <stop offset="1" stop-color="#0c0d17"/>
-    </radialGradient>
-    <linearGradient id="e" gradientUnits="userSpaceOnUse" x1="10" y1="30" x2="54" y2="52">
-      <stop offset="0" stop-color="#ffd0d0"/>
-      <stop offset="0.4" stop-color="#f2767a"/>
-      <stop offset="1" stop-color="#9a232b"/>
-    </linearGradient>
-    <linearGradient id="f" gradientUnits="userSpaceOnUse" x1="12" y1="32" x2="50" y2="48">
-      <stop offset="0" stop-color="#f58b8e"/>
-      <stop offset="0.5" stop-color="#e5484d"/>
-      <stop offset="1" stop-color="#b02a31"/>
-    </linearGradient>
-    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="16" y1="12" x2="44" y2="38">
-      <stop offset="0" stop-color="#fff3b8"/>
-      <stop offset="0.45" stop-color="#f5c451"/>
-      <stop offset="1" stop-color="#c8922a"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="url(#ground)"/>
-  <ellipse cx="33" cy="52" rx="19" ry="6" fill="#0a0b13" opacity="0.5"/>
-  <path d="M12 40V46A20 9 0 0 0 52 46V40Z" fill="#5c1018"/>
-  <ellipse cx="32" cy="46" rx="20" ry="9" fill="#5c1018"/>
-  <path d="M12 36V42A20 9 0 0 0 52 42V36Z" fill="#a92a32"/>
-  <ellipse cx="32" cy="36" rx="20" ry="9" fill="url(#e)"/>
-  <ellipse cx="32" cy="36" rx="16" ry="7" fill="url(#f)"/>
-  <path d="M19 40L17 22L25 29L32 17L39 29L47 22L45 40Q32 44 19 40Z" fill="#7a4a0c" transform="translate(1.2 1.6)" stroke="#7a4a0c" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M19 40L17 22L25 29L32 17L39 29L47 22L45 40Q32 44 19 40Z" fill="url(#g)" stroke="url(#g)" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="17" cy="21" r="3" fill="url(#g)"/><circle cx="32" cy="16" r="3.2" fill="url(#g)"/><circle cx="47" cy="21" r="3" fill="url(#g)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img">
+  <title>Typecheckers</title>
+  <rect width="64" height="64" fill="#1E1E1E"/>
+  <rect x="4" y="4" width="56" height="56" fill="#F386A1"/>
+  <rect x="8" y="8" width="48" height="48" fill="#DEDEDE"/>
+  <path d="M8 8H32V32H8ZM32 32H56V56H32Z" fill="#1E1E1E"/>
+  <path d="M10 14H14V18H18V14H22V18H26V14H30V26H10Z" fill="#F386A1"/>
 </svg>

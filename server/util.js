@@ -51,7 +51,18 @@ export async function safeEqual(a,b) { if(typeof a!=='string'||typeof b!=='strin
 // APP_ORIGIN is the canonical origin. LEGACY_APP_ORIGINS (comma-separated) keeps the pre-rename hostname
 // (checkers.jevplay.games) working until the redirect cutover: a request on a listed origin keeps its own
 // origin for links, OAuth callbacks and the CSRF origin check, so cookies stay on the host that set them.
-export function appOrigins(env){return [env.APP_ORIGIN,...String(env.LEGACY_APP_ORIGINS??'').split(',').map(o=>o.trim())].filter(Boolean);}
+// Orchestrator rule D9: a legacy entry is admitted only as a bare origin (http(s), no userinfo, path, query,
+// fragment or wildcard; one trailing "/" is tolerated). Anything else is skipped with one structured warning
+// per distinct entry and never throws, so a typo can only switch the old host's legacy handling off.
+const warnedOrigins=new Set();
+export function legacyOrigin(entry,env){
+  let url=null;try{url=new URL(entry);}catch{}
+  const bare=url&&['https:',...(env?.APP_ENV==='production'?[]:['http:'])].includes(url.protocol)&&!/[@?#*]/.test(entry)&&entry.replace(/\/$/,'')===url.origin;
+  if(bare)return url.origin;
+  if(!warnedOrigins.has(entry)){warnedOrigins.add(entry);console.warn(JSON.stringify({kind:'legacy_origin_skipped',entry,reason:'LEGACY_APP_ORIGINS entries must be bare origins'}));}
+  return null;
+}
+export function appOrigins(env){return [env.APP_ORIGIN,...String(env.LEGACY_APP_ORIGINS??'').split(',').map(o=>o.trim()).filter(Boolean).map(o=>legacyOrigin(o,env))].filter(Boolean);}
 export function origin(env,request) {
   const own=new URL(request.url).origin,result=env.APP_ORIGIN || own;
   assert(new URL(result).origin===result,500,'APP_ORIGIN must be an origin without a trailing slash');

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1280, initial-scale=1"><title>Typecheckers — jevplay.games</title>
+<style>
+@font-face{font-family:Inter;src:url('../../public/brand/inter-var.woff2') format('woff2');font-weight:100 900;font-display:block}
+@font-face{font-family:VT323;src:url('../../public/brand/vt323.woff2') format('woff2');font-weight:400;font-display:block}
+*{box-sizing:border-box}html,body{margin:0;width:1280px;height:640px;overflow:hidden}body{background:#F386A1;color:#1E1E1E;font-family:VT323,'JetBrains Mono',monospace}main{position:relative;width:1280px;height:640px;isolation:isolate}.texture{position:absolute;inset:0;z-index:-1}.frame{position:absolute;inset:31px 41px;border:1px solid #1E1E1E}.tag{position:absolute;left:66px;top:59px;margin:0;padding:9px 13px;background:#1E1E1E;color:#F386A1;border:2px dotted #F386A1;outline:1px solid #1E1E1E;font-size:25px;letter-spacing:1px}.copy{position:absolute;left:66px;top:190px;width:640px}h1{font:700 90px/1.08 Inter,sans-serif;letter-spacing:-4.5px;margin:0 0 26px}.tagline{font-size:32px;line-height:1.13;margin:0}.rule{height:3px;width:68px;background:#1E1E1E;margin-top:30px}footer{position:absolute;left:66px;bottom:69px;font-size:25px;line-height:1.3}footer p{margin:0}.window{position:absolute;left:733px;top:131px;width:334px;background:#DEDEDE;border:3px solid #1E1E1E;box-shadow:3px 3px 0 #1E1E1E,inset 0 0 0 2px #FEFEFE}.bar{height:35px;background:#1E1E1E;color:#FEFEFE;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:25px;letter-spacing:1px}.board{display:block;width:304px;height:304px;margin:12px;border:2px solid #1E1E1E}.status{border-top:1px solid #1E1E1E;margin:0 12px 10px;padding-top:6px;font-size:21px;display:flex;justify-content:space-between}.robot{position:absolute;left:1066px;top:350px;width:172px;height:132px}.robot-label{position:absolute;left:1090px;top:497px;width:124px;text-align:center;font-size:23px;margin:0;border-top:2px solid #1E1E1E;padding-top:8px}
+</style></head><body><main aria-label="Typecheckers social card">
+<svg class="texture" width="1280" height="640" aria-hidden="true"><defs><pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#1E1E1E"/></pattern><pattern id="dense" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.25" fill="#1E1E1E"/></pattern></defs><rect width="1280" height="640" fill="url(#dots)" opacity=".4"/><g fill="url(#dense)" opacity=".4"><circle cx="1239" cy="94" r="119"/><circle cx="775" cy="620" r="114"/><circle cx="15" cy="413" r="64"/></g><path d="M16 43V16H43M1237 16H1264V43M16 597V624H43M1237 624H1264V597" fill="none" stroke="#1E1E1E" stroke-width="1"/></svg>
+<div class="frame" aria-hidden="true"></div><p class="tag">JEVPLAY.GAMES/TYPECHECKERS</p>
+<section class="copy"><h1>Typecheckers</h1><p class="tagline">Jump, king, outplay Jev.<br>Every move logged.</p><div class="rule" aria-hidden="true"></div></section>
+<section class="window" aria-label="Mid-game checkers board"><div class="bar"><span>BOARD</span><span aria-hidden="true">_ x</span></div>
+<svg class="board" viewBox="0 0 320 320" role="img" aria-label="8 by 8 mid-game board with pink and ink pieces and one crowned king of each colour" shape-rendering="crispEdges"><defs><pattern id="squares" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="#FEFEFE"/><path d="M40 0H80V40H40ZM0 40H40V80H0Z" fill="#DEDEDE"/></pattern></defs><rect width="320" height="320" fill="url(#squares)"/>
+<image href="../../public/art/dark.svg" x="42" y="2" width="36" height="36"/>
+<image href="../../public/art/dark.svg" x="202" y="2" width="36" height="36"/>
+<image href="../../public/art/dark.svg" x="82" y="42" width="36" height="36"/>
+<image href="../../public/art/dark.svg" x="242" y="42" width="36" height="36"/>
+<image href="../../public/art/dark.svg" x="42" y="82" width="36" height="36"/>
+<image href="../../public/art/dark.svg" x="162" y="122" width="36" height="36"/>
+<image href="../../public/art/dark-king.svg" x="242" y="202" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="122" y="162" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="282" y="162" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="2" y="202" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="82" y="202" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="42" y="242" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="202" y="242" width="36" height="36"/>
+<image href="../../public/art/red.svg" x="162" y="282" width="36" height="36"/>
+<image href="../../public/art/red-king.svg" x="242" y="122" width="36" height="36"/>
+</svg><p class="status"><span>YOUR MOVE</span><span>08 × 08</span></p></section>
+<svg class="robot" viewBox="0 0 86 66" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Jev, a friendly boxy pixel robot" shape-rendering="crispEdges"><g fill="#1E1E1E"><path d="M40 2h8v6h-3v5h24v6h6v29h-7v12H53v5H33v-5H18V48h-7V19h6v-6h24V8h-1z"/><path d="M3 32h7v18H3zm73 0h7v18h-7z"/></g><path fill="#F386A1" d="M21 17h44v30H21zM24 51h38v7H24z"/><path fill="#DEDEDE" d="M25 22h36v20H25z"/><g fill="#1E1E1E"><path d="M30 25h6v7h-6zm20 0h6v7h-6zM36 35h14v4H36zM28 59h8v7h-8zm23 0h8v7h-8z"/></g></svg>
+<p class="robot-label">JEV / READY</p><footer><p>typecheckers.jevplay.games</p><p>github.com/jevplays-games/jev-typecheckers</p></footer>
+</main></body></html>

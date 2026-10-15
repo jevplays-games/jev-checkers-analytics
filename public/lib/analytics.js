@@ -1,4 +1,4 @@
-import { createInitialState, applyAction, owner, isKing } from '../games/checkers/rules.js';
+import { createInitialState, applyAction, owner, isKing, otherSide } from '../games/checkers/rules.js';
 import { features, evaluate } from '../games/checkers/strategy.js';
 export const ANALYTICS_VERSION = 'analytics-1.0.0';
 const sum = a => a.reduce((s,x) => s+x,0);
@@ -102,3 +102,19 @@ export function toCSV(rows) {
 }
 export function flatEvents(replay) { return replay.events.map(e=>({seq:e.seq,at:e.at,kind:e.kind,actor:e.actor,
   action:e.action?.id||'',preHash:e.preHash,postHash:e.postHash,previousHash:e.previousHash,eventHash:e.eventHash,evidence:e.evidence})); }
+// Chart series are keyed to players, not piece colours (orchestrator decision D8): the human is always the
+// solid --chart-human series and the opponent always the dashed --chart-jev one, whichever side each plays.
+// Material is drawn from the human's side too, so a positive balance always means "you are ahead".
+// Displayed side names follow the piece art (public/art): the first side is pink, the second ink. The rules
+// keep the ids 'red' and 'white', which replays, exports and leaderboards store, so only the labels differ.
+export const sideName=side=>side==='red'?'Pink':'Ink';
+export const opponentName=opponent=>opponent==='jev'?'Jev':'Local opponent';
+export function materialSeries(points,humanSide,opponent){
+  const other=otherSide(humanSide);
+  return [{name:`You − ${opponentName(opponent)}`,values:points.map(p=>p[`${humanSide}Material`]-p[`${other}Material`]),opponent:false}];
+}
+export function mobilitySeries(points,humanSide,opponent){
+  const other=otherSide(humanSide);
+  return [{name:`You (${sideName(humanSide)})`,values:points.map(p=>p[`${humanSide}Mobility`]),opponent:false},
+    {name:`${opponentName(opponent)} (${sideName(other)})`,values:points.map(p=>p[`${other}Mobility`]),opponent:true}];
+}

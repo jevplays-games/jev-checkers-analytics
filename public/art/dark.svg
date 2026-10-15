@@ -1,28 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" shape-rendering="crispEdges">
   <title>dark</title>
-  <defs>
-    <linearGradient id="e" gradientUnits="userSpaceOnUse" x1="16" y1="10" x2="84" y2="92">
-      <stop offset="0" stop-color="#8a90ad"/><stop offset="0.35" stop-color="#4a4f66"/><stop offset="1" stop-color="#161824"/>
-    </linearGradient>
-    <linearGradient id="f" gradientUnits="userSpaceOnUse" x1="20" y1="12" x2="80" y2="88">
-      <stop offset="0" stop-color="#565b75"/><stop offset="0.5" stop-color="#2a2d3a"/><stop offset="1" stop-color="#1a1c27"/>
-    </linearGradient>
-    <linearGradient id="side" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#4a4f66" stop-opacity="0.55"/><stop offset="1" stop-color="#0b0c13"/>
-    </linearGradient>
-    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="32" y1="27" x2="68" y2="59">
-      <stop offset="0" stop-color="#fff3b8"/><stop offset="0.45" stop-color="#f5c451"/><stop offset="1" stop-color="#c8922a"/>
-    </linearGradient>
-    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff" stop-opacity="0.5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-  <ellipse cx="54" cy="89" rx="36" ry="8" fill="#04050a" opacity="0.4"/>
-  <circle cx="50" cy="57" r="40" fill="#0b0c13" transform="translate(1.2 1.6)"/>
-  <circle cx="50" cy="56" r="40" fill="url(#side)"/>
-  <circle cx="50" cy="47" r="40" fill="url(#e)"/>
-  <circle cx="50" cy="47" r="33" fill="url(#f)"/>
-  <path d="M17 47A33 33 0 0 1 83 47Q50 31 17 47Z" fill="url(#gloss)"/>
-  <path d="M25 32.5A29 29 0 0 1 42.5 19" fill="none" stroke="#fff" stroke-opacity="0.8" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M20 39A33 33 0 0 1 44 15" fill="none" stroke="#fff" stroke-opacity="0.8" stroke-width="3.2" stroke-linecap="round"/>
+  <path fill="#1E1E1E" transform="translate(3 3)" d="M30 10H70V20H80V30H90V70H80V80H70V90H30V80H20V70H10V30H20V20H30Z" />
+  <path fill="#1E1E1E" d="M30 10H70V20H80V30H90V70H80V80H70V90H30V80H20V70H10V30H20V20H30Z" />
+  <path fill="#FEFEFE" fill-rule="evenodd" d="M55 20V21H59V22H62V23H64V24H66V25H67V26H69V27H70V28H71V29H72V30H73V31H74V33H75V34H76V36H77V38H78V41H79V45H80V55H79V59H78V62H77V64H76V66H75V67H74V69H73V70H72V71H71V72H70V73H69V74H67V75H66V76H64V77H62V78H59V79H55V80H45V79H41V78H38V77H36V76H34V75H33V74H31V73H30V72H29V71H28V70H27V69H26V67H25V66H24V64H23V62H22V59H21V55H20V45H21V41H22V38H23V36H24V34H25V33H26V31H27V30H28V29H29V28H30V27H31V26H33V25H34V24H36V23H38V22H41V21H45V20Z M55 23V24H59V25H61V26H63V27H65V28H66V29H68V30H69V31H70V32H71V34H72V35H73V37H74V39H75V41H76V45H77V55H76V59H75V61H74V63H73V65H72V66H71V68H70V69H69V70H68V71H66V72H65V73H63V74H61V75H59V76H55V77H45V76H41V75H39V74H37V73H35V72H34V71H32V70H31V69H30V68H29V66H28V65H27V63H26V61H25V59H24V55H23V45H24V41H25V39H26V37H27V35H28V34H29V32H30V31H31V30H32V29H34V28H35V27H37V26H39V25H41V24H45V23Z"/>
 </svg>

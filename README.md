@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev playing checkers beside a bar-chart hologram." width="100%"></p>
+<p align="center"><img src="assets/banner.png" alt="Typecheckers in a pink retro desktop with a checkers board, typed move choices, a score chart, and the pixel Jev robot." width="100%"></p>
 
 <div align="center">
 
@@ -21,6 +21,8 @@ Typecheckers is a single-page American checkers game from jevplay.games. You pla
 
 > [!NOTE]
 > Local practice works offline and needs no account. Playing the real Jev needs a TypeSafe API key; Discord credentials are needed for sign-in, community launch and leaderboards. This repository holds the integrations but no credentials, no deployed service and no Jev benchmark results: none were measured, so none are shown.
+
+<p align="center"><img src="reports/desktop-preview-top.png" alt="Typecheckers at 1440 px: a local practice match a few moves in on the pink and ink board, with the setup and decision panels beside it." width="720"></p>
 
 ## Quick start
 
@@ -172,15 +174,18 @@ The production Worker serves `typecheckers.jevplay.games` and, until the redirec
 
 ## Reports included
 
-`reports/` contains the test transcript, browser check report, desktop/mobile previews, an actual browser-generated export/replay, and two search-only paired benchmark runs. No live Jev result is represented as measured here.
+`reports/` contains the test transcript, browser check report, desktop/mobile previews (`desktop-preview.png`, `desktop-preview-top.png`, `mobile-preview.png`, retaken after the jevplay.games restyle), an actual browser-generated export/replay, and two search-only paired benchmark runs. No live Jev result is represented as measured here.
 
 ## Repository layout
 
 ```text
+assets/                 README banner and GitHub social preview
+  src/                  HTML sources for the banner, social preview and OG card; render.py re-renders them and the PNG icons
 public/                 browser app: index.html, game.js, game.css
-  brand/                shared jevplay.games brand.css, fonts (Inter, VT323) and icons
+  brand/                shared jevplay.games brand.css, fonts (Inter, VT323), icons, OG card and result badges
+  art/                  piece SVGs (red, dark, red-king, dark-king)
   games/checkers/       pure rules, search engine and strategy
-  lib/                  audit (hash chain, replay verification), analytics, ZIP writer
+  lib/                  audit (hash chain, replay verification), analytics, charts, storage keys, ZIP writer
 server/                 Worker API: matches, Jev adapter, auth, Discord, leaderboards
 migrations/             D1 / SQLite schema
 scripts/                dev server, replay verify/analyze, Discord registration
