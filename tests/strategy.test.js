@@ -19,7 +19,7 @@ for(const [name,change]of Object.entries({
  'bad usage':r=>r.usage.input_tokens=-1,
  'bad legend':r=>r.answers[Object.keys(r.answers)[0]].legend['0']='tampered'
 }))test(`rejects ${name}`,()=>{const s=createInitialState(),p=profileFor('easy'),request=buildRequest(s,searchCandidates(s,p),p),r=mockJev(request);change(r);assert.throws(()=>validateAnswers(r,request));});
-test('JEV factors can change equal-budget search ordering',()=>{const p=profileFor('normal'),search=searchCandidates(createInitialState(),p);search.candidates[0].score=0;search.candidates[1].score=0;for(const c of search.candidates.slice(2))c.score=-1000;
+test('Jev factors can change equal-budget search ordering',()=>{const p=profileFor('normal'),search=searchCandidates(createInitialState(),p);search.candidates[0].score=0;search.candidates[1].score=0;for(const c of search.candidates.slice(2))c.score=-1000;
  const factors={[search.candidates[0].action.id]:{promotion:0,mobility:0,support:0},[search.candidates[1].action.id]:{promotion:4,mobility:4,support:4}};
  assert.equal(rankCandidates(search,factors,p)[0].action.id,search.candidates[1].action.id);
 });

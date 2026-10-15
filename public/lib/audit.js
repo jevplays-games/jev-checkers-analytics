@@ -8,13 +8,19 @@ export async function sha256(value) {
   const bytes = new TextEncoder().encode(typeof value === 'string' ? value : canonical(value));
   return [...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(b => b.toString(16).padStart(2,'0')).join('');
 }
+// Typecheckers was Checkers. New records use the new game id and replay format; records exported
+// before the rename keep the old ones and must still verify, so both are accepted everywhere.
+export const GAME_ID = 'typecheckers', LEGACY_GAME_IDS = ['checkers'];
+export const REPLAY_FORMAT = 'jev-typecheckers-audit', LEGACY_REPLAY_FORMATS = ['jev-checkers-audit'];
+export const isGameId = id => id === GAME_ID || LEGACY_GAME_IDS.includes(id);
+export const isReplayFormat = format => format === REPLAY_FORMAT || LEGACY_REPLAY_FORMATS.includes(format);
 export const hashState = state => sha256(serialize(state));
 export async function sealEvent(fields, previousHash) {
   const event = { schemaVersion: 1, ...fields, previousHash };
   return { ...event, eventHash: await sha256(event) };
 }
 export async function verifyReplay(replay) {
-  if (!replay || replay.format !== 'jev-checkers-audit' || replay.version !== 1 || !Array.isArray(replay.events) || replay.events.length > 20000) throw new Error('Unsupported replay');
+  if (!replay || !isReplayFormat(replay.format) || replay.version !== 1 || !Array.isArray(replay.events) || replay.events.length > 20000) throw new Error('Unsupported replay');
   if (!replay.manifest || typeof replay.manifest.matchId !== 'string' || !/^[a-zA-Z0-9-]{8,80}$/.test(replay.manifest.matchId) || !replay.manifest.profile) throw new Error('Invalid manifest');
   let state = deserialize(replay.manifest.initialState || createInitialState());
   if (!['red','white'].includes(replay.manifest.humanSide)) throw new Error('Invalid human side');

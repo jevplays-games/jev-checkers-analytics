@@ -9,7 +9,7 @@ async function fixture(){
  let state=initial,head=await sha256(manifest);const events=[];
  for(let i=0;i<4;i++){const action=getLegalActions(state)[0],next=applyAction(state,action.id);const e=await sealEvent({matchId:manifest.matchId,seq:i+1,at:'2026-09-22T00:00:00.000Z',kind:'move',actor:i%2?'opponent':'human',action,
   evidence:i%2?{source:'local',model:null,totalMs:i*10,searchMs:5,searchedNodes:10,completedDepth:1,legalCount:7,evaluatedCount:7,attempts:[],candidates:[]}: {},turnMs:100,preHash:await hashState(state),postHash:await hashState(next)},head);events.push(e);head=e.eventHash;state=next;}
- return {format:'jev-checkers-audit',version:1,manifest,events,finalState:state,finalHash:head,outcome:null};
+ return {format:'jev-typecheckers-audit',version:1,manifest,events,finalState:state,finalHash:head,outcome:null};
 }
 test('complete audit record verifies offline without network',async()=>{const r=await fixture(),v=await verifyReplay(r);assert(v.valid);assert.equal(v.eventCount,4);assert.deepEqual(v.state,r.finalState);});
 for(const [name,change]of Object.entries({
@@ -27,7 +27,7 @@ test('self-consistent hashes do not excuse forged move metadata',async()=>{
  for(let i=0;i<r.events.length;i++){const {eventHash,previousHash,...fields}=r.events[i];r.events[i]=await sealEvent(fields,previous);previous=r.events[i].eventHash;}
  r.finalHash=previous;await assert.rejects(()=>verifyReplay(r),/metadata/);
 });
-test('failed JEV attempts remain in analytics even when no move was committed',async()=>{
+test('failed Jev attempts remain in analytics even when no move was committed',async()=>{
  const r=await fixture();r.events.push({kind:'service_failure',evidence:{totalMs:8000,providerMs:7950,attempts:[{status:'provider_http_529',usage:null},{status:'provider_timeout',usage:null}]}});
  const a=analyzeReplay(r);assert.equal(a.jev.calls,2);assert.equal(a.jev.failedAttempts,2);assert.equal(a.jev.serviceFailures,1);assert.equal(a.jev.unknownUsageCalls,2);
 });

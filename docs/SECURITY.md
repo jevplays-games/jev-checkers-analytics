@@ -13,10 +13,10 @@ The rules engine is deterministic but not an authentication mechanism. A user ca
 - One-use OAuth state bound to the initiating browser session; allowlisted local return paths; server-only code exchange; discard/revoke OAuth tokens after identity lookup.
 - Timestamp-bounded Discord Ed25519 signatures; guild/application/installation checks; hashed ten-minute subject-bound launch token; unsupported DMs/threads rejected.
 - User-bound match ownership, server-generated opponent turns, legal-action validation, immutable profile configuration, revision/lease checks, idempotent event commits.
-- Replay integrity and complete state reconstruction, plus accepted JEV response provenance for ranked finalization. Browser-provided scores are never accepted.
+- Replay integrity and complete state reconstruction, plus accepted Jev response provenance for ranked finalization. Browser-provided scores are never accepted.
 - Content-security policy, self-hosted native modules/CSS, names rendered as text, bounded JSON bodies, no sensitive headers/query parameters in application logs, formula-safe CSV strings.
 - API keys/Discord secrets only in server environment. Operator analytics requires a separate private token. Provider packets contain game data, not account or community identities.
-- Usage quotas, bounded candidate/question sizes, an eight-second provider budget, at most two attempts, one active ranked game, and no local fallback counted as JEV.
+- Usage quotas, bounded candidate/question sizes, an eight-second provider budget, at most two attempts, one active ranked game, and no local fallback counted as Jev.
 
 ## Explicit limitations
 

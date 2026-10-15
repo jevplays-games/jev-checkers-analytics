@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Reproducible paired-color experiments. Remote JEV is opt-in and never simulated. */
+/** Reproducible paired-color experiments. Remote Jev is opt-in and never simulated. */
 import { mkdir,readFile,writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { platform,arch,cpus } from 'node:os';
@@ -18,12 +18,12 @@ if(!Number.isInteger(pairs)||pairs<1||pairs>1000)throw Error('--pairs must be 1â
 if(!['random','heuristic','search','jev'].includes(opponent)||!['search','jev'].includes(treatment))throw Error('Unsupported agent');
 const maxPlies=Number(options['max-plies']||240);if(!Number.isInteger(maxPlies)||maxPlies<2||maxPlies>2000)throw Error('--max-plies must be 2â€“2000');
 const treatments=options.ablation?['search','jev']:[treatment],remote=treatments.includes('jev')||opponent==='jev';
-if(remote&&(!options['allow-remote']||!process.env.TYPESAFE_API_KEY))throw Error('Remote experiments require TYPESAFE_API_KEY and explicit --allow-remote. No mock JEV will be substituted.');
+if(remote&&(!options['allow-remote']||!process.env.TYPESAFE_API_KEY))throw Error('Remote experiments require TYPESAFE_API_KEY and explicit --allow-remote. No mock Jev will be substituted.');
 const config=profileFor(profile),outdir=resolve(String(options.out||`bench/results/${new Date().toISOString().replaceAll(':','-')}`));await mkdir(outdir,{recursive:true});
 const DB=new NodeDB();DB.exec(await readFile(new URL('../migrations/001.sql',import.meta.url),'utf8'));const env={DB,TYPESAFE_API_KEY:process.env.TYPESAFE_API_KEY};
 const manifest={benchmarkVersion:1,startedAt:new Date().toISOString(),seed,pairs,treatments,opponent,maxPlies,profile:config,profileHash:await sha256(config),
   runtime:{node:process.version,platform:platform(),arch:arch(),cpu:cpus()[0]?.model},remoteProviderUsed:remote,
-  design:'Same legal opening in each color. Ablation uses identical search budgets; only JEV factors differ. Truncation is not a draw.'};
+  design:'Same legal opening in each color. Ablation uses identical search budgets; only Jev factors differ. Truncation is not a draw.'};
 await writeFile(resolve(outdir,'manifest.json'),JSON.stringify(manifest,null,2));
 const random=rng(seed),fixtures=[];
 for(let i=0;i<pairs;i++){
