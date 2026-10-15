@@ -8,6 +8,9 @@ const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.Number
 const ms=n=>Number.isFinite(n)?n>=1000?`${(n/1000).toFixed(2)} s`:`${Math.round(n)} ms`:'—';
 const moveName=id=>id?.replace(/^[mj]:/,'').replaceAll('x',' × ').replaceAll('-',' – ')||'—';
 const plural=(n,word)=>`${n} ${word}${n===1?'':'s'}`;
+// Display labels for stored ids (history rows print these, never the raw ids).
+const LABELS={opponent:{jev:'Jev',local:'Local search'},mode:{casual:'Casual',ranked:'Ranked'},difficulty:{easy:'Easy',normal:'Normal',hard:'Hard',jev:'Jev profile'}};
+const label=(kind,id)=>LABELS[kind][id]??id;
 function element(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function stored(key,fallback=null){try{const data=localStorage.getItem(key);return data?JSON.parse(data):fallback;}catch{return fallback;}}
 function store(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
@@ -195,16 +198,17 @@ function svgNode(tag,attributes={},text){const e=document.createElementNS(svgNS,
 function chart(target,series,label,bars=false){
   target.replaceChildren();const values=series.flatMap(s=>s.values).filter(Number.isFinite);
   if(!values.length){target.append(element('div','Metrics appear as the game progresses.','empty-chart'));return;}
-  const svg=svgNode('svg',{viewBox:'0 0 500 180',role:'img','aria-label':label});svg.append(svgNode('title',{},label));
+  const svg=svgNode('svg',{viewBox:`0 0 500 ${series.length>1?192:180}`,role:'img','aria-label':label});svg.append(svgNode('title',{},label));
   let min=Math.min(0,...values),max=Math.max(1,...values);if(min===max)max=min+1;
   const width=445,height=125,left=42,top=12,y=v=>top+height-(v-min)/(max-min)*height;
-  for(let i=0;i<4;i++){const value=min+(max-min)*i/3;svg.append(svgNode('line',{x1:left,x2:left+width,y1:y(value),y2:y(value),class:'grid-line'}),svgNode('text',{x:3,y:y(value)+3},number(value)));}
+  for(let i=0;i<4;i++){const value=min+(max-min)*i/3;svg.append(svgNode('line',{x1:left,x2:left+width,y1:y(value),y2:y(value),class:'grid-line'}),svgNode('text',{x:3,y:y(value)+5},number(value)));}
   for(const [s,entry]of series.entries()){
     const n=entry.values.length,x=i=>left+(n>1?i/(n-1):.5)*width;
     if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:`bar${entry.opponent?' secondary':''}`});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
     else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${entry.opponent?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:`bar${entry.opponent?' secondary':''}`}));}
     // Legend: a swatch drawn like its series (solid, dashed or a bar) so colour is not the only cue; the label is ink.
-    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${plural(entry.values.length,'observation')}`));
+    // One legend row per series: chart text is 15 user units (readable at about 9px when the chart is 300px wide).
+    const lx=left,ly=156+s*18;svg.append(bars?svgNode('rect',{x:lx,y:ly-10,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:ly-4,y2:ly-4,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:ly},`${entry.name} · ${plural(entry.values.length,'observation')}`));
   }target.append(svg);
 }
 function renderAnalytics(){
@@ -212,7 +216,7 @@ function renderAnalytics(){
   if(!r){$('audit-status').textContent='No match recorded yet. Local records are untrusted; official scores require server verification.';return;}
   analytics=analyzeReplay(r);const a=analytics;
   $('audit-status').textContent=`${imported?'Imported record':r.manifest.trust==='trusted_server'?'Server-recorded match':'Local practice · untrusted client'} · ${r.events.length} events · ${r.verification||'not verified'} · profile ${r.manifest.profileHash.slice(0,12)}…`;
-  $('metric-turns').textContent=number(a.turns);$('metric-captures').textContent=`${a.bySide.red.captures+a.bySide.white.captures} captures · ${a.bySide.red.promotions+a.bySide.white.promotions} promotions`;
+  $('metric-turns').textContent=number(a.turns);$('metric-captures').textContent=`${plural(a.bySide.red.captures+a.bySide.white.captures,'capture')} · ${plural(a.bySide.red.promotions+a.bySide.white.promotions,'promotion')}`;
   $('metric-latency').textContent=ms(a.timing.opponent.p50);$('metric-p95').textContent=`p95 ${ms(a.timing.opponent.p95)}`;
   $('metric-calls').textContent=number(a.jev.decisions);$('metric-tokens').textContent=a.jev.calls?`${number(a.jev.inputTokens)} input tokens · ${a.jev.calls} attempts`:'No provider usage';
   $('metric-changed').textContent=a.jev.changedRate===null?'—':`${(100*a.jev.changedRate).toFixed(1)}%`;
@@ -283,8 +287,8 @@ async function loadLeaderboard(more=false){
 }
 async function loadHistory(){
   const local=stored(HISTORY_KEY,[]),rows=[];
-  for(const r of local){const b=element('button','Inspect');b.onclick=()=>{imported=r;renderAnalytics();showTab('replay');};rows.push(['Local practice',r.manifest.profile.difficulty,r.outcome?.reason||'unfinished',r.events.length,b]);}
-  if(serverOnline)try{const data=await api('/api/analytics/me');for(const m of data.recent){const b=element('button','Inspect');b.onclick=async()=>{try{imported=await api(`/api/matches/${m.id}/replay`);renderAnalytics();showTab('replay');}catch(e){notice(e.message);}};rows.push([`${m.opponent} · ${m.mode}`,m.difficulty,m.status,m.revision,b]);}}catch(error){notice(error.message);}
+  for(const r of local){const b=element('button','Inspect');b.onclick=()=>{imported=r;renderAnalytics();showTab('replay');};rows.push(['Local practice',label('difficulty',r.manifest.profile.difficulty),r.outcome?.reason||'unfinished',r.events.length,b]);}
+  if(serverOnline)try{const data=await api('/api/analytics/me');for(const m of data.recent){const b=element('button','Inspect');b.onclick=async()=>{try{imported=await api(`/api/matches/${m.id}/replay`);renderAnalytics();showTab('replay');}catch(e){notice(e.message);}};rows.push([`${label('opponent',m.opponent)} · ${label('mode',m.mode)}`,label('difficulty',m.difficulty),m.status,m.revision,b]);}}catch(error){notice(error.message);}
   table($('history-table'),['Source','Difficulty','Status','Events','Record'],rows);
 }
 function showTab(name){activeTab=name;for(const tab of document.querySelectorAll('[data-tab]')){const selected=tab.dataset.tab===name;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;$(`${tab.dataset.tab}-panel`).hidden=!selected;}
@@ -341,7 +345,9 @@ async function autoStart(serverActiveId){
   try{await startGame();}catch(error){notice(error.message);}
 }
 $('new-game').onclick=startGame;$('resign').onclick=resign;$('flip').onclick=()=>{flip=!flip;renderGame();renderReplay();};
-$('cancel-selection').onclick=()=>{path=[];renderGame();};$('continue-local').onclick=()=>startLocal(state,active.humanSide);
+$('cancel-selection').onclick=()=>{path=[];renderGame();};$('continue-local').onclick=()=>{
+  // The voided game continues as practice, so the Setup panel must describe practice for the next game too.
+  opponentChosen=true;$('opponent').value='local';$('mode').value='casual';applyCapabilities();startLocal(state,active.humanSide);};
 $('analysis-on').onchange=()=>{$('decision-body').hidden=!$('analysis-on').checked;store('jev-analysis-on',$('analysis-on').checked);};
 $('difficulty').onchange=()=>{store('jev-difficulty',$('difficulty').value);if(activeTab==='leaderboard')loadLeaderboard();};
 $('opponent').onchange=()=>{opponentChosen=true;applyCapabilities();};$('telemetry-consent').onchange=()=>store('jev-telemetry-consent',$('telemetry-consent').checked);
