@@ -102,3 +102,12 @@ export function toCSV(rows) {
 }
 export function flatEvents(replay) { return replay.events.map(e=>({seq:e.seq,at:e.at,kind:e.kind,actor:e.actor,
   action:e.action?.id||'',preHash:e.preHash,postHash:e.postHash,previousHash:e.previousHash,eventHash:e.eventHash,evidence:e.evidence})); }
+// Chart series are keyed to players, not piece colours (orchestrator decision D8): the human is always the
+// solid --chart-human series and the opponent always the dashed --chart-jev one, whichever side each plays.
+const sideName=side=>side==='red'?'Red':'White';
+export const opponentName=opponent=>opponent==='jev'?'Jev':'Local opponent';
+export function mobilitySeries(points,humanSide,opponent){
+  const other=humanSide==='red'?'white':'red';
+  return [{name:`You (${sideName(humanSide)})`,values:points.map(p=>p[`${humanSide}Mobility`]),opponent:false},
+    {name:`${opponentName(opponent)} (${sideName(other)})`,values:points.map(p=>p[`${other}Mobility`]),opponent:true}];
+}

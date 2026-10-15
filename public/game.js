@@ -1,7 +1,7 @@
 import { createInitialState,getLegalActions,getOutcome,applyAction,coords,squareAt,owner,isKing,otherSide,serialize } from './games/checkers/rules.js';
 import { profileFor,features } from './games/checkers/strategy.js';
 import { hashState,sha256,sealEvent,verifyReplay,GAME_ID,REPLAY_FORMAT } from './lib/audit.js';
-import { analyzeReplay,toCSV,flatEvents } from './lib/analytics.js';
+import { analyzeReplay,toCSV,flatEvents,mobilitySeries,opponentName } from './lib/analytics.js';
 import { makeZip } from './lib/zip.js';
 import { ACTIVE_KEY,HISTORY_KEY,LAUNCH_KEY,migrateStorage } from './lib/storage.js';
 const $=id=>document.getElementById(id),number=n=>Number.isFinite(n)?Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(n):'—';
@@ -197,10 +197,10 @@ function chart(target,series,label,bars=false){
   for(let i=0;i<4;i++){const value=min+(max-min)*i/3;svg.append(svgNode('line',{x1:left,x2:left+width,y1:y(value),y2:y(value),class:'grid-line'}),svgNode('text',{x:3,y:y(value)+3},number(value)));}
   for(const [s,entry]of series.entries()){
     const n=entry.values.length,x=i=>left+(n>1?i/(n-1):.5)*width;
-    if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:'bar'});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
-    else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${s?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:'bar'}));}
+    if(bars){const step=width/Math.max(1,n);entry.values.forEach((v,i)=>{const bar=svgNode('rect',{x:left+i*step+2,y:y(v),width:Math.max(1,step-4),height:Math.max(1,y(0)-y(v)),class:`bar${entry.opponent?' secondary':''}`});bar.append(svgNode('title',{},`${entry.name} ${i+1}: ${number(v)}`));svg.append(bar);});}
+    else{const p=entry.values.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');svg.append(svgNode('path',{d:p,class:`chart-line${entry.opponent?' secondary':''}`}));if(n===1)svg.append(svgNode('circle',{cx:x(0),cy:y(entry.values[0]),r:3,class:`bar${entry.opponent?' secondary':''}`}));}
     // Legend: a swatch drawn like its series (solid, dashed or a bar) so colour is not the only cue; the label is ink.
-    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:'bar legend-swatch'}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${s?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${entry.values.length} observations`));
+    const lx=left+s*190;svg.append(bars?svgNode('rect',{x:lx,y:158,width:12,height:10,class:`bar legend-swatch${entry.opponent?' secondary':''}`}):svgNode('line',{x1:lx,x2:lx+22,y1:163,y2:163,class:`chart-line legend-swatch${entry.opponent?' secondary':''}`}),svgNode('text',{x:lx+(bars?18:28),y:166},`${entry.name} · ${entry.values.length} observations`));
   }target.append(svg);
 }
 function renderAnalytics(){
@@ -213,8 +213,8 @@ function renderAnalytics(){
   $('metric-calls').textContent=number(a.jev.decisions);$('metric-tokens').textContent=a.jev.calls?`${number(a.jev.inputTokens)} input tokens · ${a.jev.calls} attempts`:'No provider usage';
   $('metric-changed').textContent=a.jev.changedRate===null?'—':`${(100*a.jev.changedRate).toFixed(1)}%`;
   chart($('material-chart'),[{name:'Red − White',values:a.points.map(p=>p.materialBalance)}],'Material balance over all recorded positions');
-  chart($('latency-chart'),[{name:'Opponent latency (ms)',values:a.moves.filter(m=>m.actor==='opponent').map(m=>m.totalMs).filter(Number.isFinite)}],'Opponent decision latency in milliseconds',true);
-  chart($('mobility-chart'),[{name:'Red mobility',values:a.points.map(p=>p.redMobility)},{name:'White mobility',values:a.points.map(p=>p.whiteMobility)}],'Red and white legal moves over all recorded positions');
+  chart($('latency-chart'),[{name:`${opponentName(r.manifest.opponent)} latency (ms)`,opponent:true,values:a.moves.filter(m=>m.actor==='opponent').map(m=>m.totalMs).filter(Number.isFinite)}],'Opponent decision latency in milliseconds',true);
+  chart($('mobility-chart'),mobilitySeries(a.points,r.manifest.humanSide,r.manifest.opponent),'Your and your opponent\'s legal moves over all recorded positions');
   const heat=$('heatmap'),max=Math.max(1,...a.heatmaps.landings);heat.replaceChildren();
   for(let row=0;row<8;row++)for(let col=0;col<8;col++){const sq=squareAt(row,col),count=sq?a.heatmaps.landings[sq-1]:0,cell=element('div',sq?String(count):'',`heat-cell ${sq?`heat-${count?Math.max(1,Math.ceil(count/max*5)):0}`:'blank'}`);if(sq){cell.title=`Square ${sq}: ${count} landings`;cell.setAttribute('aria-label',cell.title);}heat.append(cell);}
   const metricRows=[];

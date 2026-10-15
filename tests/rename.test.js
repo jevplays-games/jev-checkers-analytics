@@ -100,11 +100,16 @@ test('storage migration keeps newer data, drops the stale key, and survives bloc
 // Orchestrator rule D9: hostile or malformed LEGACY_APP_ORIGINS entries are skipped, never admitted, never a 500.
 import { appOrigins } from '../server/util.js';
 const HOSTILE=['https://user:pw@evil.example',`https://evil.example#@checkers.jevplay.games`,'https://evil.example/path','https://evil.example?q=1','https://*.jevplay.games','not a url','javascript:alert(1)','http://checkers.jevplay.games'];
-test('D9: only bare origins are admitted from LEGACY_APP_ORIGINS',()=>{
- const env={APP_ENV:'production',APP_ORIGIN:NEW,LEGACY_APP_ORIGINS:[...HOSTILE,`${OLD}/`].join(',')};
- const warn=console.warn;let warnings=0;console.warn=()=>warnings++;
- try{assert.deepEqual(appOrigins(env),[NEW,OLD]);}finally{console.warn=warn;}
- assert(warnings<=HOSTILE.length);
+test('D9: only bare origins are admitted from LEGACY_APP_ORIGINS, each skipped entry warned exactly once',()=>{
+ // Fresh entries per run: warnings are deduplicated per distinct entry for the life of the process.
+ const tag=crypto.randomUUID().slice(0,8),hostile=HOSTILE.map(e=>e.replace('evil',`evil-${tag}`).replace('*.jevplay',`*.${tag}.jevplay`).replace('not a url',`not a url ${tag}`).replace('alert(1)',`alert('${tag}')`).replace('http://checkers',`http://${tag}.checkers`));
+ assert.equal(new Set(hostile).size,HOSTILE.length);
+ const env={APP_ENV:'production',APP_ORIGIN:NEW,LEGACY_APP_ORIGINS:[...hostile,`${OLD}/`].join(',')};
+ const warn=console.warn,seen=[];console.warn=line=>seen.push(JSON.parse(line));
+ try{assert.deepEqual(appOrigins(env),[NEW,OLD]);assert.deepEqual(appOrigins(env),[NEW,OLD]);}finally{console.warn=warn;}
+ assert.equal(seen.length,hostile.length);
+ assert.deepEqual(seen.map(w=>w.entry).sort(),[...hostile].sort());
+ assert(seen.every(w=>w.kind==='legacy_origin_skipped'));
 });
 for(const entry of HOSTILE)test(`D9: legacy entry ${entry} admits no evil host and keeps both real hosts working`,async()=>{
  const warn=console.warn;console.warn=()=>{};
