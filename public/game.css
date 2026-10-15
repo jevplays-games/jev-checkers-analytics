@@ -72,6 +72,9 @@
 @media(max-height:240px){.main,.jv-main{padding:var(--s1)}.board-frame{--fit-reserve:.75rem}}
 /* Small phones: give the 8x8 board every pixel the column allows. */
 @media(max-width:480px) and (min-height:561px){.board-panel{padding:var(--s2)}.board-frame{padding:4px;--fit-reserve:15rem}.jv-main{padding-inline:var(--s2)}}
+/* The brand header is sticky: anchor jumps (the "Skip to game" link targets #board) and focus scrolling stop below it
+   instead of leaving the top of the board under the header. */
+html{scroll-padding-top:calc(var(--header-h) + var(--sa-t) + var(--s2))}
 /* Pixel-window title bars on the main panels. Absolute, so the bar spans the panel edge to edge whatever
    padding the breakpoint gives it. Compact landscape layouts drop the bar to give the board the height. */
 .jv-panel.has-titlebar{position:relative;padding-top:calc(28px + var(--s4))}
