@@ -20,7 +20,8 @@
     "db:local": "wrangler d1 migrations apply checkers --local",
     "db:remote": "wrangler d1 migrations apply checkers --remote",
     "discord:register": "node --env-file-if-exists=.env scripts/register-discord.mjs",
-    "analyze": "node scripts/analyze-replay.mjs"
+    "analyze": "node scripts/analyze-replay.mjs",
+    "deploy:godaddy": "node --env-file-if-exists=.env scripts/godaddy-deploy.js"
   },
   "devDependencies": {}
 }
